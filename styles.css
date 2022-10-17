@@ -1,0 +1,40 @@
+:root {
+    --matrix-gap: calc(100%/var(--matrix-columns))*0.1;
+}
+
+#lcd {
+    width: 40vw; 
+    height: 19.3vw;
+}
+
+#lcd-matrix{
+    width: calc(96%/114*100);
+    height: calc(35%/55*100);
+    margin: auto;
+}
+
+#lcd-matrix canvas{
+    width: 100%;
+    height: 100%;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.center{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.center-horizontal{
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    -ms-transform: translate(-50%, 0%);
+    transform: translate(-50%, 0%);
+}

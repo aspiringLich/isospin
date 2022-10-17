@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 114 55" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <rect style="stroke: rgb(0, 0, 0); fill-rule: evenodd; fill: rgb(0, 140, 74); paint-order: fill;" width="112" height="53" rx="1" ry="1" x="1" y="1.034"/>
+  <polyline style="fill: rgba(255, 255, 255, 0); stroke: rgb(26, 79, 39);" points="48.292 46.51 53.873 51.01 69.65 51.036 75.236 46.172"/>
+  <polyline style="fill: rgba(255, 255, 255, 0); stroke: rgb(26, 79, 39);" points="7.751 47.97 13.332 52.47 29.109 52.496 34.695 47.632"/>
+  <polyline style="fill: rgba(255, 255, 255, 0); stroke: rgb(26, 79, 39);" points="8.582 46.338 13.787 50.838 28.499 50.864 33.709 46"/>
+  <rect style="stroke: rgb(0, 0, 0); fill: rgb(46, 46, 46);" x="5.375" y="6" width="103.249" height="43" rx="2" ry="2"/>
+  <ellipse style="stroke: rgb(217, 172, 11); fill: rgba(216, 216, 216, 0);" cx="110" cy="4.034" rx="1.5" ry="1.5"/>
+  <ellipse style="stroke: rgb(217, 172, 11); fill: rgba(216, 216, 216, 0);" cx="4" cy="4.034" rx="1.5" ry="1.5"/>
+  <ellipse style="stroke: rgb(217, 172, 11); fill: rgba(216, 216, 216, 0);" cx="110" cy="51.062" rx="1.5" ry="1.5"/>
+  <ellipse style="stroke: rgb(217, 172, 11); fill: rgba(216, 216, 216, 0);" cx="4" cy="51.062" rx="1.5" ry="1.5"/>
+  <rect style="stroke: rgb(0, 0, 0); fill: rgb(6, 0, 121);" x="8" y="9" width="98" height="37" rx="2" ry="2" id="screen"/>
+  <path style="fill: rgb(217, 172, 11); stroke: rgb(210, 154, 0);" d="M 7.985 1.034 H 9.985 V 3.163 A 1 1 0 0 1 8.985 4.163 H 8.985 A 1 1 0 0 1 7.985 3.163 V 1.034 Z" bx:shape="rect 7.985 1.034 2 3.129 0 0 1 1 1@da74840b"/>
+  <path style="fill: rgb(217, 172, 11); stroke: rgb(210, 154, 0);" d="M 12 1.034 H 14 V 3.163 A 1 1 0 0 1 13 4.163 H 13 A 1 1 0 0 1 12 3.163 V 1.034 Z" bx:shape="rect 12 1.034 2 3.129 0 0 1 1 1@d78dcb6b"/>
+  <path style="fill: rgb(217, 172, 11); stroke: rgb(210, 154, 0);" d="M 16 1.034 H 18 V 3.163 A 1 1 0 0 1 17 4.163 H 17 A 1 1 0 0 1 16 3.163 V 1.034 Z" bx:shape="rect 16 1.034 2 3.129 0 0 1 1 1@07aee073"/>
+  <path style="fill: rgb(217, 172, 11); stroke: rgb(210, 154, 0);" d="M 20 1.034 H 22 V 3.163 A 1 1 0 0 1 21 4.163 H 21 A 1 1 0 0 1 20 3.163 V 1.034 Z" bx:shape="rect 20 1.034 2 3.129 0 0 1 1 1@6204e1e7"/>
+  <path style="fill: rgb(217, 172, 11); stroke: rgb(210, 154, 0);" d="M 24 1.034 H 26 V 3.163 A 1 1 0 0 1 25 4.163 H 25 A 1 1 0 0 1 24 3.163 V 1.034 Z" bx:shape="rect 24 1.034 2 3.129 0 0 1 1 1@a7b91d07"/>
+  <path style="fill: rgb(217, 172, 11); stroke: rgb(210, 154, 0);" d="M 28 1.034 H 30 V 3.163 A 1 1 0 0 1 29 4.163 H 29 A 1 1 0 0 1 28 3.163 V 1.034 Z" bx:shape="rect 28 1.034 2 3.129 0 0 1 1 1@2aa484f6"/>
+  <path style="fill: rgb(217, 172, 11); stroke: rgb(210, 154, 0);" d="M 32 1 H 34 V 3.129 A 1 1 0 0 1 33 4.129 H 33 A 1 1 0 0 1 32 3.129 V 1 Z" bx:shape="rect 32 1 2 3.129 0 0 1 1 1@0380cca4"/>
+  <path style="fill: rgb(217, 172, 11); stroke: rgb(210, 154, 0);" d="M 35.842 1.034 H 37.842 V 3.163 A 1 1 0 0 1 36.842 4.163 H 36.842 A 1 1 0 0 1 35.842 3.163 V 1.034 Z" bx:shape="rect 35.842 1.034 2 3.129 0 0 1 1 1@c7b6ac87"/>
+</svg>
