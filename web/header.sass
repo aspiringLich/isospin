@@ -38,7 +38,7 @@ $animation-len: 5s
 $elements: 5
 @for $i from 1 through $elements
     p:nth-child(#{$i})
-        $delay: calc($animation-len / $elements * $i)
+        $delay: calc(3s + $animation-len / $elements * $i)
         animation-delay: $delay
         -moz-animation-delay: $delay
 

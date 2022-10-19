@@ -28,6 +28,12 @@ let transitions = `
 &ltISOSPIN&gt
 `.split("\n");
 
+function play_sound(sound) {
+    var audio = new Audio(sound);
+    audio.loop = false;
+    audio.play();
+}
+
 let delay = 150;
 let variance = 0.3;
 function type_title(count) {
