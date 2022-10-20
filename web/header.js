@@ -1,3 +1,6 @@
+// post it notes
+
+
 // type title
 let title = document.querySelector("#lcd-matrix h1");
 let transitions = `
@@ -19,7 +22,6 @@ let transitions = `
 &ltISOSO
 &ltISOS
 &ltISOS
-&ltISOS
 &ltISOSP
 &ltISOSPI
 &ltISOSPIN
@@ -27,12 +29,6 @@ let transitions = `
 &ltISOSPIN&gt
 &ltISOSPIN&gt
 `.split("\n");
-
-function play_sound(sound) {
-    var audio = new Audio(sound);
-    audio.loop = false;
-    audio.play();
-}
 
 let delay = 150;
 let variance = 0.3;

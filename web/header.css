@@ -101,7 +101,7 @@ p:nth-child(5) {
 
 #post-it {
   width: 30vw;
-  position: aboslute;
+  position: absolute;
 }
 #post-it img {
   width: 5vw;
