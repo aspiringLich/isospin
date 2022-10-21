@@ -101,9 +101,18 @@ p:nth-child(5) {
 
 #post-it {
   width: 30vw;
+  position: relative;
+}
+#post-it:nth-child(2) {
+  right: -60vw;
+}
+#post-it #note {
   position: absolute;
+  width: 20vw;
+  height: 20vw;
 }
 #post-it img {
-  width: 5vw;
-  height: 5vw;
+  position: absolute;
+  width: 80%;
+  height: 80%;
 }/*# sourceMappingURL=header.css.map */

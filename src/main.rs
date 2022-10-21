@@ -38,6 +38,8 @@ fn main() {
                     image::Rgba([0, 0, 0, 0])
                 } else if x.0 == [157, 157, 157, 255] {
                     image::Rgba([0, 0, 0, 127])
+                } else if x.0 == [201, 201, 201, 255] {
+                    image::Rgba([0, 0, 0, 63])
                 } else {
                     x
                 }

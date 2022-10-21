@@ -2,6 +2,7 @@
     font-family: 'FixedSys'
     src: url('FSEX300.ttf')
 
+$unit-width: calc(40vw / 114)
 $lcd-width: 40vw
 #lcd
     width: $lcd-width
@@ -63,11 +64,20 @@ $elements: 5
         -ms-transform: translate(-50%, 0%)
         transform: translate(-50%, 0%)
 
-$post-it-size: 5vw
+$post-it-size: 20vw
 #post-it
     width: calc((100vw - $lcd-width) / 2)
-    position: absolute
+    position: relative
 
-    img
+    &:nth-child(2)
+        right: -60vw
+
+    #note
+        position: absolute
         width: $post-it-size
         height: $post-it-size
+
+    img
+        position: absolute
+        width: 80%
+        height: 80%
