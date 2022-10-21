@@ -4,10 +4,10 @@ use std::fmt;
 use std::fs::File;
 use std::time::{Duration, Instant};
 
-fn main() {
+fn process_imgs() {
     // process post-it images
     let out_path = "./web/post-it-imgs/".to_owned();
-    let in_path = "./src/in/".to_owned();
+    let in_path = "./src/pictures/".to_owned();
 
     let img: RgbImage = ImageBuffer::new(1404, 1872);
 
@@ -54,4 +54,8 @@ fn main() {
         assert!(output_image(i, 0, 10, (i - 1) * 4 + 3).is_ok());
         assert!(output_image(i, 10, 10, (i - 1) * 4 + 4).is_ok());
     }
+}
+
+fn main() {
+    process_imgs();
 }
