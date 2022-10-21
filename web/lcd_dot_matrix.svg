@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg viewBox="0 0 114 55" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
-  <rect style="stroke: rgb(0, 0, 0); fill-rule: evenodd; fill: rgb(0, 140, 74); paint-order: fill;" width="112" height="53" rx="1" ry="1" x="1" y="1.034"/>
+  <rect style="fill-rule: evenodd; fill: rgb(0, 140, 74); paint-order: fill; stroke: rgb(26, 79, 39);" width="112" height="53" rx="1" ry="1" x="1" y="1.034"/>
   <polyline style="fill: rgba(255, 255, 255, 0); stroke: rgb(26, 79, 39);" points="48.292 46.51 53.873 51.01 69.65 51.036 75.236 46.172"/>
   <polyline style="fill: rgba(255, 255, 255, 0); stroke: rgb(26, 79, 39);" points="7.751 47.97 13.332 52.47 29.109 52.496 34.695 47.632"/>
   <polyline style="fill: rgba(255, 255, 255, 0); stroke: rgb(26, 79, 39);" points="8.582 46.338 13.787 50.838 28.499 50.864 33.709 46"/>
-  <rect style="stroke: rgb(0, 0, 0); fill: rgb(46, 46, 46);" x="5.375" y="6" width="103.249" height="43" rx="2" ry="2"/>
+  <rect style="fill: rgb(46, 46, 46); stroke: rgb(26, 26, 26);" x="5.375" y="6" width="103.249" height="43" rx="2" ry="2"/>
   <ellipse style="stroke: rgb(217, 172, 11); fill: rgba(216, 216, 216, 0);" cx="110" cy="4.034" rx="1.5" ry="1.5"/>
   <ellipse style="stroke: rgb(217, 172, 11); fill: rgba(216, 216, 216, 0);" cx="4" cy="4.034" rx="1.5" ry="1.5"/>
   <ellipse style="stroke: rgb(217, 172, 11); fill: rgba(216, 216, 216, 0);" cx="110" cy="51.062" rx="1.5" ry="1.5"/>
