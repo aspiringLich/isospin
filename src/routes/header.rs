@@ -7,21 +7,6 @@ use rand::prelude::*;
 #[path = "../config.rs"]
 mod config;
 
-// // post it notes
-// for (let indx = 0; indx <= 1; indx++) {
-//     let div = document.querySelectorAll("#post-it")[indx];
-//     let x = shuffleArray([...Array(numpostits).keys()]);
-//     let y = shuffleArray([...Array(numpostits).keys()]);
-//     for (let i = 0; i < numpostits; i++) {
-//         let rot = Math.random() * 45 - 22.5;
-//         let top = Math.random() * 15 - 2.5;
-//         div.innerHTML += `<div id="note" style="rotate: ${rot}deg; left: ${x[i] * 5}vw; top: ${y[i] * 2.5}vw">
-//         <object type=\"image/svg+xml\" data=\"assets/post-its/${["blue", "green", "purple", "red", "yellow"][(Math.random() * 5) | 0]}.svg\"></object>
-//         <img src=\"assets/post-it-imgs/${ids[i + indx * numpostits] + 1}.png\" class=\"center\"></img>
-//         </div>`
-//     }
-// }
-
 pub fn generate_header() -> String {
     const post_its: u32 = 8;
 
