@@ -16,7 +16,7 @@ function shuffleArray(array) {
 }
 
 let numpostits = 4;
-let ids = shuffleArray([...Array(numpostits * 4).keys()]);
+let ids = shuffleArray([...Array(numpostits * 3).keys()]);
 
 // post it notes
 for (let indx = 0; indx <= 1; indx++) {
@@ -27,8 +27,8 @@ for (let indx = 0; indx <= 1; indx++) {
         let rot = Math.random() * 45 - 22.5;
         let top = Math.random() * 15 - 2.5;
         div.innerHTML += `<div id="note" style="rotate: ${rot}deg; left: ${x[i] * 5}vw; top: ${y[i] * 5}vw">
-        <object type=\"image/svg+xml\" data=\"post-its/${["blue", "green", "purple", "red", "yellow"][(Math.random() * 5) | 0]}.svg\"></object>
-        <img src=\"post-it-imgs/${ids[i + indx * numpostits] + 1}.png\" class=\"center\"></img>
+        <object type=\"image/svg+xml\" data=\"assets/post-its/${["blue", "green", "purple", "red", "yellow"][(Math.random() * 5) | 0]}.svg\"></object>
+        <img src=\"assets/post-it-imgs/${ids[i + indx * numpostits] + 1}.png\" class=\"center\"></img>
         </div>`
     }
 }

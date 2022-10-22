@@ -1,0 +1,104 @@
+@font-face {
+    font-family: 'FixedSys';
+    src: url('assets/FSEX300.ttf');
+}
+
+$unit-width: calc(40vw / 114);
+$lcd-width: 40vw;
+
+#lcd {
+    width: $lcd-width;
+    height: 19.3vw;
+}
+
+$text-size: 3.5vw;
+$animation-len: 5s;
+
+#lcd-matrix {
+    overflow: hidden;
+    font-family: 'FixedSys';
+    text-align: center;
+    -webkit-text-fill-color: #c9e1ff;
+    -webkit-text-stroke-color: #c9e1ff;
+    width: calc(96%/114*100);
+    height: calc(35%/55*100);
+    margin: auto;
+
+    h1 {
+        font-size: calc($text-size * 1.8);
+    }
+
+    p {
+        position: absolute;
+        -webkit-text-fill-color: #c9e1ff40;
+        margin-top: 0;
+        margin-bottom: 0;
+        top: -$text-size;
+        font-size: $text-size;
+        animation-name: text-scroll-down;
+        animation-timing-function: linear;
+        animation-duration: $animation-len;
+        animation-iteration-count: infinite;
+        transform-origin: center center;
+    }
+}
+
+$elements: 5;
+
+@for $i from 1 through $elements {
+    p:nth-child(#{$i}) {
+        $delay: calc(3s + $animation-len / $elements * $i);
+        animation-delay: $delay;
+        -moz-animation-delay: $delay;
+    }
+}
+
+@keyframes text-scroll-down {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(0, calc($text-size * 5));
+    }
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    &-horizontal {
+        margin: 0;
+        position: absolute;
+        left: 50%;
+        -ms-transform: translate(-50%, 0%);
+        transform: translate(-50%, 0%);
+    }
+}
+
+$post-it-size: 20vw;
+
+#post-it {
+    width: calc((100vw - $lcd-width) / 2);
+    position: relative;
+
+    &:nth-child(2) {
+        right: -68vw;
+    }
+
+    #note {
+        position: absolute;
+        width: $post-it-size;
+        height: $post-it-size;
+    }
+
+    img {
+        position: absolute;
+        width: 80%;
+        height: 80%;
+    }
+}

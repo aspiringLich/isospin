@@ -6,5 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# ur welcome conor
+"afire" = {version = "1.2.0", features = ["extensions", "tracing"] }
+# very slow image processing i could have done in python but oh well
 "image" = "0.24.4"
 "imageproc" = "0.23.0"
