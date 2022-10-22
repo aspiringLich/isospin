@@ -16,7 +16,7 @@ function shuffleArray(array) {
 }
 
 let numpostits = 4;
-let ids = shuffleArray([...Array(numpostits * 3).keys()]);
+let ids = shuffleArray([...Array(numpostits * 4).keys()]);
 
 // post it notes
 for (let indx = 0; indx <= 1; indx++) {

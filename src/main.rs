@@ -1,17 +1,17 @@
 use std::fs;
 
 use afire::{extension::ServeStatic, prelude::*};
-use image::*;
+use image::{imageops::resize, *};
 use imageproc::map;
 
 fn process_imgs() {
     // process post-it images
-    let out_path = "./web/template/assets/post-it-imgs/".to_owned();
-    let in_path = "./src/template/assets/pictures/".to_owned();
+    let out_path = "./web/static/assets/post-it-imgs/".to_owned();
+    let in_path = "./src/pictures/".to_owned();
 
     let img: RgbImage = ImageBuffer::new(1404, 1872);
 
-    const IMGS: usize = 3;
+    const IMGS: usize = 4;
 
     const GIRD_SIZE: u32 = 59;
     const TOP_LEFT: (u32, u32) = (53 + GIRD_SIZE / 2, 167 + GIRD_SIZE / 2);
@@ -21,8 +21,9 @@ fn process_imgs() {
     for i in 1..=IMGS {
         let output_image = |i: usize, startx, starty, n| {
             let path = in_path.clone() + &i.to_string() + &".png";
+            // dbg!(&path);
             let mut img = image::open(path).unwrap();
-            img = img.crop(
+            img = img.crop_imm(
                 TOP_LEFT.0 + startx * GIRD_SIZE - expand,
                 TOP_LEFT.1 + starty * GIRD_SIZE - expand,
                 BLOCK_SIZE * GIRD_SIZE + expand * 2,
@@ -39,8 +40,9 @@ fn process_imgs() {
                 } else {
                     x
                 }
-            })
-            .save(format!("{}{}.png", out_path, n));
+            });
+            let out = resize(&out, 256, 256, imageops::FilterType::Gaussian)
+                .save(format!("{}{}.png", out_path, n));
             out
         };
         // dbg!("aiosjd");
