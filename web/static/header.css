@@ -2,6 +2,10 @@
   font-family: "FixedSys";
   src: url("assets/FSEX300.ttf");
 }
+body {
+  overflow-x: hidden;
+}
+
 #lcd {
   width: 40vw;
   height: 19.3vw;
@@ -104,7 +108,7 @@ p:nth-child(5) {
   position: relative;
 }
 #post-it:nth-child(2) {
-  right: -68vw;
+  right: -65vw;
 }
 #post-it #note {
   position: absolute;
@@ -115,4 +119,9 @@ p:nth-child(5) {
   position: absolute;
   width: 80%;
   height: 80%;
+}
+
+#content {
+  position: absolute;
+  margin-top: 28vw;
 }/*# sourceMappingURL=header.css.map */

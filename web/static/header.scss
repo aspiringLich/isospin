@@ -3,6 +3,10 @@
     src: url('assets/FSEX300.ttf');
 }
 
+body {
+    overflow-x: hidden;
+}
+
 $unit-width: calc(40vw / 114);
 $lcd-width: 40vw;
 
@@ -87,7 +91,7 @@ $post-it-size: 20vw;
     position: relative;
 
     &:nth-child(2) {
-        right: -68vw;
+        right: -65vw;
     }
 
     #note {
@@ -101,4 +105,9 @@ $post-it-size: 20vw;
         width: 80%;
         height: 80%;
     }
+}
+
+#content {
+    position: absolute;
+    margin-top: 28vw;
 }

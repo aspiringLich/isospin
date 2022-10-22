@@ -1,38 +1,4 @@
 
-
-function shuffleArray(array) {
-    let curId = array.length;
-    // There remain elements to shuffle
-    while (0 !== curId) {
-        // Pick a remaining element
-        let randId = Math.floor(Math.random() * curId);
-        curId -= 1;
-        // Swap it with the current element.
-        let tmp = array[curId];
-        array[curId] = array[randId];
-        array[randId] = tmp;
-    }
-    return array;
-}
-
-let numpostits = 4;
-let ids = shuffleArray([...Array(numpostits * 4).keys()]);
-
-// post it notes
-for (let indx = 0; indx <= 1; indx++) {
-    let div = document.querySelectorAll("#post-it")[indx];
-    let x = shuffleArray([...Array(numpostits).keys()]);
-    let y = shuffleArray([...Array(numpostits).keys()]);
-    for (let i = 0; i < numpostits; i++) {
-        let rot = Math.random() * 45 - 22.5;
-        let top = Math.random() * 15 - 2.5;
-        div.innerHTML += `<div id="note" style="rotate: ${rot}deg; left: ${x[i] * 5}vw; top: ${y[i] * 5}vw">
-        <object type=\"image/svg+xml\" data=\"assets/post-its/${["blue", "green", "purple", "red", "yellow"][(Math.random() * 5) | 0]}.svg\"></object>
-        <img src=\"assets/post-it-imgs/${ids[i + indx * numpostits] + 1}.png\" class=\"center\"></img>
-        </div>`
-    }
-}
-
 // type title
 let title = document.querySelector("#lcd-matrix h1");
 let transitions = `
