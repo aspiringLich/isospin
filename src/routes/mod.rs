@@ -3,6 +3,7 @@ use std::{collections::HashMap, fs, sync::Mutex};
 
 use crate::{config, Server};
 use afire::{Content, Response};
+use comrak::{markdown_to_html, ComrakOptions, ComrakParseOptions, ComrakRenderOptions};
 
 mod home;
 
@@ -10,24 +11,32 @@ pub fn attach(server: &mut Server) {
     home::attach(server);
 }
 
-lazy_static! {
-    static ref markdown_table: Mutex<HashMap<String, String>> = Mutex::new(HashMap::new());
-}
 // returns the coorosponding markdown file from MARKDOWN_DIR as html
 // stores markdown files its seen before in a hasmap so it doesnt have to reconvert them into html
 pub fn get_markdown(path: &String) -> Response {
-    let mut table = markdown_table.lock().unwrap();
+    let options: ComrakOptions = ComrakOptions {
+        render: ComrakRenderOptions {
+            unsafe_: true,
+            ..Default::default()
+        },
+        ..Default::default()
+    };
 
-    if let Some(string) = table.get(path) {
+    let path_html = path.clone().split(".").next().unwrap().to_owned() + ".html";
+
+    if let Ok(string) = fs::read_to_string(format!("{}{}", *config::MARKDOWN_OUT_DIR, path_html)) {
         return Response::new().text(string).content(Content::HTML);
     }
 
-    if let Ok(string) = markdown::file_to_html(std::path::Path::new(
-        &(config::MARKDOWN_DIR.to_string() + path),
-    )) {
-        table.insert(path.clone(), string.clone());
-        Response::new().text(string).content(Content::HTML)
+    let f = fs::read_to_string(format!("{}{}", *config::MARKDOWN_IN_DIR, path));
+    if let Ok(string) = f {
+        let html = markdown_to_html(&string, &options);
+        match fs::write(format!("{}{}", *config::MARKDOWN_OUT_DIR, path_html), &html) {
+            Ok(_) => {}
+            Err(err) => return config::ERROR(&err),
+        }
+        Response::new().text(html).content(Content::HTML)
     } else {
-        config::FILE_NOT_FOUND.clone()
+        config::ERROR(&f.err().unwrap())
     }
 }
