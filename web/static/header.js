@@ -55,3 +55,26 @@ scrolling.forEach((x) => {
     x.addEventListener("animationiteration", () => { change_text(x) });
 })
 
+
+function getScrollTop() {
+    if (typeof window.pageYOffset !== "undefined") {
+        // Most browsers
+        return window.pageYOffset;
+    }
+
+    var d = document.documentElement;
+    if (typeof d.clientHeight !== "undefined") {
+        // IE in standards mode
+        return d.scrollTop;
+    }
+
+    // IE in quirks mode
+    return document.body.scrollTop;
+}
+
+window.onscroll = function () {
+    var box = document.getElementById("popup");
+    var scroll = getScrollTop();
+    console.log(scroll);
+    box.style.top = `calc(50% + ${scroll}px)`;
+};

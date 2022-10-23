@@ -1,3 +1,4 @@
+use afire::Response;
 use lazy_static::lazy_static;
 
 lazy_static! {
@@ -13,4 +14,9 @@ lazy_static! {
 
     // the directory that contains the images that go on the post it notes before they are processed
     pub static ref POST_IT_IMGS_IN_DIR: String = "./src/data/pictures/".to_string();
+    // the directory that contains markdown files
+    pub static ref MARKDOWN_DIR: String = "./src/data/markdown/".to_string();
+
+    // standard error response for file not found
+    pub static ref FILE_NOT_FOUND: Response = Response::new().status(404).text("file not found :(");
 }

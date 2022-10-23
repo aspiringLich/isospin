@@ -1,5 +1,5 @@
 use afire::{extension::ServeStatic, prelude::*};
-use std::fs;
+use std::{collections::HashMap, fs};
 
 mod config;
 mod routes;
@@ -27,9 +27,26 @@ fn main() {
                 .text("Pretend theres a good 404 screen here thanks");
 
             let is_html = _req.path.split(".").last() == Some("html");
+            let is_md = _req.path.split(".").last() == Some("md");
             let is_get = _req.method == Method::GET;
-            if is_get {
+
+            if is_get && is_html {
+                dbg!(format!("{}{}", config::TEMPLATE_DIR.clone(), _req.path));
+                res = Response::new()
+                    .text(
+                        fs::read_to_string(format!(
+                            "{}{}",
+                            config::TEMPLATE_DIR.clone(),
+                            _req.path
+                        ))
+                        .unwrap_or("file not found :(".to_string()),
+                    )
+                    .content(Content::HTML)
+            } else if is_get && is_md {
+                res = routes::get_markdown(&_req.path);
+            } else if is_get {
                 res = Response::new().status(404).text("file not found :(")
+                // if its html, try and get it from the template directory
             }
             res
         })
