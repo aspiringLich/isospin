@@ -7,15 +7,17 @@ body {
     overflow-x: hidden;
 }
 
-$unit-width: calc(40vw / 114);
-$lcd-width: 40vw;
+$lcd-width: max(40vw, 300px);
+$lcd-height: calc($lcd-width * 0.4825);
+$unit-width: calc($lcd-width / 114);
 
 #lcd {
     width: $lcd-width;
-    height: 19.3vw;
+    height: $lcd-height;
+
 }
 
-$text-size: 3.5vw;
+$text-size: calc($lcd-width * 0.0875);
 $animation-len: 5s;
 
 #lcd-matrix {
@@ -37,7 +39,7 @@ $animation-len: 5s;
         -webkit-text-fill-color: #c9e1ff40;
         margin-top: 0;
         margin-bottom: 0;
-        top: -$text-size;
+        top: calc($text-size * -1);
         font-size: $text-size;
         animation-name: text-scroll-down;
         animation-timing-function: linear;
@@ -91,7 +93,7 @@ $post-it-size: 20vw;
     position: relative;
 
     &:nth-child(2) {
-        right: -65vw;
+        right: -70vw;
     }
 
     #note {
@@ -109,5 +111,7 @@ $post-it-size: 20vw;
 
 #content {
     position: absolute;
-    margin-top: 28vw;
+    margin-top: max(28vw, $lcd-height * 1.05);
+    width: 100%;
+    align-content: center;
 }

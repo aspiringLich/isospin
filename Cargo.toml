@@ -14,3 +14,4 @@ edition = "2021"
 
 "rand" = "0.8.5"
 "lazy_static" = "1.4.0"
+"markdown" = "0.3.0"

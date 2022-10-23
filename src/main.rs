@@ -18,16 +18,21 @@ fn main() {
     // serve static fles
     ServeStatic::new("./web/static")
         .middleware(|req, res, suc| {
-            // Print path sevred
-            println!("Served: {}", req.path);
+            println!("{} made a request", req.address);
             Some((res.header("X-Static-Serve", "true"), suc))
         })
         .not_found(|_req, _dis| {
-            Response::new()
+            let mut res = Response::new()
                 .status(404)
-                .text("Pretend theres a good 404 screen here thanks")
+                .text("Pretend theres a good 404 screen here thanks");
+
+            let is_html = _req.path.split(".").last() == Some("html");
+            let is_get = _req.method == Method::GET;
+            if is_get {
+                res = Response::new().status(404).text("file not found :(")
+            }
+            res
         })
-        .mime_type("key", "value")
         .path("/")
         .attach(&mut server);
 

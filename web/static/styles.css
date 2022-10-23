@@ -7,8 +7,8 @@ body {
 }
 
 #lcd {
-  width: 40vw;
-  height: 19.3vw;
+  width: max(40vw, 300px);
+  height: calc(max(40vw, 300px) * 0.4825);
 }
 
 #lcd-matrix {
@@ -22,15 +22,15 @@ body {
   margin: auto;
 }
 #lcd-matrix h1 {
-  font-size: 6.3vw;
+  font-size: calc(max(40vw, 300px) * 0.0875 * 1.8);
 }
 #lcd-matrix p {
   position: absolute;
   -webkit-text-fill-color: rgba(201, 225, 255, 0.2509803922);
   margin-top: 0;
   margin-bottom: 0;
-  top: -3.5vw;
-  font-size: 3.5vw;
+  top: calc(max(40vw, 300px) * 0.0875 * -1);
+  font-size: calc(max(40vw, 300px) * 0.0875);
   -webkit-animation-name: text-scroll-down;
           animation-name: text-scroll-down;
   -webkit-animation-timing-function: linear;
@@ -77,7 +77,7 @@ p:nth-child(5) {
     transform: translate(0, 0);
   }
   100% {
-    transform: translate(0, 17.5vw);
+    transform: translate(0, calc(max(40vw, 300px) * 0.0875 * 5));
   }
 }
 
@@ -86,7 +86,7 @@ p:nth-child(5) {
     transform: translate(0, 0);
   }
   100% {
-    transform: translate(0, 17.5vw);
+    transform: translate(0, calc(max(40vw, 300px) * 0.0875 * 5));
   }
 }
 .center {
@@ -104,11 +104,11 @@ p:nth-child(5) {
 }
 
 #post-it {
-  width: 30vw;
+  width: calc((100vw - max(40vw, 300px)) / 2);
   position: relative;
 }
 #post-it:nth-child(2) {
-  right: -65vw;
+  right: -70vw;
 }
 #post-it #note {
   position: absolute;
@@ -123,5 +123,7 @@ p:nth-child(5) {
 
 #content {
   position: absolute;
-  margin-top: 28vw;
-}/*# sourceMappingURL=header.css.map */
+  margin-top: max(28vw, max(40vw, 300px) * 0.4825 * 1.05);
+  width: 100%;
+  align-content: center;
+}/*# sourceMappingURL=styles.css.map */
