@@ -7,6 +7,8 @@ body {
 }
 
 #lcd {
+  position: absolute;
+  top: 2vw;
   width: max(40vw, 300px);
   height: calc(max(40vw, 300px) * 0.4825);
 }
@@ -122,8 +124,76 @@ p:nth-child(5) {
 }
 
 #content {
-  position: absolute;
-  margin-top: max(28vw, max(40vw, 300px) * 0.4825 * 1.05);
+  transform: translateY(max(28vw, max(40vw, 300px) * 0.4825 * 1.05));
   width: 100%;
-  align-content: center;
+  text-align: center;
+}
+#content #construction {
+  border-radius: 5px;
+  width: 80%;
+  min-height: 50px;
+  background: repeating-linear-gradient(45deg, #f3d217, #f3d217 40px, #423707 40px, #423707 80px);
+  transform: translateX(12.5%);
+}
+#content #construction h1 {
+  font-family: "Comic Sans MS";
+  color: #e94b0d;
+  font-size: calc(max(40vw, 300px) * 0.0875);
+}
+
+.btn {
+  display: inline-block;
+  border-radius: 5px;
+  margin: 20px 20px 20px 20px;
+  perspective: 1000px;
+}
+.btn img {
+  margin: 0;
+  position: relative;
+}
+.btn .inner {
+  transition: 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+.btn .front,
+.btn .back {
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  position: absolute;
+  width: 512px;
+  height: 512px;
+  top: 16px;
+  left: 16px;
+}
+.btn .front {
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+.btn .back {
+  transform: rotateY(180deg);
+}
+
+.btn.hover .inner {
+  transform: rotateY(180deg);
+}
+
+.btn,
+.inner {
+  height: 544px;
+  width: 544px;
+}
+
+@-webkit-keyframes flip {
+  100% {
+    width: 80vw;
+    height: 80;
+  }
+}
+
+@keyframes flip {
+  100% {
+    width: 80vw;
+    height: 80;
+  }
 }/*# sourceMappingURL=styles.css.map */

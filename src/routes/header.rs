@@ -34,7 +34,7 @@ pub fn generate_header() -> String {
             let post_it_img = img_order.next().unwrap();
 
             out += &format!(
-                "<div id=\"note\" style=\"rotate: {rot}deg; left: {x}vw; top: {y}vw\">\
+                "<div id=\"note\" style=\"rotate: {rot}deg; left: {x}vw; top: calc({y}vw)\">\
                  <object type=\"image/svg+xml\" data=\"assets/post-its/{post_it_col}.svg\"></object>\
                  <img src=\"assets/post-it-imgs/{post_it_img}.png\" class=\"center\"></img></div>"
             );

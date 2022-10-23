@@ -12,6 +12,8 @@ $lcd-height: calc($lcd-width * 0.4825);
 $unit-width: calc($lcd-width / 114);
 
 #lcd {
+    position: absolute;
+    top: 2vw;
     width: $lcd-width;
     height: $lcd-height;
 
@@ -74,14 +76,12 @@ $elements: 5;
     position: absolute;
     top: 50%;
     left: 50%;
-    -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 
     &-horizontal {
         margin: 0;
         position: absolute;
         left: 50%;
-        -ms-transform: translate(-50%, 0%);
         transform: translate(-50%, 0%);
     }
 }
@@ -110,8 +110,122 @@ $post-it-size: 20vw;
 }
 
 #content {
-    position: absolute;
-    margin-top: max(28vw, $lcd-height * 1.05);
+    transform: translateY(max(28vw, calc($lcd-height * 1.05)));
     width: 100%;
-    align-content: center;
+    text-align: center;
+
+    #construction {
+        border-radius: 5px;
+        width: 80%;
+        min-height: 50px;
+        background: repeating-linear-gradient(45deg,
+                #f3d217,
+                #f3d217 40px,
+                #423707 40px,
+                #423707 80px);
+        transform: translateX(12.5%);
+
+        h1 {
+            font-family: 'Comic Sans MS';
+            color: #e94b0d;
+            font-size: calc($text-size);
+        }
+    }
+}
+
+// .btn {
+//     display: inline-block;
+//     border-radius: 5px;
+//     height: 512px + 32px;
+//     width: 512px + 32px;
+//     margin: 20px 20px 20px 20px;
+//     border: 1px solid #f1f1f1;
+//     perspective: 1000px;
+
+//     .inner {
+//         position: relative;
+//         width: 100%;
+//         height: 100%;
+//         text-align: center;
+//         transition: transform 0.8s;
+//         transform-style: preserve-3d;
+//     }
+
+//     .hover .inner {
+//         transform: rotateY(180deg);
+//     }
+
+//     .front,
+//     .back {
+//         position: absolute;
+//         width: 100%;
+//         height: 100%;
+//         -webkit-backface-visibility: hidden;
+//         backface-visibility: hidden;
+//     }
+
+//     .front {
+//         background-color: #bbb;
+//         color: black;
+//     }
+
+//     .back {
+//         background-color: dodgerblue;
+//         color: white;
+//         transform: rotateY(180deg);
+//     }
+// }
+
+.btn {
+    display: inline-block;
+    border-radius: 5px;
+    margin: 20px 20px 20px 20px;
+    perspective: 1000px;
+
+    img {
+        margin: 0;
+        position: relative;
+    }
+
+    .inner {
+        transition: 0.6s;
+        transform-style: preserve-3d;
+        position: relative;
+    }
+
+    .front,
+    .back {
+        backface-visibility: hidden;
+        position: absolute;
+        width: 512px;
+        height: 512px;
+        top: 16px;
+        left: 16px;
+    }
+
+    .front {
+        z-index: 2;
+        transform: rotateY(0deg);
+    }
+
+    .back {
+        transform: rotateY(180deg);
+    }
+}
+
+.btn.hover .inner {
+    transform: rotateY(180deg);
+}
+
+.btn,
+.inner {
+    height: 512px + 32px;
+    width: 512px + 32px;
+}
+
+@keyframes flip {
+    100% {
+        width: 80vw;
+        height: 80;
+    }
 }

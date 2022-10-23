@@ -9,25 +9,40 @@
 </head>
 
 <body>
-    <div id="post-it">{{POST-IT-L}}</div>
-    <div id="post-it">{{POST-IT-R}}</div>
+    <div>
+        <div id="post-it">{{POST-IT-L}}</div>
+        <div id="post-it">{{POST-IT-R}}</div>
 
-    <div id="lcd" class="center-horizontal">
-        <object type="image/svg+xml" data="assets/lcd_dot_matrix.svg"></object>
+        <div id="lcd" class="center-horizontal">
+            <object type="image/svg+xml" data="assets/lcd_dot_matrix.svg"></object>
 
-        <div id="lcd-matrix" class="center">
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <h1 class="center">&ltISOSPIN&gt</h1>
-
-            <!-- <canvas id="lcd-matrix-canvas" class="center" width="110" height="40"></canvas> -->
+            <div id="lcd-matrix" class="center">
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+                <h1 class="center">&ltISOSPIN&gt</h1>
+                <!-- <canvas id="lcd-matrix-canvas" class="center" width="110" height="40"></canvas> -->
+            </div>
         </div>
-    </div>
 
-    <div id="content">
-        {{CONTENT}}
+        <div id="content">
+            {{CONTENT}}
+            <div id="construction">
+                <h1>
+                    🚧Under Construction!🚧
+                </h1>
+            </div>
+
+            <div class="btn" onclick="this.classList.toggle('hover');">
+                <div class="inner">
+                    <div class="front"> <img src="assets/isospin.png"> </div>
+                    <div class="back"> hello </div>
+                </div>
+            </div>
+            <div class="btn"></div>
+            <div class="btn"></div>
+        </div>
     </div>
 </body>
