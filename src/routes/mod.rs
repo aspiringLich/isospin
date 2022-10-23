@@ -12,7 +12,7 @@ pub fn attach(server: &mut Server) {
 }
 
 // returns the coorosponding markdown file from MARKDOWN_DIR as html
-// stores markdown files its seen before in a hasmap so it doesnt have to reconvert them into html
+// first checks if its already parsed a markdown file by the same name
 pub fn get_markdown(path: &String) -> Response {
     let options: ComrakOptions = ComrakOptions {
         render: ComrakRenderOptions {
