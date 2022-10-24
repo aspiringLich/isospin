@@ -9,6 +9,11 @@ body {
     overflow-x: hidden;
 }
 
+// size variables i reference later
+$lcd-width: max(40vw, 300px);
+$lcd-height: calc($lcd-width * 0.4825);
+$unit-width: calc($lcd-width / 114);
+
 #header {
     transform: translate(-8px, -8px);
     width: 100vw;
@@ -16,13 +21,20 @@ body {
     z-index: 0;
     position: relative;
     // animation: scanlines 1s steps($scan-fps) infinite;
+
+    $flop-size: calc($lcd-width * 0.6);
+
+    #flop {
+        position: relative;
+        width: $flop-size;
+        height: $flop-size;
+        top: calc(105vh - $flop-size);
+        left: calc(50vw - $flop-size / 2);
+    }
 }
 
 
-// size variables i reference later
-$lcd-width: max(40vw, 300px);
-$lcd-height: calc($lcd-width * 0.4825);
-$unit-width: calc($lcd-width / 114);
+
 
 // the lcd - what you
 #lcd {
@@ -160,12 +172,13 @@ $post-it-size: 20vw;
 
     iframe,
     img {
+        box-shadow: 5px 10px 8px #00000027;
         left: 0;
         position: static;
         // width: $item-size;
         height: $item-size;
         border-radius: 5px;
-        transition: all 0.6s;
+        transition: all 1s;
     }
 
     iframe {
@@ -186,6 +199,7 @@ $post-it-size: 20vw;
 
     .wrapper {
         iframe {
+            visibility: hidden;
             border: none;
             transform: scaleX(0);
         }
@@ -196,13 +210,15 @@ $post-it-size: 20vw;
     }
 
     .active {
+        iframe {
+            visibility: visible;
+            transform: scaleX(1);
+        }
+
         img {
             transform: translateX(0%);
         }
 
-        iframe {
-            transform: scaleX(1);
-        }
     }
 }
 

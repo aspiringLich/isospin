@@ -93,25 +93,28 @@ function isScrolledIntoView(elem) {
 };
 
 
-let box = document.getElementById("popup");
-let header = document.getElementById("header");
-let lcd = document.getElementById("lcd");
-
 let popup = false;
 
 let scrolln = 0;
 let elem = document.querySelectorAll(".wrapper");
+
+$("#header").css("transform", `translateY(0px)`);
+$("#lcd").css("margin-top", `calc(0px)`);
+$("#flop").css("transform", `translateY(0px)`);
 
 window.onscroll = function () {
     let scroll = getScrollTop();
 
     // header stuff, disable if scrolled too far down
     if (scroll < viewportToPixels("100vh") + 10) {
-        header.style.top = `${scroll * 0.6}px`;
-        lcd.style.top = `calc(10px - ${scroll * 0.1}px)`
+        $("#header").css("transform", `translateY(${scroll * 0.6}px)`);
+        $("#lcd").css("margin-top", `calc(-${scroll * 0.1}px)`);
+        $("#flop").css("transform", `translateY(-${scroll * 0.4}px)`);
+
+        // randomly scroll each of the post it notes
     }
     // popup window, dont bother if theres no popup window
-    if (popup) box.style.top = `calc(50% + ${scroll}px)`;
+    if (popup) $("#popup").css("transform", `translateY(-${scroll}px)`);
 
     // if were still not scrolled past the final element
     if (scrolln < elem.length) {
