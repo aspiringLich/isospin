@@ -18,7 +18,7 @@ fn main() {
     // serve static fles
     ServeStatic::new("./web/static")
         .middleware(|req, res, suc| {
-            println!("{} made a request", req.address);
+            // println!("{} made a request", req.address);
             Some((res.header("X-Static-Serve", "true"), suc))
         })
         .not_found(|_req, _dis| {
