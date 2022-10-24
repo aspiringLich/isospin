@@ -1,4 +1,6 @@
 
+
+
 // type title
 let title = document.querySelector("#lcd-matrix h1");
 let transitions = `
@@ -56,6 +58,7 @@ scrolling.forEach((x) => {
 })
 
 
+// stolen from stack overflow thank you random guy on stack overflow
 function getScrollTop() {
     if (typeof window.pageYOffset !== "undefined") {
         // Most browsers
@@ -71,10 +74,53 @@ function getScrollTop() {
     // IE in quirks mode
     return document.body.scrollTop;
 }
+// also thank you stack overflow
+function viewportToPixels(value) {
+    var parts = value.match(/([0-9\.]+)(vh|vw)/)
+    var q = Number(parts[1])
+    var side = window[['innerHeight', 'innerWidth'][['vh', 'vw'].indexOf(parts[2])]]
+    return side * (q / 100)
+}
+// also thank you stack overflow
+function isScrolledIntoView(elem) {
+    var docViewTop = $(window).scrollTop();
+    var docViewBottom = docViewTop + $(window).height();
+
+    var elemTop = $(elem).offset().top;
+    var elemBottom = elemTop + $(elem).height();
+
+    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+};
+
+
+let box = document.getElementById("popup");
+let header = document.getElementById("header");
+let lcd = document.getElementById("lcd");
+
+let popup = false;
+
+let scrolln = 0;
+let elem = document.querySelectorAll(".wrapper");
 
 window.onscroll = function () {
-    var box = document.getElementById("popup");
-    var scroll = getScrollTop();
-    console.log(scroll);
-    box.style.top = `calc(50% + ${scroll}px)`;
+    let scroll = getScrollTop();
+
+    // header stuff, disable if scrolled too far down
+    if (scroll < viewportToPixels("100vh") + 10) {
+        header.style.top = `${scroll * 0.6}px`;
+        lcd.style.top = `calc(10px - ${scroll * 0.1}px)`
+    }
+    // popup window, dont bother if theres no popup window
+    if (popup) box.style.top = `calc(50% + ${scroll}px)`;
+
+    // if were still not scrolled past the final element
+    if (scrolln < elem.length) {
+        if (isScrolledIntoView(elem[scrolln])) {
+            elem[scrolln].classList.add("active");
+            scrolln++;
+        }
+    }
 };
+
+
+// document.querySelectorAll("#btn").forEach();

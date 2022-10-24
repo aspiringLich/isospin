@@ -1,27 +1,41 @@
+// font stuff (noway)
 @font-face {
     font-family: 'FixedSys';
     src: url('assets/FSEX300.ttf');
 }
 
+// this might bite me in the back later but eh
 body {
     overflow-x: hidden;
 }
 
+#header {
+    transform: translate(-8px, -8px);
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    position: relative;
+    // animation: scanlines 1s steps($scan-fps) infinite;
+}
+
+
+// size variables i reference later
 $lcd-width: max(40vw, 300px);
 $lcd-height: calc($lcd-width * 0.4825);
 $unit-width: calc($lcd-width / 114);
 
+// the lcd - what you
 #lcd {
-    position: absolute;
-    top: 2vw;
+    z-index: 0;
+    top: 10px;
     width: $lcd-width;
     height: $lcd-height;
-
 }
 
 $text-size: calc($lcd-width * 0.0875);
 $animation-len: 5s;
 
+// the screen of the lcd
 #lcd-matrix {
     overflow: hidden;
     font-family: 'FixedSys';
@@ -53,6 +67,7 @@ $animation-len: 5s;
 
 $elements: 5;
 
+// scroll the text down
 @for $i from 1 through $elements {
     p:nth-child(#{$i}) {
         $delay: calc(3s + $animation-len / $elements * $i);
@@ -88,20 +103,24 @@ $elements: 5;
 
 $post-it-size: 20vw;
 
+// post it notes :D
 #post-it {
     width: calc((100vw - $lcd-width) / 2);
     position: relative;
 
+    // the second post it note group  should be aligned to the right
     &:nth-child(2) {
         right: -70vw;
     }
 
+    // the post it notes themselves
     #note {
         position: absolute;
         width: $post-it-size;
         height: $post-it-size;
     }
 
+    // the things drawn on the post its
     img {
         position: absolute;
         width: 80%;
@@ -109,10 +128,15 @@ $post-it-size: 20vw;
     }
 }
 
+// the meat and bones of the websites, or, shockingly, the content
 #content {
-    transform: translateY(max(28vw, calc($lcd-height * 1.05)));
+    left: 0px;
+    // transform: TranslateY(100vh);
+    position: absolute;
     width: 100vw;
+    height: 200vh;
     text-align: center;
+    // background-color: gray;
 
     #construction {
         border-radius: 5px;
@@ -132,29 +156,59 @@ $post-it-size: 20vw;
         }
     }
 
-    .btn {
-        display: inline-block;
-        border-radius: 5px;
-        height: 512px;
-        width: 512px;
-        margin: 20px 20px 20px 20px;
-        border: 1px solid #f1f1f1;
-        perspective: 1000px;
-        transform-style: preserve-3d;
-        transition: 0.6s all;
+    $item-size: min(512px, 30vw);
 
-        img {
-            width: 100%;
-            height: 100%;
+    iframe,
+    img {
+        left: 0;
+        position: static;
+        // width: $item-size;
+        height: $item-size;
+        border-radius: 5px;
+        transition: all 0.6s;
+    }
+
+    iframe {
+        background: linear-gradient(left, #00000000, #FFFFFF);
+        width: calc($item-size * 2);
+    }
+
+    img {
+        width: $item-size;
+    }
+
+    .active,
+    .wrapper {
+        display: inline-block;
+        height: $item-size;
+        margin: 20px 20px 20px 20px;
+    }
+
+    .wrapper {
+        iframe {
+            border: none;
+            transform: scaleX(0);
         }
 
-        // :hover {
-        //     position: relative;
-        //     transform: scale(1.1);
-        // }
+        img {
+            transform: translateX(100%);
+        }
+    }
+
+    .active {
+        img {
+            transform: translateX(0%);
+        }
+
+        iframe {
+            transform: scaleX(1);
+        }
     }
 }
 
+
+
+// the cover that goes over the screen when popup window goes up
 #cover {
     position: fixed;
     width: 100%;
@@ -165,8 +219,15 @@ $post-it-size: 20vw;
     visibility: hidden;
     opacity: 0;
     background: rgba(0, 0, 0, 0.5);
+    transition: 0.6s;
+
+    .active {
+        visibility: visible;
+        opacity: 1;
+    }
 }
 
+// popup window!
 #popup {
     position: absolute;
     width: 440px;
@@ -177,11 +238,43 @@ $post-it-size: 20vw;
     opacity: 0;
     z-index: 2;
     padding: 30px;
-
     background: white;
     box-shadow: 0px 0px 60px rgba(0, 0, 0, 0.3);
     border-radius: 3px;
     box-sizing: border-box;
+    transition: 0.6s;
 
-    transform: scale(0.8);
+    .active {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+#content {
+    background-image: linear-gradient(90deg, #7697d4, #4d69aa);
+}
+
+#grid {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    background-image:
+        linear-gradient(0deg, transparent 9%,
+            rgba(255, 255, 255, .2) 10%, rgba(255, 255, 255, .2) 12%, transparent 13%, transparent 29%,
+            rgba(255, 255, 255, .1) 30%, rgba(255, 255, 255, .1) 31%, transparent 32%, transparent 49%,
+            rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, .1) 51%, transparent 52%, transparent 69%,
+            rgba(255, 255, 255, .1) 70%, rgba(255, 255, 255, .1) 71%, transparent 72%, transparent 89%,
+            rgba(255, 255, 255, .1) 90%, rgba(255, 255, 255, .1) 91%, transparent 92%, transparent),
+        linear-gradient(90deg, transparent 9%,
+            rgba(255, 255, 255, .2) 10%, rgba(255, 255, 255, .2) 12%, transparent 13%, transparent 29%,
+            rgba(255, 255, 255, .1) 30%, rgba(255, 255, 255, .1) 31%, transparent 32%, transparent 49%,
+            rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, .1) 51%, transparent 52%, transparent 69%,
+            rgba(255, 255, 255, .1) 70%, rgba(255, 255, 255, .1) 71%, transparent 72%, transparent 89%,
+            rgba(255, 255, 255, .1) 90%, rgba(255, 255, 255, .1) 91%, transparent 92%, transparent);
+
+    height: 100%;
+    background-size: 50px 50px;
 }

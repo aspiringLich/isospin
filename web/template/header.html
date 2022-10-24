@@ -5,14 +5,14 @@
     <title>Isospin</title>
     <link rel="stylesheet" href="styles.css">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script defer src="header.js"></script>
 </head>
 
 <body>
+    <!-- <iframe id="popup" src="test.md"></iframe> -->
 
-    <iframe id="popup" src="test.md"></iframe>
-
-    <div>
+    <div id="header">
         <div id="post-it">{{POST-IT-L}}</div>
         <div id="post-it">{{POST-IT-R}}</div>
 
@@ -29,20 +29,22 @@
                 <!-- <canvas id="lcd-matrix-canvas" class="center" width="110" height="40"></canvas> -->
             </div>
         </div>
+    </div>
+    <div id="content">
+        <div id="grid"></div>
+        <div id="construction">
+            <h1>
+                🚧Under Construction!🚧
+            </h1>
+        </div>
 
-        <div id="content">
-            {{CONTENT}}
-            <div id="construction">
-                <h1>
-                    🚧Under Construction!🚧
-                </h1>
-            </div>
-
-            <div class="btn">
-                <div class="front"> <img src="assets/isospin.png"> </div>
-            </div>
+        {{CONTENT}}
+        <div class="wrapper">
+            <img src="assets/isospin.png">
+            <iframe src="isospin.md"></iframe>
         </div>
     </div>
 
-    <div id="cover"></div>
+
+    <!-- <div id="cover"></div> -->
 </body>
