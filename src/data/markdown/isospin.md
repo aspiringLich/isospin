@@ -8,4 +8,4 @@ If I learned anything from this endeavour, its that I don't want to become a fro
 
 Anyway I did quite enjoy learning how to setup the backend, using a friend's web server [(afire)](https://github.com/Basicprogrammer10/afire). It is the only web server library thing I have ever used, but idk seems pretty good. Go check it out and ignore the spelling mistakes :sweat_smile:.
 
-With web development i realise you can just copy and paste some code from the first article you find when you google `Collestt CSS EFFects!!1!one` and slap that on your website to wow people. I didn't want to do that so I can maintain a veil of superiority over the strawmen I have constructed and am now laughing at. So tl;dr: this website is made by me. No copy pasting from codepen. Just a bit of copy pasting from stack overflow.
+With web development i realise you can just copy and paste some code from the first article you find when you google `Collestt CSS EFFects!!1!one` and slap that on your website to wow people. I didn't want to do that. So tl;dr: this website is made by me. No copy pasting from codepen. Just a bit of copy pasting from stack overflow.
