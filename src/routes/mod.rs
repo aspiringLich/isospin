@@ -62,7 +62,7 @@ pub fn get_markdown(path: &String) -> Response {
         let html = markdown_to_html(&string, &options);
         // modified html: just add some stuff so it uses a style sheet and does some stuff
         let mhtml = format!(
-            "<!DOCTYPE html><head><link rel=\"stylesheet\" href=\"text.css\"></head><body>{}</body>",
+            "<!DOCTYPE html><head><link rel=\"stylesheet\" href=\"text.css\"></head><body><div class=\"md\">{}</div></body>",
             html
         );
         // write it out!
