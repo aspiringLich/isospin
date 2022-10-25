@@ -1,7 +1,6 @@
 /node_modules
-/web/parsed_markdown/*
+/web/static/parsed_markdown
 
 # Added by cargo
 
 /target
-
