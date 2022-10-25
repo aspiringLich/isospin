@@ -42,7 +42,7 @@ pub fn generate_header() -> String {
         out
     };
 
-    fs::read_to_string(config::TEMPLATE_DIR.to_string() + "header.html")
+    fs::read_to_string(config::TEMPLATE_DIR.to_string() + "/header.html")
         .unwrap()
         .replacen("{{POST-IT-L}}", &generate_html(), 1)
         .replacen("{{POST-IT-R}}", &generate_html(), 1)

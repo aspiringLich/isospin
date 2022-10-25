@@ -28,6 +28,8 @@ pub fn get_markdown(path: &String) -> Response {
     path_html = format!("{}{}", *config::MARKDOWN_OUT_DIR, path_html);
     let path_md = format!("{}{}", *config::MARKDOWN_IN_DIR, path);
 
+    // dbg!(&path_html, &path_md);
+
     // make sure that the md file isnt more recent, cuz then we need to rebuild
     let mut last_modified_html = None;
     if let Ok(metadata) = fs::metadata(&path_html) {
