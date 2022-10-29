@@ -1,11 +1,12 @@
 use afire::{extension::ServeStatic, prelude::*};
-use std::{collections::HashMap, fs};
 
 mod config;
 mod routes;
 mod setup;
+#[macro_use]
+mod sh;
 
-fn main() {
+fn main() -> Result<(), &'static str> {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
 
     if args.contains(&"setup".to_string()) {
@@ -21,34 +22,18 @@ fn main() {
             // println!("{} made a request", req.address);
             Some((res.header("X-Static-Serve", "true"), suc))
         })
-        .not_found(|_req, _dis| {
-            let mut res = Response::new()
-                .status(404)
-                .text("Pretend theres a good 404 screen here thanks");
-
-            let is_html = _req.path.split(".").last() == Some("html");
-            let is_md = _req.path.split(".").last() == Some("md");
-            let is_get = _req.method == Method::GET;
-
-            if is_get && is_html {
-                dbg!(format!("{}{}", config::TEMPLATE_DIR.clone(), _req.path));
-                res = Response::new()
-                    .text(
-                        fs::read_to_string(format!(
-                            "{}{}",
-                            config::TEMPLATE_DIR.clone(),
-                            _req.path
-                        ))
-                        .unwrap_or("file not found :(".to_string()),
-                    )
-                    .content(Content::HTML)
-            } else if is_get && is_md {
-                res = routes::get_markdown(&_req.path);
-            } else if is_get {
-                res = Response::new().status(404).text("file not found :(")
-                // if its html, try and get it from the template directory
+        .not_found(|req, dis| -> Response {
+            eprintln!("{}", req.path);
+            let cls = || -> Result<Response, &str> {
+                let mut res = Response::new()
+                    .status(404)
+                    .text("Pretend theres a good 404 screen here thanks");
+                Ok(res)
+            };
+            match cls() {
+                Ok(res) => res,
+                Err(err) => sh::err_temp(err),
             }
-            res
         })
         .path("/")
         .attach(&mut server);
@@ -56,5 +41,6 @@ fn main() {
     routes::attach(&mut server);
 
     // server start
-    server.start().unwrap();
+    server.start_threaded(4).unwrap();
+    Ok(())
 }

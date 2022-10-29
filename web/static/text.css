@@ -1,11 +1,6 @@
-body {
+.markdown-body {
     padding: 16px 32px 16px 32px;
     background: linear-gradient(0deg, #0d11174d, #0d11177a);
-}
-
-html {
-    scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.09);
-    scrollbar-width: thin;
 }
 
 
@@ -37,8 +32,12 @@ html {
     -webkit-border-radius: 100px;
 }
 
+.desc {
+    scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.09);
+    scrollbar-width: thin;
+}
 
-body {
+.markdown-body {
     color-scheme: dark;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
@@ -50,18 +49,18 @@ body {
     word-wrap: break-word;
 }
 
-body .octicon {
+.markdown-body.octicon {
     display: inline-block;
     fill: currentColor;
     vertical-align: text-bottom;
 }
 
-body h1:hover .anchor .octicon-link:before,
-body h2:hover .anchor .octicon-link:before,
-body h3:hover .anchor .octicon-link:before,
-body h4:hover .anchor .octicon-link:before,
-body h5:hover .anchor .octicon-link:before,
-body h6:hover .anchor .octicon-link:before {
+.markdown-bodyh1:hover .anchor .octicon-link:before,
+.markdown-bodyh2:hover .anchor .octicon-link:before,
+.markdown-bodyh3:hover .anchor .octicon-link:before,
+.markdown-bodyh4:hover .anchor .octicon-link:before,
+.markdown-bodyh5:hover .anchor .octicon-link:before,
+.markdown-bodyh6:hover .anchor .octicon-link:before {
     width: 16px;
     height: 16px;
     content: ' ';
@@ -71,46 +70,46 @@ body h6:hover .anchor .octicon-link:before {
     mask-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' version='1.1' aria-hidden='true'><path fill-rule='evenodd' d='M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z'></path></svg>");
 }
 
-body details,
-body figcaption,
-body figure {
+.markdown-bodydetails,
+.markdown-bodyfigcaption,
+.markdown-bodyfigure {
     display: block;
 }
 
-body summary {
+.markdown-bodysummary {
     display: list-item;
 }
 
-body [hidden] {
+.markdown-body[hidden] {
     display: none !important;
 }
 
-body a {
+.markdown-bodya {
     background-color: transparent;
     color: #58a6ff;
     text-decoration: none;
 }
 
-body a:active,
-body a:hover {
+.markdown-bodya:active,
+.markdown-bodya:hover {
     outline-width: 0;
 }
 
-body abbr[title] {
+.markdown-bodyabbr[title] {
     border-bottom: none;
     text-decoration: underline dotted;
 }
 
-body b,
-body strong {
+.markdown-bodyb,
+.markdown-bodystrong {
     font-weight: 600;
 }
 
-body dfn {
+.markdown-bodydfn {
     font-style: italic;
 }
 
-body h1 {
+.markdown-bodyh1 {
     margin: .67em 0;
     font-weight: 600;
     padding-bottom: .3em;
@@ -118,51 +117,51 @@ body h1 {
     border-bottom: 1px solid #21262d;
 }
 
-body mark {
+.markdown-bodymark {
     background-color: rgba(187, 128, 9, 0.15);
     color: #c9d1d9;
 }
 
-body small {
+.markdown-bodysmall {
     font-size: 90%;
 }
 
-body sub,
-body sup {
+.markdown-bodysub,
+.markdown-bodysup {
     font-size: 75%;
     line-height: 0;
     position: relative;
     vertical-align: baseline;
 }
 
-body sub {
+.markdown-bodysub {
     bottom: -0.25em;
 }
 
-body sup {
+.markdown-bodysup {
     top: -0.5em;
 }
 
-body img {
+.markdown-bodyimg {
     border-style: none;
     max-width: 100%;
     box-sizing: content-box;
     background-color: #0d1117;
 }
 
-body code,
-body kbd,
-body pre,
-body samp {
+.markdown-bodycode,
+.markdown-bodykbd,
+.markdown-bodypre,
+.markdown-bodysamp {
     font-family: monospace, monospace;
     font-size: 1em;
 }
 
-body figure {
+.markdown-bodyfigure {
     margin: 1em 40px;
 }
 
-body hr {
+.markdown-bodyhr {
     box-sizing: content-box;
     overflow: hidden;
     background: transparent;
@@ -174,7 +173,7 @@ body hr {
     border: 0;
 }
 
-body input {
+.markdown-bodyinput {
     font: inherit;
     margin: 0;
     overflow: visible;
@@ -183,72 +182,72 @@ body input {
     line-height: inherit;
 }
 
-body [type=button],
-body [type=reset],
-body [type=submit] {
+.markdown-body[type=button],
+.markdown-body[type=reset],
+.markdown-body[type=submit] {
     -webkit-appearance: button;
 }
 
-body [type=button]::-moz-focus-inner,
-body [type=reset]::-moz-focus-inner,
-body [type=submit]::-moz-focus-inner {
+.markdown-body[type=button]::-moz-focus-inner,
+.markdown-body[type=reset]::-moz-focus-inner,
+.markdown-body[type=submit]::-moz-focus-inner {
     border-style: none;
     padding: 0;
 }
 
-body [type=button]:-moz-focusring,
-body [type=reset]:-moz-focusring,
-body [type=submit]:-moz-focusring {
+.markdown-body[type=button]:-moz-focusring,
+.markdown-body[type=reset]:-moz-focusring,
+.markdown-body[type=submit]:-moz-focusring {
     outline: 1px dotted ButtonText;
 }
 
-body [type=checkbox],
-body [type=radio] {
+.markdown-body[type=checkbox],
+.markdown-body[type=radio] {
     box-sizing: border-box;
     padding: 0;
 }
 
-body [type=number]::-webkit-inner-spin-button,
-body [type=number]::-webkit-outer-spin-button {
+.markdown-body[type=number]::-webkit-inner-spin-button,
+.markdown-body[type=number]::-webkit-outer-spin-button {
     height: auto;
 }
 
-body [type=search] {
+.markdown-body[type=search] {
     -webkit-appearance: textfield;
     outline-offset: -2px;
 }
 
-body [type=search]::-webkit-search-cancel-button,
-body [type=search]::-webkit-search-decoration {
+.markdown-body[type=search]::-webkit-search-cancel-button,
+.markdown-body[type=search]::-webkit-search-decoration {
     -webkit-appearance: none;
 }
 
-body ::-webkit-input-placeholder {
+.markdown-body::-webkit-input-placeholder {
     color: inherit;
     opacity: .54;
 }
 
-body ::-webkit-file-upload-button {
+.markdown-body::-webkit-file-upload-button {
     -webkit-appearance: button;
     font: inherit;
 }
 
-body a:hover {
+.markdown-bodya:hover {
     text-decoration: underline;
 }
 
-body hr::before {
+.markdown-bodyhr::before {
     display: table;
     content: "";
 }
 
-body hr::after {
+.markdown-bodyhr::after {
     display: table;
     clear: both;
     content: "";
 }
 
-body table {
+.markdown-bodytable {
     border-spacing: 0;
     border-collapse: collapse;
     display: block;
@@ -257,20 +256,20 @@ body table {
     overflow: auto;
 }
 
-body td,
-body th {
+.markdown-bodytd,
+.markdown-bodyth {
     padding: 0;
 }
 
-body details summary {
+.markdown-bodydetails summary {
     cursor: pointer;
 }
 
-body details:not([open])>*:not(summary) {
+.markdown-bodydetails:not([open])>*:not(summary) {
     display: none !important;
 }
 
-body kbd {
+.markdown-bodykbd {
     display: inline-block;
     padding: 3px 5px;
     font: 11px ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
@@ -284,88 +283,88 @@ body kbd {
     box-shadow: inset 0 -1px 0 rgba(110, 118, 129, 0.4);
 }
 
-body h1,
-body h2,
-body h3,
-body h4,
-body h5,
-body h6 {
+.markdown-bodyh1,
+.markdown-bodyh2,
+.markdown-bodyh3,
+.markdown-bodyh4,
+.markdown-bodyh5,
+.markdown-bodyh6 {
     margin-top: 24px;
     margin-bottom: 16px;
     font-weight: 600;
     line-height: 1.25;
 }
 
-body h2 {
+.markdown-bodyh2 {
     font-weight: 600;
     padding-bottom: .3em;
     font-size: 1.5em;
     border-bottom: 1px solid #21262d;
 }
 
-body h3 {
+.markdown-bodyh3 {
     font-weight: 600;
     font-size: 1.25em;
 }
 
-body h4 {
+.markdown-bodyh4 {
     font-weight: 600;
     font-size: 1em;
 }
 
-body h5 {
+.markdown-bodyh5 {
     font-weight: 600;
     font-size: .875em;
 }
 
-body h6 {
+.markdown-bodyh6 {
     font-weight: 600;
     font-size: .85em;
     color: #8b949e;
 }
 
-body p {
+.markdown-bodyp {
     margin-top: 0;
     margin-bottom: 10px;
 }
 
-body blockquote {
+.markdown-bodyblockquote {
     margin: 0;
     padding: 0 1em;
     color: #8b949e;
     border-left: .25em solid #30363d;
 }
 
-body ul,
-body ol {
+.markdown-bodyul,
+.markdown-bodyol {
     margin-top: 0;
     margin-bottom: 0;
     padding-left: 2em;
 }
 
-body ol ol,
-body ul ol {
+.markdown-bodyol ol,
+.markdown-bodyul ol {
     list-style-type: lower-roman;
 }
 
-body ul ul ol,
-body ul ol ol,
-body ol ul ol,
-body ol ol ol {
+.markdown-bodyul ul ol,
+.markdown-bodyul ol ol,
+.markdown-bodyol ul ol,
+.markdown-bodyol ol ol {
     list-style-type: lower-alpha;
 }
 
-body dd {
+.markdown-bodydd {
     margin-left: 0;
 }
 
-body tt,
-body code {
+.markdown-bodytt,
+.markdown-bodycode {
     font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
     font-size: 12px;
 }
 
-body pre {
+.markdown-bodypre {
     margin-top: 0;
     margin-bottom: 0;
     font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
@@ -373,150 +372,150 @@ body pre {
     word-wrap: normal;
 }
 
-body .octicon {
+.markdown-body.octicon {
     display: inline-block;
     overflow: visible !important;
     vertical-align: text-bottom;
     fill: currentColor;
 }
 
-body ::placeholder {
+.markdown-body::placeholder {
     color: #484f58;
     opacity: 1;
 }
 
-body input::-webkit-outer-spin-button,
-body input::-webkit-inner-spin-button {
+.markdown-bodyinput::-webkit-outer-spin-button,
+.markdown-bodyinput::-webkit-inner-spin-button {
     margin: 0;
     -webkit-appearance: none;
     appearance: none;
 }
 
-body .pl-c {
+.markdown-body.pl-c {
     color: #8b949e;
 }
 
-body .pl-c1,
-body .pl-s .pl-v {
+.markdown-body.pl-c1,
+.markdown-body.pl-s .pl-v {
     color: #79c0ff;
 }
 
-body .pl-e,
-body .pl-en {
+.markdown-body.pl-e,
+.markdown-body.pl-en {
     color: #d2a8ff;
 }
 
-body .pl-smi,
-body .pl-s .pl-s1 {
+.markdown-body.pl-smi,
+.markdown-body.pl-s .pl-s1 {
     color: #c9d1d9;
 }
 
-body .pl-ent {
+.markdown-body.pl-ent {
     color: #7ee787;
 }
 
-body .pl-k {
+.markdown-body.pl-k {
     color: #ff7b72;
 }
 
-body .pl-s,
-body .pl-pds,
-body .pl-s .pl-pse .pl-s1,
-body .pl-sr,
-body .pl-sr .pl-cce,
-body .pl-sr .pl-sre,
-body .pl-sr .pl-sra {
+.markdown-body.pl-s,
+.markdown-body.pl-pds,
+.markdown-body.pl-s .pl-pse .pl-s1,
+.markdown-body.pl-sr,
+.markdown-body.pl-sr .pl-cce,
+.markdown-body.pl-sr .pl-sre,
+.markdown-body.pl-sr .pl-sra {
     color: #a5d6ff;
 }
 
-body .pl-v,
-body .pl-smw {
+.markdown-body.pl-v,
+.markdown-body.pl-smw {
     color: #ffa657;
 }
 
-body .pl-bu {
+.markdown-body.pl-bu {
     color: #f85149;
 }
 
-body .pl-ii {
+.markdown-body.pl-ii {
     color: #f0f6fc;
     background-color: #8e1519;
 }
 
-body .pl-c2 {
+.markdown-body.pl-c2 {
     color: #f0f6fc;
     background-color: #b62324;
 }
 
-body .pl-sr .pl-cce {
+.markdown-body.pl-sr .pl-cce {
     font-weight: bold;
     color: #7ee787;
 }
 
-body .pl-ml {
+.markdown-body.pl-ml {
     color: #f2cc60;
 }
 
-body .pl-mh,
-body .pl-mh .pl-en,
-body .pl-ms {
+.markdown-body.pl-mh,
+.markdown-body.pl-mh .pl-en,
+.markdown-body.pl-ms {
     font-weight: bold;
     color: #1f6feb;
 }
 
-body .pl-mi {
+.markdown-body.pl-mi {
     font-style: italic;
     color: #c9d1d9;
 }
 
-body .pl-mb {
+.markdown-body.pl-mb {
     font-weight: bold;
     color: #c9d1d9;
 }
 
-body .pl-md {
+.markdown-body.pl-md {
     color: #ffdcd7;
     background-color: #67060c;
 }
 
-body .pl-mi1 {
+.markdown-body.pl-mi1 {
     color: #aff5b4;
     background-color: #033a16;
 }
 
-body .pl-mc {
+.markdown-body.pl-mc {
     color: #ffdfb6;
     background-color: #5a1e02;
 }
 
-body .pl-mi2 {
+.markdown-body.pl-mi2 {
     color: #c9d1d9;
     background-color: #1158c7;
 }
 
-body .pl-mdr {
+.markdown-body.pl-mdr {
     font-weight: bold;
     color: #d2a8ff;
 }
 
-body .pl-ba {
+.markdown-body.pl-ba {
     color: #8b949e;
 }
 
-body .pl-sg {
+.markdown-body.pl-sg {
     color: #484f58;
 }
 
-body .pl-corl {
+.markdown-body.pl-corl {
     text-decoration: underline;
     color: #a5d6ff;
 }
 
-body [data-catalyst] {
+.markdown-body[data-catalyst] {
     display: block;
 }
 
-body g-emoji {
+.markdown-bodyg-emoji {
     font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-size: 1em;
     font-style: normal !important;
@@ -525,7 +524,7 @@ body g-emoji {
     vertical-align: -0.075em;
 }
 
-body g-emoji img {
+.markdown-bodyg-emoji img {
     width: 1em;
     height: 1em;
 }
@@ -549,142 +548,142 @@ body>*:last-child {
     margin-bottom: 0 !important;
 }
 
-body a:not([href]) {
+.markdown-bodya:not([href]) {
     color: inherit;
     text-decoration: none;
 }
 
-body .absent {
+.markdown-body.absent {
     color: #f85149;
 }
 
-body .anchor {
+.markdown-body.anchor {
     float: left;
     padding-right: 4px;
     margin-left: -20px;
     line-height: 1;
 }
 
-body .anchor:focus {
+.markdown-body.anchor:focus {
     outline: none;
 }
 
-body p,
-body blockquote,
-body ul,
-body ol,
-body dl,
-body table,
-body pre,
-body details {
+.markdown-bodyp,
+.markdown-bodyblockquote,
+.markdown-bodyul,
+.markdown-bodyol,
+.markdown-bodydl,
+.markdown-bodytable,
+.markdown-bodypre,
+.markdown-bodydetails {
     margin-top: 0;
     margin-bottom: 16px;
 }
 
-body blockquote>:first-child {
+.markdown-bodyblockquote>:first-child {
     margin-top: 0;
 }
 
-body blockquote>:last-child {
+.markdown-bodyblockquote>:last-child {
     margin-bottom: 0;
 }
 
-body sup>a::before {
+.markdown-bodysup>a::before {
     content: "[";
 }
 
-body sup>a::after {
+.markdown-bodysup>a::after {
     content: "]";
 }
 
-body h1 .octicon-link,
-body h2 .octicon-link,
-body h3 .octicon-link,
-body h4 .octicon-link,
-body h5 .octicon-link,
-body h6 .octicon-link {
+.markdown-bodyh1 .octicon-link,
+.markdown-bodyh2 .octicon-link,
+.markdown-bodyh3 .octicon-link,
+.markdown-bodyh4 .octicon-link,
+.markdown-bodyh5 .octicon-link,
+.markdown-bodyh6 .octicon-link {
     color: #c9d1d9;
     vertical-align: middle;
     visibility: hidden;
 }
 
-body h1:hover .anchor,
-body h2:hover .anchor,
-body h3:hover .anchor,
-body h4:hover .anchor,
-body h5:hover .anchor,
-body h6:hover .anchor {
+.markdown-bodyh1:hover .anchor,
+.markdown-bodyh2:hover .anchor,
+.markdown-bodyh3:hover .anchor,
+.markdown-bodyh4:hover .anchor,
+.markdown-bodyh5:hover .anchor,
+.markdown-bodyh6:hover .anchor {
     text-decoration: none;
 }
 
-body h1:hover .anchor .octicon-link,
-body h2:hover .anchor .octicon-link,
-body h3:hover .anchor .octicon-link,
-body h4:hover .anchor .octicon-link,
-body h5:hover .anchor .octicon-link,
-body h6:hover .anchor .octicon-link {
+.markdown-bodyh1:hover .anchor .octicon-link,
+.markdown-bodyh2:hover .anchor .octicon-link,
+.markdown-bodyh3:hover .anchor .octicon-link,
+.markdown-bodyh4:hover .anchor .octicon-link,
+.markdown-bodyh5:hover .anchor .octicon-link,
+.markdown-bodyh6:hover .anchor .octicon-link {
     visibility: visible;
 }
 
-body h1 tt,
-body h1 code,
-body h2 tt,
-body h2 code,
-body h3 tt,
-body h3 code,
-body h4 tt,
-body h4 code,
-body h5 tt,
-body h5 code,
-body h6 tt,
-body h6 code {
+.markdown-bodyh1 tt,
+.markdown-bodyh1 code,
+.markdown-bodyh2 tt,
+.markdown-bodyh2 code,
+.markdown-bodyh3 tt,
+.markdown-bodyh3 code,
+.markdown-bodyh4 tt,
+.markdown-bodyh4 code,
+.markdown-bodyh5 tt,
+.markdown-bodyh5 code,
+.markdown-bodyh6 tt,
+.markdown-bodyh6 code {
     padding: 0 .2em;
     font-size: inherit;
 }
 
-body ul.no-list,
-body ol.no-list {
+.markdown-bodyul.no-list,
+.markdown-bodyol.no-list {
     padding: 0;
     list-style-type: none;
 }
 
-body ol[type="1"] {
+.markdown-bodyol[type="1"] {
     list-style-type: decimal;
 }
 
-body ol[type=a] {
+.markdown-bodyol[type=a] {
     list-style-type: lower-alpha;
 }
 
-body ol[type=i] {
+.markdown-bodyol[type=i] {
     list-style-type: lower-roman;
 }
 
-body div>ol:not([type]) {
+.markdown-bodydiv>ol:not([type]) {
     list-style-type: decimal;
 }
 
-body ul ul,
-body ul ol,
-body ol ol,
-body ol ul {
+.markdown-bodyul ul,
+.markdown-bodyul ol,
+.markdown-bodyol ol,
+.markdown-bodyol ul {
     margin-top: 0;
     margin-bottom: 0;
 }
 
-body li>p {
+.markdown-bodyli>p {
     margin-top: 16px;
 }
 
-body li+li {
+.markdown-bodyli+li {
     margin-top: .25em;
 }
 
-body dl {
+.markdown-bodydl {
     padding: 0;
 }
 
-body dl dt {
+.markdown-bodydl dt {
     padding: 0;
     margin-top: 16px;
     font-size: 1em;
@@ -692,54 +691,54 @@ body dl dt {
     font-weight: 600;
 }
 
-body dl dd {
+.markdown-bodydl dd {
     padding: 0 16px;
     margin-bottom: 16px;
 }
 
-body table th {
+.markdown-bodytable th {
     font-weight: 600;
 }
 
-body table th,
-body table td {
+.markdown-bodytable th,
+.markdown-bodytable td {
     padding: 6px 13px;
     border: 1px solid #30363d;
 }
 
-body table tr {
+.markdown-bodytable tr {
     background-color: #0d1117;
     border-top: 1px solid #21262d;
 }
 
-body table tr:nth-child(2n) {
+.markdown-bodytable tr:nth-child(2n) {
     background-color: #161b22;
 }
 
-body table img {
+.markdown-bodytable img {
     background-color: transparent;
 }
 
-body img[align=right] {
+.markdown-bodyimg[align=right] {
     padding-left: 20px;
 }
 
-body img[align=left] {
+.markdown-bodyimg[align=left] {
     padding-right: 20px;
 }
 
-body .emoji {
+.markdown-body.emoji {
     max-width: none;
     vertical-align: text-top;
     background-color: transparent;
 }
 
-body span.frame {
+.markdown-bodyspan.frame {
     display: block;
     overflow: hidden;
 }
 
-body span.frame>span {
+.markdown-bodyspan.frame>span {
     display: block;
     float: left;
     width: auto;
@@ -749,81 +748,81 @@ body span.frame>span {
     border: 1px solid #30363d;
 }
 
-body span.frame span img {
+.markdown-bodyspan.frame span img {
     display: block;
     float: left;
 }
 
-body span.frame span span {
+.markdown-bodyspan.frame span span {
     display: block;
     padding: 5px 0 0;
     clear: both;
     color: #c9d1d9;
 }
 
-body span.align-center {
+.markdown-bodyspan.align-center {
     display: block;
     overflow: hidden;
     clear: both;
 }
 
-body span.align-center>span {
+.markdown-bodyspan.align-center>span {
     display: block;
     margin: 13px auto 0;
     overflow: hidden;
     text-align: center;
 }
 
-body span.align-center span img {
+.markdown-bodyspan.align-center span img {
     margin: 0 auto;
     text-align: center;
 }
 
-body span.align-right {
+.markdown-bodyspan.align-right {
     display: block;
     overflow: hidden;
     clear: both;
 }
 
-body span.align-right>span {
+.markdown-bodyspan.align-right>span {
     display: block;
     margin: 13px 0 0;
     overflow: hidden;
     text-align: right;
 }
 
-body span.align-right span img {
+.markdown-bodyspan.align-right span img {
     margin: 0;
     text-align: right;
 }
 
-body span.float-left {
+.markdown-bodyspan.float-left {
     display: block;
     float: left;
     margin-right: 13px;
     overflow: hidden;
 }
 
-body span.float-left span {
+.markdown-bodyspan.float-left span {
     margin: 13px 0 0;
 }
 
-body span.float-right {
+.markdown-bodyspan.float-right {
     display: block;
     float: right;
     margin-left: 13px;
     overflow: hidden;
 }
 
-body span.float-right>span {
+.markdown-bodyspan.float-right>span {
     display: block;
     margin: 13px auto 0;
     overflow: hidden;
     text-align: right;
 }
 
-body code,
-body tt {
+.markdown-bodycode,
+.markdown-bodytt {
     padding: .2em .4em;
     margin: 0;
     font-size: 85%;
@@ -831,20 +830,20 @@ body tt {
     border-radius: 6px;
 }
 
-body code br,
-body tt br {
+.markdown-bodycode br,
+.markdown-bodytt br {
     display: none;
 }
 
-body del code {
+.markdown-bodydel code {
     text-decoration: inherit;
 }
 
-body pre code {
+.markdown-bodypre code {
     font-size: 100%;
 }
 
-body pre>code {
+.markdown-bodypre>code {
     padding: 0;
     margin: 0;
     word-break: normal;
@@ -853,17 +852,17 @@ body pre>code {
     border: 0;
 }
 
-body .highlight {
+.markdown-body.highlight {
     margin-bottom: 16px;
 }
 
-body .highlight pre {
+.markdown-body.highlight pre {
     margin-bottom: 0;
     word-break: normal;
 }
 
-body .highlight pre,
-body pre {
+.markdown-body.highlight pre,
+.markdown-bodypre {
     padding: 16px;
     overflow: auto;
     font-size: 85%;
@@ -872,8 +871,8 @@ body pre {
     border-radius: 6px;
 }
 
-body pre code,
-body pre tt {
+.markdown-bodypre code,
+.markdown-bodypre tt {
     display: inline;
     max-width: auto;
     padding: 0;
@@ -885,8 +884,8 @@ body pre tt {
     border: 0;
 }
 
-body .csv-data td,
-body .csv-data th {
+.markdown-body.csv-data td,
+.markdown-body.csv-data th {
     padding: 5px;
     overflow: hidden;
     font-size: 12px;
@@ -895,38 +894,38 @@ body .csv-data th {
     white-space: nowrap;
 }
 
-body .csv-data .blob-num {
+.markdown-body.csv-data .blob-num {
     padding: 10px 8px 9px;
     text-align: right;
     background: #0d1117;
     border: 0;
 }
 
-body .csv-data tr {
+.markdown-body.csv-data tr {
     border-top: 0;
 }
 
-body .csv-data th {
+.markdown-body.csv-data th {
     font-weight: 600;
     background: #161b22;
     border-top: 0;
 }
 
-body .footnotes {
+.markdown-body.footnotes {
     font-size: 12px;
     color: #8b949e;
     border-top: 1px solid #30363d;
 }
 
-body .footnotes ol {
+.markdown-body.footnotes ol {
     padding-left: 16px;
 }
 
-body .footnotes li {
+.markdown-body.footnotes li {
     position: relative;
 }
 
-body .footnotes li:target::before {
+.markdown-body.footnotes li:target::before {
     position: absolute;
     top: -8px;
     right: -8px;
@@ -938,43 +937,43 @@ body .footnotes li:target::before {
     border-radius: 6px;
 }
 
-body .footnotes li:target {
+.markdown-body.footnotes li:target {
     color: #c9d1d9;
 }
 
-body .footnotes .data-footnote-backref g-emoji {
+.markdown-body.footnotes .data-footnote-backref g-emoji {
     font-family: monospace;
 }
 
-body .task-list-item {
+.markdown-body.task-list-item {
     list-style-type: none;
 }
 
-body .task-list-item label {
+.markdown-body.task-list-item label {
     font-weight: 400;
 }
 
-body .task-list-item.enabled label {
+.markdown-body.task-list-item.enabled label {
     cursor: pointer;
 }
 
-body .task-list-item+.task-list-item {
+.markdown-body.task-list-item+.task-list-item {
     margin-top: 3px;
 }
 
-body .task-list-item .handle {
+.markdown-body.task-list-item .handle {
     display: none;
 }
 
-body .task-list-item-checkbox {
+.markdown-body.task-list-item-checkbox {
     margin: 0 .2em .25em -1.6em;
     vertical-align: middle;
 }
 
-body .contains-task-list:dir(rtl) .task-list-item-checkbox {
+.markdown-body.contains-task-list:dir(rtl) .task-list-item-checkbox {
     margin: 0 -1.6em .25em .2em;
 }
 
-body ::-webkit-calendar-picker-indicator {
+.markdown-body::-webkit-calendar-picker-indicator {
     filter: invert(50%);
 }

@@ -1,3 +1,4 @@
+@import "text.css";
 @font-face {
   font-family: "FixedSys";
   src: url("assets/FSEX300.ttf");
@@ -157,41 +158,48 @@ p:nth-child(5) {
   color: #e94b0d;
   font-size: calc(max(40vw, 300px) * 0.0875);
 }
-#content iframe,
-#content img {
+#content .flex {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+#content .desc,
+#content .icon {
+  position: relative;
+  display: inline-block;
   box-shadow: 5px 10px 8px rgba(0, 0, 0, 0.1529411765);
-  left: 0;
   position: static;
   height: min(512px, 30vw);
   border-radius: 5px;
   transition: all 1s;
 }
-#content iframe {
-  background: linear-gradient(left, rgba(0, 0, 0, 0), #FFFFFF);
+#content .desc {
+  overflow-y: scroll;
+  text-align: left;
   width: calc(min(512px, 30vw) * 2);
+  margin-left: 8px;
 }
-#content img {
+#content .icon {
   width: min(512px, 30vw);
 }
 #content .active,
 #content .wrapper {
-  display: inline-block;
   height: min(512px, 30vw);
   margin: 20px 20px 20px 20px;
 }
-#content .wrapper iframe {
+#content .wrapper .desc {
   visibility: hidden;
   border: none;
   transform: scaleX(0);
 }
-#content .wrapper img {
+#content .wrapper .icon {
   transform: translateX(100%);
 }
-#content .active iframe {
+#content .active .desc {
   visibility: visible;
   transform: scaleX(1);
 }
-#content .active img {
+#content .active .icon {
   transform: translateX(0%);
 }
 

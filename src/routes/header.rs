@@ -7,7 +7,7 @@ use rand::prelude::*;
 #[path = "../config.rs"]
 mod config;
 
-pub fn generate_header() -> String {
+pub fn generate_header(page: &String) -> String {
     const post_its: u32 = 8;
 
     let mut rng = thread_rng();
@@ -42,8 +42,6 @@ pub fn generate_header() -> String {
         out
     };
 
-    fs::read_to_string(config::TEMPLATE_DIR.to_string() + "header.html")
-        .unwrap()
-        .replacen("{{POST-IT-L}}", &generate_html(), 1)
+    page.replacen("{{POST-IT-L}}", &generate_html(), 1)
         .replacen("{{POST-IT-R}}", &generate_html(), 1)
 }

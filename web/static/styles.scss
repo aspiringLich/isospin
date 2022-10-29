@@ -1,3 +1,5 @@
+@import "text.css";
+
 // font stuff (noway)
 @font-face {
     font-family: 'FixedSys';
@@ -170,10 +172,18 @@ $post-it-size: 20vw;
 
     $item-size: min(512px, 30vw);
 
-    iframe,
-    img {
+    .flex {
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .desc,
+    .icon {
+        position: relative;
+        display: inline-block;
         box-shadow: 5px 10px 8px #00000027;
-        left: 0;
+        // left: 0;
         position: static;
         // width: $item-size;
         height: $item-size;
@@ -181,41 +191,44 @@ $post-it-size: 20vw;
         transition: all 1s;
     }
 
-    iframe {
-        background: linear-gradient(left, #00000000, #FFFFFF);
+    .desc {
+        overflow-y: scroll;
+        text-align: left;
         width: calc($item-size * 2);
+        margin-left: 8px;
     }
 
-    img {
+    .icon {
+        // margin-right: 0px;
         width: $item-size;
     }
 
     .active,
     .wrapper {
-        display: inline-block;
         height: $item-size;
         margin: 20px 20px 20px 20px;
     }
 
     .wrapper {
-        iframe {
+        .desc {
             visibility: hidden;
             border: none;
             transform: scaleX(0);
         }
 
-        img {
+        .icon {
             transform: translateX(100%);
         }
     }
 
     .active {
-        iframe {
+        .desc {
             visibility: visible;
             transform: scaleX(1);
         }
 
-        img {
+        .icon {
+
             transform: translateX(0%);
         }
 
