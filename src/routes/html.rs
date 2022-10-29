@@ -1,4 +1,4 @@
-use crate::{config, sh};
+use crate::config;
 use afire::Request;
 
 use anyhow::*;

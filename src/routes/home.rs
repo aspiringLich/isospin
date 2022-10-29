@@ -32,7 +32,7 @@ lazy_static! {
 /// route for `/home`, goes to the home screen
 pub fn attach(server: &mut Server) {
     // home screen
-    server.route(Method::GET, "/home", |req| {
+    server.route(Method::GET, "/home", |_req| {
         let template = header::generate_header(&*PAGE);
 
         Response::new().text(template).content(Content::HTML)

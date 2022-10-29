@@ -3,9 +3,9 @@ use afire::prelude::*;
 use super::html;
 use super::md;
 
-pub struct root;
+pub struct Root;
 
-impl Middleware for root {
+impl Middleware for Root {
     fn pre(&self, req: &error::Result<Request>) -> MiddleRequest {
         // filter out all the requests were not interested in
         let mut req = match req {

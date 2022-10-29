@@ -8,5 +8,5 @@ mod root;
 
 pub fn attach(server: &mut Server) {
     home::attach(server);
-    root::root.attach(server);
+    root::Root.attach(server);
 }

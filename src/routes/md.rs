@@ -3,8 +3,6 @@ use comrak::{markdown_to_html, ComrakOptions, ComrakRenderOptions};
 use std::{cmp::Ordering, fs};
 
 use crate::config;
-// #[macro_use]
-use crate::sh;
 
 use anyhow::{Context, Result};
 

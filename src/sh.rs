@@ -1,11 +1,11 @@
-use std::{fmt::Display, io};
+use std::fmt::Display;
 
 use afire::prelude::*;
 
 // sh.rs - shorthand.rs name abbreviated for obvious reasons
 
 /// return an html response
-pub fn html_res<T: Display>(string: T) -> Response {
+pub fn _html_res<T: Display>(string: T) -> Response {
     return Response::new().text(string).content(Content::HTML);
 }
 

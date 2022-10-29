@@ -1,5 +1,3 @@
-use std::fmt::Display;
-
 use afire::Response;
 use lazy_static::lazy_static;
 

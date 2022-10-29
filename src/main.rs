@@ -7,25 +7,26 @@ mod setup;
 mod sh;
 
 fn main() -> Result<(), &'static str> {
-    let args = std::env::args().skip(1).collect::<Vec<_>>();
+    // let args = std::env::args().skip(1).collect::<Vec<_>>();
 
-    if args.contains(&"setup".to_string()) {
-        println!("Processing images!");
-        setup::process_imgs();
-    }
+    // do this in another thing
+    // if args.contains(&"setup".to_string()) {
+    //     println!("Processing images!");
+    //     setup::process_imgs();
+    // }
 
     let mut server: Server = Server::<()>::new("localhost", 8080);
 
     // serve static fles
     ServeStatic::new("./web/static")
-        .middleware(|req, res, suc| {
+        .middleware(|_req, res, suc| {
             // println!("{} made a request", req.address);
             Some((res.header("X-Static-Serve", "true"), suc))
         })
-        .not_found(|req, dis| -> Response {
+        .not_found(|req, _dis| -> Response {
             eprintln!("failed to serve file: {}", req.path);
             let cls = || -> Result<Response, &str> {
-                let mut res = Response::new()
+                let res = Response::new()
                     .status(404)
                     .text("Pretend theres a good 404 screen here thanks");
                 Ok(res)
