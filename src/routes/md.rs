@@ -4,17 +4,17 @@ use std::{cmp::Ordering, fs};
 
 use crate::config;
 
-use anyhow::{Context, Result};
+use anyhow::Result;
 
 pub fn get_file(path: String) -> Result<String> {
-    Ok(fs::read_to_string(reparse_and_get_html(path)?)?)
+    Ok(fs::read_to_string(reparse_and_get_html(path))?)
 }
 
 /// returns a new request for the coorosponding html file
 pub fn get_req(req: Request) -> Result<Request> {
     let mut out = req.clone();
 
-    out.path = reparse_and_get_html(req.path)?
+    out.path = reparse_and_get_html(req.path)
         .split("static")
         .last()
         .unwrap()
@@ -27,7 +27,7 @@ pub fn get_req(req: Request) -> Result<Request> {
 /// will reparse if:
 ///  - theres no html file
 ///  - if the md file has been modified more recently
-fn reparse_and_get_html(path: String) -> Result<String> {
+fn reparse_and_get_html(path: String) -> String {
     // options
     let options: ComrakOptions = ComrakOptions {
         render: ComrakRenderOptions {
@@ -66,15 +66,16 @@ fn reparse_and_get_html(path: String) -> Result<String> {
 
     if rebuild {
         // ok so read and parse the md file
-        let string = fs::read_to_string(&path_md).context("couldnt find md file")?;
+        let string = fs::read_to_string(&path_md).expect("couldnt find md file");
         let html = format!(
             "<div class=\"markdown-body\">{}</div>",
             markdown_to_html(&string, &options)
         );
 
         // write it out!
-        fs::write(&path_html, &html).context("failed to write out parsed md")?;
+        // dbg!(&path_html);
+        fs::write(&path_html, &html).expect("failed to write out parsed md");
     }
 
-    Ok(path_html)
+    path_html
 }
