@@ -7,6 +7,6 @@ use anyhow::*;
 
 pub fn get_req(req: Request) -> Result<Request> {
     let mut out = req.clone();
-    out.path = format!("{}{}", *config::TEMPLATE_DIR, req.path);
+    out.path = format!("{}{}", &*config::TEMPLATE_DIR, req.path);
     Ok(req)
 }

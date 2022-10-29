@@ -1,28 +1,31 @@
-use afire::Response;
-use lazy_static::lazy_static;
+// the directory that contains the html template files
+#[allow(dead_code)]
+pub const TEMPLATE_DIR: &str = "./web/template";
 
-lazy_static! {
-    // the directory that contains the html template files
-    pub static ref TEMPLATE_DIR: String = "./web/template".to_string();
-    // the directory that contains the assets for the website
-    pub static ref ASSET_DIR: String = "./web/static/assets".to_string();
+// the directory that contains the assets for the website
+#[allow(dead_code)]
+pub const ASSET_DIR: &str = "./web/static/assets";
 
-    // the directory that contains the post it svgs: basically the post it notes themselves
-    pub static ref POST_ITS_DIR: String = "./web/static/assets/post-its/".to_string();
-    // the directory that contains the images that go on top of the post it notes
-    pub static ref POST_IT_IMGS_DIR: String = "./web/static/assets/post-it-imgs/".to_string();
+// the directory that contains the post it svgs: basically the post it notes themselves
+#[allow(dead_code)]
+pub const POST_ITS_DIR: &str = "./web/static/assets/post-its/";
 
-    // the directory that contains the images that go on the post it notes before they are processed
-    pub static ref POST_IT_IMGS_IN_DIR: String = "./src/data/pictures".to_string();
-    // the directory that contains markdown files before they are rendered
-    pub static ref MARKDOWN_IN_DIR: String = "./src/data/markdown".to_string();
-    // the directory that contains markdown files after they are rendered
-    pub static ref MARKDOWN_OUT_DIR: String = "./web/static/assets/parsed_markdown/".to_string();
-    // // the directory that contains images that go with the project description and info pages
-    // pub static ref PROJECT_IMGS_DIR: String = "./web/static/assets/project_assets/".to_string();
+// the directory that contains the images that go on top of the post it notes
+#[allow(dead_code)]
+pub const POST_IT_IMGS_DIR: &str = "./web/static/assets/post-it-imgs/";
 
-    // standard error response for file not found
-    pub static ref FILE_NOT_FOUND: Response = Response::new().status(404).text("file not found :(");
-}
+// the directory that contains the images that go on the post it notes before they are processed
+#[allow(dead_code)]
+pub const POST_IT_IMGS_IN_DIR: &str = "./src/data/pictures";
 
+// the directory that contains markdown files before they are rendered
+#[allow(dead_code)]
+pub const MARKDOWN_IN_DIR: &str = "./src/data/markdown";
+
+// the directory that contains markdown files after they are rendered
+#[allow(dead_code)]
+pub const MARKDOWN_OUT_DIR: &str = "./web/static/assets/parsed_markdown/";
+
+/// the list of projects that i want to generate icon / descriptions for
+#[allow(dead_code)]
 pub const PROJECTS: [&str; 1] = ["isospin"];
