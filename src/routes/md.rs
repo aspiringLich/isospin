@@ -40,9 +40,9 @@ fn reparse_and_get_html(path: String) -> Result<String> {
     };
 
     // get the full paths
+    // dbg!(&path_html);
     let mut path_html = path.clone().split(".").next().unwrap().to_owned() + ".html";
     path_html = format!("{}{}", *config::MARKDOWN_OUT_DIR, path_html);
-    dbg!(&path_html);
     let path_md = format!("{}{}", *config::MARKDOWN_IN_DIR, path);
 
     // make sure that the md file isnt more recent, cuz then we need to rebuild

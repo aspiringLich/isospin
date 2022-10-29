@@ -23,7 +23,7 @@ fn main() -> Result<(), &'static str> {
             Some((res.header("X-Static-Serve", "true"), suc))
         })
         .not_found(|req, dis| -> Response {
-            eprintln!("{}", req.path);
+            eprintln!("failed to serve file: {}", req.path);
             let cls = || -> Result<Response, &str> {
                 let mut res = Response::new()
                     .status(404)
