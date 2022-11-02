@@ -6,8 +6,10 @@ Hello, yes this is in fact the website you are looking at currently. This took f
 
 If I learned anything from this endeavour, its that I don't want to become a front end web developer. This was kinda fun but god; Designing anything, for me at least, takes forever and it's frustrating and annoying because I can't do it for 6 hours straight without getting diminishing returns. Not a good way to waste your 3 day weekend me, because you just waste half of it trying random stuff that doesn't work.
 
-Anyway I did quite enjoy learning how to setup the backend, using a friend's web server [(afire)](https://github.com/Basicprogrammer10/afire). It is the only web server library thing I have ever used, but idk seems pretty good. Go check it out and ignore the spelling mistakes :sweat_smile:. 
-
-*Addendum: Hello it's me right after i finished getting the domain name working. I actually got it working the previous night but didn't notice because i was testing with www. before it. I don't know what i was thinking (I wasn't).*
+Anyway I did quite enjoy learning how to setup the backend, using a friend's web server [(afire)](https://github.com/Basicprogrammer10/afire). It is the only web server framework thingy I have ever used, but idk seems pretty good. Go check it out and ignore the spelling mistakes :sweat_smile:. 
 
 With web development i realise you can just copy and paste some code from the first article you find when you google `Collestt CSS EFFects!!1!one` and slap that on your website to wow people. I didn't want to do that. So tl;dr: this website is made by me. No copy pasting from codepen. Just a bit of copy pasting from stack overflow.
+
+Overall I'm pretty happy with how it turned out. I'm not too good of a designer but in my humble objectively subjectively correct opinion, it's pretty creative. I have more plans for it and it's still kind of unfinished, but I expect this to be a hub for my projects and thoughts for the forseeable future. Until I get bored and revamp it at least.
+
+ *- Brandon Li (AKA aspiringLich)*

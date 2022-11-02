@@ -4,22 +4,22 @@
   src: url("assets/FSEX300.ttf");
 }
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 #header {
   transform: translate(-8px, -8px);
   width: 100vw;
-  height: 100vh;
+  height: 70vh;
   z-index: 0;
   position: relative;
 }
 #header #flop {
   position: relative;
-  width: calc(max(40vw, 300px) * 0.6);
-  height: calc(max(40vw, 300px) * 0.6);
-  top: calc(105vh - max(40vw, 300px) * 0.6);
-  left: calc(50vw - max(40vw, 300px) * 0.6 / 2);
+  width: calc(max(40vw, 300px) * 0.5);
+  height: calc(max(40vw, 300px) * 0.5);
+  top: calc(70vh - max(40vw, 300px) * 0.5);
+  left: calc(50vw - max(40vw, 300px) * 0.5 / 2);
 }
 
 #lcd {

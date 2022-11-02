@@ -8,7 +8,7 @@
 
 // this might bite me in the back later but eh
 body {
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 // size variables i reference later
@@ -16,21 +16,23 @@ $lcd-width: max(40vw, 300px);
 $lcd-height: calc($lcd-width * 0.4825);
 $unit-width: calc($lcd-width / 114);
 
+$header-height: 70vh;
+
 #header {
     transform: translate(-8px, -8px);
     width: 100vw;
-    height: 100vh;
+    height: $header-height;
     z-index: 0;
     position: relative;
     // animation: scanlines 1s steps($scan-fps) infinite;
 
-    $flop-size: calc($lcd-width * 0.6);
+    $flop-size: calc($lcd-width * 0.5);
 
     #flop {
         position: relative;
         width: $flop-size;
         height: $flop-size;
-        top: calc(105vh - $flop-size);
+        top: calc($header-height - $flop-size);
         left: calc(50vw - $flop-size / 2);
     }
 }
