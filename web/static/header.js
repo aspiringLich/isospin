@@ -1,6 +1,4 @@
 
-
-
 // type title
 let title = document.querySelector("#lcd-matrix h1");
 let transitions = `
@@ -107,11 +105,10 @@ window.onscroll = function () {
     let scroll = getScrollTop();
 
     // header stuff, disable if scrolled too far down
-    if (scroll < viewportToPixels("100vh") + 10) {
+    if (scroll < viewportToPixels("80vw")) {
         $("#header").css("transform", `translateY(${scroll * 0.6}px)`);
         $("#lcd").css("margin-top", `calc(-${scroll * 0.1}px)`);
         $("#flop").css("transform", `translateY(-${scroll * 0.4}px)`);
-
         // randomly scroll each of the post it notes
     }
 

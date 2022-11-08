@@ -16,7 +16,7 @@ pub const POST_IT_IMGS_DIR: &str = "./web/static/assets/post-it-imgs";
 
 // the directory that contains the images that go on the post it notes before they are processed
 #[allow(dead_code)]
-pub const POST_IT_IMGS_IN_DIR: &str = "./src/data/pictures";
+pub const POST_IT_IMGS_IN_DIR: &str = "./src/data/raw_pictures";
 
 // the directory that contains markdown files before they are rendered
 #[allow(dead_code)]

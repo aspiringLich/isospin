@@ -119,6 +119,7 @@ $elements: 5;
 
 $post-it-size: 20vw;
 
+
 // post it notes :D
 #post-it {
     width: calc((100vw - $lcd-width) / 2);
@@ -144,13 +145,16 @@ $post-it-size: 20vw;
     }
 }
 
+$pane-width: 0.75;
+
 // the meat and bones of the websites, or, shockingly, the content
 #content {
     left: 0px;
     // transform: TranslateY(100vh);
     position: absolute;
-    width: 100vw;
-    height: 200vh;
+    left: calc(100vw * (1 - $pane-width) / 2);
+    width: calc(100vw * $pane-width);
+    padding-bottom: 20vh;
     text-align: center;
     // background-color: gray;
 
@@ -172,7 +176,8 @@ $post-it-size: 20vw;
         }
     }
 
-    $item-size: min(512px, 30vw);
+    $item-size: calc(34vw * $pane-width);
+    $desc-size: 1.5;
 
     .flex {
         justify-content: center;
@@ -190,13 +195,13 @@ $post-it-size: 20vw;
         // width: $item-size;
         height: $item-size;
         border-radius: 5px;
-        transition: all 1s;
+        transition: transform 1s, filter 0.4s;
     }
 
     .desc {
         overflow-y: scroll;
         text-align: left;
-        width: calc($item-size * 2);
+        width: calc($item-size * $desc-size);
         margin-left: 8px;
     }
 
@@ -207,8 +212,7 @@ $post-it-size: 20vw;
 
     .active,
     .wrapper {
-        height: $item-size;
-        margin: 20px 20px 20px 20px;
+        margin: 0;
     }
 
     .wrapper {
@@ -219,7 +223,7 @@ $post-it-size: 20vw;
         }
 
         .icon {
-            transform: translateX(100%);
+            transform: translateX(calc(100% * $desc-size / 2));
         }
     }
 
@@ -238,57 +242,20 @@ $post-it-size: 20vw;
 }
 
 
-
-// the cover that goes over the screen when popup window goes up
-#cover {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    visibility: hidden;
-    opacity: 0;
-    background: rgba(0, 0, 0, 0.5);
-    transition: 0.6s;
-
-    .active {
-        visibility: visible;
-        opacity: 1;
-    }
-}
-
-// popup window!
-#popup {
-    position: absolute;
-    width: 440px;
-    left: 50%;
-    top: 50%;
-    margin: -140px 0 0 -220px;
-    visibility: hidden;
-    opacity: 0;
-    z-index: 2;
-    padding: 30px;
-    background: white;
-    box-shadow: 0px 0px 60px rgba(0, 0, 0, 0.3);
-    border-radius: 3px;
-    box-sizing: border-box;
-    transition: 0.6s;
-
-    .active {
-        visibility: visible;
-        opacity: 1;
-    }
-}
-
 #content {
     background-image: linear-gradient(90deg, #7697d4, #4d69aa);
+
+    #tabs {
+        position: absolute;
+        transform: translateY(-10vh);
+        height: 10vh;
+        background: none;
+    }
 }
 
 #grid {
     position: absolute;
     left: 0;
-    top: 0;
     width: 100%;
     height: 100%;
     background-color: transparent;
