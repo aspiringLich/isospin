@@ -1,6 +1,6 @@
 use afire::prelude::*;
 use comrak::{markdown_to_html, ComrakOptions, ComrakRenderOptions};
-use std::{cmp::Ordering, default::default, fs};
+use std::{default::default, fs};
 
 use crate::{config, file::*};
 

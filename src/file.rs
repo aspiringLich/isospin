@@ -1,4 +1,4 @@
-use std::{cmp::Ordering, fs, io::BufRead};
+use std::{cmp::Ordering, fs};
 
 /// will reparse if:
 ///  - theres no parsed file

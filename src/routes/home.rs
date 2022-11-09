@@ -1,9 +1,5 @@
-use std::fs;
-
 use afire::prelude::*;
 use afire::{Content, Response};
-
-use lazy_static::lazy_static;
 
 #[path = "../config.rs"]
 mod config;
