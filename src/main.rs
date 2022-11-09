@@ -1,6 +1,9 @@
+#![feature(default_free_fn)]
+
 use afire::{extension::ServeStatic, prelude::*};
 
 mod config;
+mod file;
 mod routes;
 mod setup;
 #[macro_use]
