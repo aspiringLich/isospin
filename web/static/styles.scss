@@ -1,4 +1,5 @@
 @import "text.css";
+@import "gruvbox-color.css";
 
 // font stuff (noway)
 @font-face {
@@ -6,8 +7,8 @@
     src: url('assets/FSEX300.ttf');
 }
 
-// this might bite me in the back later but eh
 body {
+    // background-color: var(--gb-fg0);
     overflow-x: clip;
 }
 
@@ -147,8 +148,11 @@ $post-it-size: 20vw;
 
 $pane-width: 0.75;
 
+$border-radius: 10px;
+
 // the meat and bones of the websites, or, shockingly, the content
 #content {
+    overflow: visible;
     left: 0px;
     // transform: TranslateY(100vh);
     position: absolute;
@@ -158,22 +162,35 @@ $pane-width: 0.75;
     text-align: center;
     // background-color: gray;
 
-    #construction {
-        border-radius: 5px;
-        width: 80%;
-        min-height: 50px;
-        background: repeating-linear-gradient(45deg,
-                #f3d217,
-                #f3d217 40px,
-                #423707 40px,
-                #423707 80px);
-        transform: translateX(12.5%);
 
-        h1 {
-            font-family: 'Comic Sans MS';
-            color: #e94b0d;
-            font-size: calc($text-size);
-        }
+    #frame {
+        border: 5px solid var(--gb-f-blue);
+
+        border-radius: $border-radius;
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--gb-blue);
+
+        height: 100%;
+    }
+
+    #title {
+        height: 20px;
+        width: 100%;
+
+        // padding-top: calc($title-text * 0.3);
+        // padding-bottom: calc($title-text * 0.3);
+
+        border: 5px solid var(--gb-bg0-h);
+
+        border-top-left-radius: $border-radius;
+        border-top-right-radius: $border-radius;
+        background-color: var(--gb-bg0);
+
+        font-family: 'FixedSys';
+        position: relative;
     }
 
     $item-size: calc(34vw * $pane-width);
@@ -183,13 +200,24 @@ $pane-width: 0.75;
         justify-content: center;
         display: flex;
         flex-direction: column;
+
+        #h {
+            font-size: calc($text-size * 1);
+            margin-top: 0;
+            margin-left: 5px;
+            width: 100%;
+            position: relative;
+            font-family: FixedSys;
+            // background-color: var(--gb-f-blue);
+        }
     }
 
     .desc,
     .icon {
+        margin-top: 10px;
         position: relative;
         display: inline-block;
-        box-shadow: 5px 10px 8px #00000027;
+        box-shadow: 5px 10px 8px #00000062;
         // left: 0;
         position: static;
         // width: $item-size;
@@ -212,7 +240,10 @@ $pane-width: 0.75;
 
     .active,
     .wrapper {
-        margin: 0;
+        width: 100%;
+        margin-left: 5px;
+        margin-right: 5px;
+
     }
 
     .wrapper {
@@ -228,6 +259,7 @@ $pane-width: 0.75;
     }
 
     .active {
+
         .desc {
             visibility: visible;
             transform: scaleX(1);
@@ -248,29 +280,10 @@ $pane-width: 0.75;
         transform: translateY(-10vh);
         height: 10vh;
         background: none;
+
+        div {
+            height: 100%;
+            display: inline;
+        }
     }
-}
-
-#grid {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #7697d4;
-    background-image:
-        linear-gradient(0deg, transparent 9%,
-            rgba(255, 255, 255, .2) 10%, rgba(255, 255, 255, .2) 12%, transparent 13%, transparent 29%,
-            rgba(255, 255, 255, .1) 30%, rgba(255, 255, 255, .1) 31%, transparent 32%, transparent 49%,
-            rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, .1) 51%, transparent 52%, transparent 69%,
-            rgba(255, 255, 255, .1) 70%, rgba(255, 255, 255, .1) 71%, transparent 72%, transparent 89%,
-            rgba(255, 255, 255, .1) 90%, rgba(255, 255, 255, .1) 91%, transparent 92%, transparent),
-        linear-gradient(90deg, transparent 9%,
-            rgba(255, 255, 255, .2) 10%, rgba(255, 255, 255, .2) 12%, transparent 13%, transparent 29%,
-            rgba(255, 255, 255, .1) 30%, rgba(255, 255, 255, .1) 31%, transparent 32%, transparent 49%,
-            rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, .1) 51%, transparent 52%, transparent 69%,
-            rgba(255, 255, 255, .1) 70%, rgba(255, 255, 255, .1) 71%, transparent 72%, transparent 89%,
-            rgba(255, 255, 255, .1) 90%, rgba(255, 255, 255, .1) 91%, transparent 92%, transparent);
-
-    height: 100%;
-    background-size: 50px 50px;
 }

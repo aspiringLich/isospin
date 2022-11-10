@@ -1,4 +1,5 @@
 @import "text.css";
+@import "gruvbox-color.css";
 @font-face {
   font-family: "FixedSys";
   src: url("assets/FSEX300.ttf");
@@ -140,6 +141,7 @@ p:nth-child(5) {
 }
 
 #content {
+  overflow: visible;
   left: 0px;
   position: absolute;
   left: 12.5vw;
@@ -147,28 +149,45 @@ p:nth-child(5) {
   padding-bottom: 20vh;
   text-align: center;
 }
-#content #construction {
-  border-radius: 5px;
-  width: 80%;
-  min-height: 50px;
-  background: repeating-linear-gradient(45deg, #f3d217, #f3d217 40px, #423707 40px, #423707 80px);
-  transform: translateX(12.5%);
+#content #frame {
+  border: 5px solid var(--gb-f-blue);
+  border-radius: 10px;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--gb-blue);
+  height: 100%;
 }
-#content #construction h1 {
-  font-family: "Comic Sans MS";
-  color: #e94b0d;
-  font-size: calc(max(40vw, 300px) * 0.0875);
+#content #title {
+  height: 20px;
+  width: 100%;
+  border: 5px solid var(--gb-bg0-h);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: var(--gb-bg0);
+  font-family: "FixedSys";
+  position: relative;
 }
 #content .flex {
   justify-content: center;
   display: flex;
   flex-direction: column;
 }
+#content .flex #h {
+  font-size: calc(max(40vw, 300px) * 0.0875 * 1);
+  margin-top: 0;
+  margin-left: 5px;
+  width: 100%;
+  position: relative;
+  font-family: FixedSys;
+}
 #content .desc,
 #content .icon {
+  margin-top: 10px;
   position: relative;
   display: inline-block;
-  box-shadow: 5px 10px 8px rgba(0, 0, 0, 0.1529411765);
+  box-shadow: 5px 10px 8px rgba(0, 0, 0, 0.3843137255);
   position: static;
   height: 25.5vw;
   border-radius: 5px;
@@ -185,7 +204,9 @@ p:nth-child(5) {
 }
 #content .active,
 #content .wrapper {
-  margin: 0;
+  width: 100%;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 #content .wrapper .desc {
   visibility: hidden;
@@ -209,14 +230,7 @@ p:nth-child(5) {
   height: 10vh;
   background: none;
 }
-
-#grid {
-  position: absolute;
-  left: 0;
-  width: 100%;
+#content #tabs div {
   height: 100%;
-  background-color: #7697d4;
-  background-image: linear-gradient(0deg, transparent 9%, rgba(255, 255, 255, 0.2) 10%, rgba(255, 255, 255, 0.2) 12%, transparent 13%, transparent 29%, rgba(255, 255, 255, 0.1) 30%, rgba(255, 255, 255, 0.1) 31%, transparent 32%, transparent 49%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.1) 51%, transparent 52%, transparent 69%, rgba(255, 255, 255, 0.1) 70%, rgba(255, 255, 255, 0.1) 71%, transparent 72%, transparent 89%, rgba(255, 255, 255, 0.1) 90%, rgba(255, 255, 255, 0.1) 91%, transparent 92%, transparent), linear-gradient(90deg, transparent 9%, rgba(255, 255, 255, 0.2) 10%, rgba(255, 255, 255, 0.2) 12%, transparent 13%, transparent 29%, rgba(255, 255, 255, 0.1) 30%, rgba(255, 255, 255, 0.1) 31%, transparent 32%, transparent 49%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.1) 51%, transparent 52%, transparent 69%, rgba(255, 255, 255, 0.1) 70%, rgba(255, 255, 255, 0.1) 71%, transparent 72%, transparent 89%, rgba(255, 255, 255, 0.1) 90%, rgba(255, 255, 255, 0.1) 91%, transparent 92%, transparent);
-  height: 100%;
-  background-size: 50px 50px;
+  display: inline;
 }/*# sourceMappingURL=styles.css.map */
