@@ -18,6 +18,9 @@ pub fn need_rebuild(path_orig: &str, path_parsed: &str) -> bool {
         // if the md has been modified more recently than the html we need to rebuild anyway
         mod_parsed.cmp(&mod_orig) == Ordering::Less
     } else {
+        if mod_parsed.is_none() {
+            eprintln!("bababooey: {}", path_parsed);
+        }
         mod_parsed.is_none()
     }
 }

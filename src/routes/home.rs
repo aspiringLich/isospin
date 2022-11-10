@@ -27,9 +27,12 @@ pub fn attach(server: &mut Server) {
     // home screen
     server.route(Method::GET, "/home", |_req| {
         // do we need a rebuild anyway because of the markdown files?
-        let rebuild = config::PROJECTS
-            .iter()
-            .any(|name| need_rebuild(&format!("/{}.md", name), &format!("/{}.html", name)));
+        let rebuild = config::PROJECTS.iter().any(|name| {
+            need_rebuild(
+                &format!("{}/{}.md", config::MARKDOWN_IN_DIR, name),
+                &format!("{}/{}.html", config::PROJECTS_DIR, name),
+            )
+        });
 
         let template = header::generate_header();
         let content = if rebuild {
