@@ -180,13 +180,11 @@ $border-radius: 10px;
     overflow: visible;
     left: 0px;
     // transform: TranslateY(100vh);
-    position: absolute;
+    position: relative;
     left: calc(100vw * (1 - $pane-width) / 2);
     width: calc(100vw * $pane-width);
-    padding-bottom: 20vh;
     text-align: center;
     // background-color: gray;
-
 
     #frame {
         border: 5px solid var(--gb-f-blue);
@@ -241,7 +239,7 @@ $border-radius: 10px;
         margin-top: 10px;
         position: relative;
         display: inline-block;
-        box-shadow: 5px 10px 8px #00000062;
+        box-shadow: 10px 10px 10px #0000002c;
         // left: 0;
         position: static;
         // width: $item-size;
@@ -301,14 +299,49 @@ $border-radius: 10px;
     z-index: 9001;
 
     position: fixed;
-    height: 8vh;
+    font-size: 4vh;
+    height: calc(1em + 10px);
     width: 100vw;
     left: 0;
     top: 0;
     border-bottom: 5px solid var(--gb-bg0-h);
-
-    text-align: center;
-    color: var(--gb-fg0);
-    font-size: x-large;
     background-color: var(--gb-bg0);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    #tab {
+        height: 100%;
+
+        transition: 0.6s;
+
+        text-align: center;
+        font-size: xx-large;
+    }
+}
+
+// info about each tab, width, color, etc
+$tab-info: (
+    // home
+    (8vw, var(--gb-blue), var(--gb-f-blue)),
+    // blog
+    (8vw, var(--gb-green), var(--gb-f-green)),
+);
+
+@for $i from 1 through length($tab-info) {
+    $info: nth($tab-info, $i);
+    $width: nth($info, 1);
+    $color: nth($info, 2);
+    $hover-color: nth($info, 3);
+
+    #tab:nth-child(#{$i}) {
+        color: $color;
+        width: $width;
+    }
+
+    #tab:nth-child(#{$i}):hover {
+        background-color: $hover-color;
+    }
 }

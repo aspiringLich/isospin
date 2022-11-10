@@ -157,10 +157,9 @@ p:nth-child(5) {
 #content {
   overflow: visible;
   left: 0px;
-  position: absolute;
+  position: relative;
   left: 12.5vw;
   width: 75vw;
-  padding-bottom: 20vh;
   text-align: center;
 }
 #content #frame {
@@ -200,7 +199,7 @@ p:nth-child(5) {
   margin-top: 10px;
   position: relative;
   display: inline-block;
-  box-shadow: 5px 10px 8px rgba(0, 0, 0, 0.3843137255);
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1725490196);
   position: static;
   height: 25.5vw;
   border-radius: 5px;
@@ -240,13 +239,39 @@ p:nth-child(5) {
 #tabs {
   z-index: 9001;
   position: fixed;
-  height: 8vh;
+  font-size: 4vh;
+  height: calc(1em + 10px);
   width: 100vw;
   left: 0;
   top: 0;
   border-bottom: 5px solid var(--gb-bg0-h);
-  text-align: center;
-  color: var(--gb-fg0);
-  font-size: x-large;
   background-color: var(--gb-bg0);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+#tabs #tab {
+  height: 100%;
+  transition: 0.6s;
+  text-align: center;
+  font-size: xx-large;
+}
+
+#tab:nth-child(1) {
+  color: var(--gb-blue);
+  width: 8vw;
+}
+
+#tab:nth-child(1):hover {
+  background-color: var(--gb-f-blue);
+}
+
+#tab:nth-child(2) {
+  color: var(--gb-green);
+  width: 8vw;
+}
+
+#tab:nth-child(2):hover {
+  background-color: var(--gb-f-green);
 }/*# sourceMappingURL=styles.css.map */
