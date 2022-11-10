@@ -22,18 +22,20 @@ pub fn template_needs_rebuild(path: &str) -> bool {
 
 pub fn get_template(path: &str, build_fn: fn(String) -> String) -> String {
     if template_needs_rebuild(&path) {
-        // dbg!(&format!("{}{}", config::TEMPLATE_DIR, path));
-        let out = build_fn(
-            fs::read_to_string(&format!("{}{}", config::TEMPLATE_DIR, path))
-                .expect("html file should exist"),
-        );
-
-        fs::write(&format!("{}{}", config::BAKED_TEMPLATE_DIR, path), &out)
-            .expect("write successful");
-        out
+        rebuild_html_template(path, build_fn)
     } else {
         // dbg!("bababooey");
         fs::read_to_string(&format!("{}{}", config::BAKED_TEMPLATE_DIR, path))
             .expect("html file should exist")
     }
+}
+
+pub fn rebuild_html_template(path: &str, build_fn: fn(String) -> String) -> String {
+    let out = build_fn(
+        fs::read_to_string(&format!("{}{}", config::TEMPLATE_DIR, path))
+            .expect("html file should exist"),
+    );
+
+    fs::write(&format!("{}{}", config::BAKED_TEMPLATE_DIR, path), &out).expect("write successful");
+    out
 }
