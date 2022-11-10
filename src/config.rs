@@ -28,6 +28,8 @@ pub const POST_IT_IMGS_DIR: &str = "./web/static/assets/post-it-imgs";
 #[allow(dead_code)]
 pub const POST_IT_IMGS_IN_DIR: &str = "./src/data/raw_pictures";
 
+// * /home related stuff
+
 /// the directory that contains markdown files for the project descriptions before they are rendered
 /// (.md)
 #[allow(dead_code)]
@@ -41,3 +43,9 @@ pub const PROJECTS_DIR: &str = "./web/static/projects";
 /// the list of projects that i want to generate icon / descriptions for
 #[allow(dead_code)]
 pub const PROJECTS: [&str; 1] = ["isospin"];
+
+// * /blog related stuff
+
+/// the directory that contains the writing for da blog
+#[allow(dead_code)]
+pub const ARTICLE_DIR: &str = "./isospin_media/articles";

@@ -9,6 +9,8 @@ use super::html::{get_template, rebuild_html_template};
 use super::md;
 
 fn build_blog(template: String) -> String {
+    let mut blog = "";
+
     template
 }
 
