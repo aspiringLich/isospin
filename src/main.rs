@@ -2,7 +2,16 @@
 
 use afire::{extension::ServeStatic, prelude::*};
 use chrono::Utc;
-use std::time;
+use std::io::{stdout, Write};
+
+use crossterm::{
+    event, execute,
+    style::{
+        Color, Print, PrintStyledContent, ResetColor, SetBackgroundColor, SetForegroundColor,
+        Stylize,
+    },
+    ExecutableCommand, Result,
+};
 
 mod config;
 mod file;
@@ -11,7 +20,7 @@ mod setup;
 #[macro_use]
 mod sh;
 
-fn main() -> Result<(), &'static str> {
+fn main() -> Result<()> {
     // let args = std::env::args().skip(1).collect::<Vec<_>>();
 
     // do this in another thing
@@ -29,13 +38,15 @@ fn main() -> Result<(), &'static str> {
             Some((res.header("X-Static-Serve", "true"), suc))
         })
         .not_found(|req, _dis| -> Response {
-            eprintln!(
-                "[{}] {} <-x- {}",
-                Utc::now().date_naive(),
-                req.address,
-                req.path
-            );
-            let cls = || -> Result<Response, &str> {
+            execute!(
+                stdout(),
+                PrintStyledContent(format!("[{}] ", Utc::now().time().format("%H:%M:%S")).green()),
+                PrintStyledContent("failed to serve static to\t".blue()),
+                PrintStyledContent(format!("{}\t", req.address).green()),
+                PrintStyledContent(format!("{}\n", req.path).yellow()),
+            )
+            .unwrap();
+            let cls = || -> Result<Response> {
                 let res = Response::new()
                     .status(404)
                     .text("Pretend theres a good 404 screen here thanks");
