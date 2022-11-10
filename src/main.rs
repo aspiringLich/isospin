@@ -1,6 +1,8 @@
 #![feature(default_free_fn)]
 
 use afire::{extension::ServeStatic, prelude::*};
+use chrono::Utc;
+use std::time;
 
 mod config;
 mod file;
@@ -27,7 +29,12 @@ fn main() -> Result<(), &'static str> {
             Some((res.header("X-Static-Serve", "true"), suc))
         })
         .not_found(|req, _dis| -> Response {
-            eprintln!("failed to serve file: {}", req.path);
+            eprintln!(
+                "[{}] {} <-x- {}",
+                Utc::now().date_naive(),
+                req.address,
+                req.path
+            );
             let cls = || -> Result<Response, &str> {
                 let res = Response::new()
                     .status(404)
