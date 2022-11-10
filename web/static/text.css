@@ -34,7 +34,12 @@
     -webkit-border-radius: 100px;
 }
 
-.desc {
+.desc #title-bar {
+    width: calc(100% - 10px) !important;
+}
+
+.markdown-body {
+    overflow-y: scroll;
     scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.09);
     scrollbar-width: thin;
 }

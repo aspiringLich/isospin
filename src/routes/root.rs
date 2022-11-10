@@ -2,6 +2,8 @@ use std::default::default;
 
 use afire::prelude::*;
 
+use crate::file::PathMethods;
+
 use super::html;
 use super::md;
 

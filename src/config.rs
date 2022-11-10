@@ -36,7 +36,7 @@ pub const MARKDOWN_IN_DIR: &str = "./src/data/markdown";
 /// the directory that contains the files pertianing to the home page display of projects
 /// (.html, .png)
 #[allow(dead_code)]
-pub const PROJECTS_DIR: &str = "./web/static/assets/projects";
+pub const PROJECTS_DIR: &str = "./web/static/projects";
 
 /// the list of projects that i want to generate icon / descriptions for
 #[allow(dead_code)]

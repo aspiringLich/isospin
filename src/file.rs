@@ -18,9 +18,9 @@ pub fn need_rebuild(path_orig: &str, path_parsed: &str) -> bool {
         // if the md has been modified more recently than the html we need to rebuild anyway
         mod_parsed.cmp(&mod_orig) == Ordering::Less
     } else {
-        if mod_parsed.is_none() {
-            eprintln!("bababooey: {}", path_parsed);
-        }
+        // if mod_parsed.is_none() {
+        //     eprintln!("bababooey: {}", path_parsed);
+        // }
         mod_parsed.is_none()
     }
 }
@@ -31,7 +31,18 @@ pub trait PathMethods {
     /// Strip the path off a string like "xxxx.ft" -> "xxxx"
     /// TODO: make it not bad (like ignore .gitignore n shiz)
     fn strip_filetype(&self) -> String {
+        assert!(self.get().chars().nth(0) != Some('.'));
         self.get().split_once(".").unwrap().0.to_string()
+    }
+
+    /// get the top folder of a path like "/template/djaiksj.html" -> "template"
+    fn strip_top_folder(&self) -> String {
+        assert!(self.get().chars().nth(0) == Some('/'));
+        self.get()
+            .chars()
+            .skip(1)
+            .take_while(|&ch| ch != '/')
+            .collect()
     }
 }
 

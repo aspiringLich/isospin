@@ -172,7 +172,7 @@ $post-it-size: 20vw;
     }
 }
 
-$pane-width: 0.75;
+$pane-width: 0.85;
 $border-radius: 10px;
 
 // the meat and bones of the websites, or, shockingly, the content
@@ -187,37 +187,50 @@ $border-radius: 10px;
     // background-color: gray;
 
     #frame {
-        border: 5px solid var(--gb-f-blue);
+        &.blue {
+            border: 5px solid var(--gb-f-blue);
+            background-color: var(--gb-blue);
+        }
+
+        &.green {
+            border: 5px solid var(--gb-f-green);
+            background-color: var(--gb-green);
+        }
 
         border-radius: $border-radius;
         position: absolute;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: var(--gb-blue);
 
         height: 100%;
     }
 
-    #title {
+    #title-bar {
         height: 20px;
         width: 100%;
-
-        // padding-top: calc($title-text * 0.3);
-        // padding-bottom: calc($title-text * 0.3);
+        position: relative;
 
         border: 5px solid var(--gb-bg0-h);
+        background-color: var(--gb-bg0);
 
         border-top-left-radius: $border-radius;
         border-top-right-radius: $border-radius;
-        background-color: var(--gb-bg0);
 
+        text-align: center;
         font-family: 'FixedSys';
-        position: relative;
+
+        #window-button {
+            width: 60px;
+            height: 20px;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
     }
 
-    $item-size: calc(34vw * $pane-width);
-    $desc-size: 1.5;
+    $item-size: calc(25vw * $pane-width);
+    $desc-size: 2.8;
 
     .flex {
         justify-content: center;
@@ -244,23 +257,27 @@ $border-radius: 10px;
         position: static;
         // width: $item-size;
         height: $item-size;
-        border-radius: 5px;
-        transition: transform 1s, filter 0.4s;
+        transition: transform 1.5s, filter 0.4s;
     }
 
     .desc {
-        overflow-y: scroll;
         text-align: left;
         width: calc($item-size * $desc-size);
         margin-left: 8px;
+
+        .markdown-body {
+            height: calc($item-size - 30px - 32px);
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
     }
 
     .icon {
         // margin-right: 0px;
+        border-radius: 10px;
         width: $item-size;
     }
 
-    .active,
     .wrapper {
         width: 100%;
         margin-left: 5px;
@@ -294,13 +311,16 @@ $border-radius: 10px;
     }
 }
 
+$navbar-height: calc(1.2em);
 
 #tabs {
     z-index: 9001;
 
     position: fixed;
     font-size: 4vh;
-    height: calc(1em + 10px);
+
+    height: $navbar-height;
+
     width: 100vw;
     left: 0;
     top: 0;
@@ -313,25 +333,31 @@ $border-radius: 10px;
     justify-content: center;
 
     #tab {
+        display: inline-block;
+
+        height: calc($navbar-height + 5px);
         height: 100%;
 
-        transition: 0.6s;
+        transition: 0.3s;
 
         text-align: center;
         font-size: xx-large;
+    }
+
+    img {
+        height: $navbar-height;
     }
 }
 
 // info about each tab, width, color, etc
 $tab-info: (
-    // home
-    (8vw, var(--gb-blue), var(--gb-f-blue)),
-    // blog
-    (8vw, var(--gb-green), var(--gb-f-green)),
+    "home": (8vw, var(--gb-blue), var(--gb-f-blue)),
+    "blog": (8vw, var(--gb-green), var(--gb-f-green)),
+    "source": ($navbar-height, transparent, var(--gb-fg0))
 );
 
 @for $i from 1 through length($tab-info) {
-    $info: nth($tab-info, $i);
+    $info: nth(nth($tab-info, $i), 2);
     $width: nth($info, 1);
     $color: nth($info, 2);
     $hover-color: nth($info, 3);

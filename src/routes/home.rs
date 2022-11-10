@@ -8,13 +8,27 @@ mod header;
 use super::html::{get_template, rebuild_html_template};
 use super::md;
 
+fn title_bar(name: &str) -> String {
+    format!("
+<div id=\"title-bar\">
+    <i>
+        <span style=\"color:var(--gb-blue)\">#desc</span><span style=\"color:var(--gb-green)\"> - </span><span style=\"color:var(--gb-yellow)\">web</span><span
+        style=\"color:var(--gb-green)\">/</span><span style=\"color:var(--gb-yellow)\">static</span><span style=\"color:var(--gb-green)\">/</span><span
+        style=\"color:var(--gb-yellow)\">projects</span><span style=\"color:var(--gb-green)\">/</span><span
+        style=\"color:var(--gb-yellow)\">{}</span><span style=\"color:var(--gb-red)\">.md</span>
+    </i>
+</div>
+", name)
+}
+
 fn build_home(template: String) -> String {
     let mut projects = "".to_string();
 
     for name in config::PROJECTS {
         projects += &format!(
-            "<div class=\"wrapper\"><img class=\"icon\"src=\"assets/projects/{}.png\"><div class=\"desc\">{}</div></div>",
+            "<div class=\"wrapper\"><img class=\"icon\"src=\"projects/{}.png\"><div class=\"desc\">{}{}</div></div>",
             name,
+            title_bar(name),
             md::get_file(format!("/{}.md", name)).unwrap(),
         );
     }

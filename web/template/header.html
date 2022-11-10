@@ -7,17 +7,19 @@
     <script defer src="index.js"></script>
 </head>
 
-<body>
+<body style="background-color: rgb(118, 151, 212)">
     <div id="grid"></div>
     <div id="tabs">
-        <div id="tab">home</div>
-        <div id="tab">blog</div>
+        <a id="tab" href="/home">home</a>
+        <a id="tab" href="/blog">blog</a>
+        <a id="tab" target="_blank" rel="noopener noreferrer" href="https://github.com/aspiringLich/isospin"><img
+                src="assets/github.png"></a>
     </div>
     <div id="header">
         <div id="post-it">{{POST-IT-L}}</div>
         <div id="post-it">{{POST-IT-R}}</div>
         <div id="lcd" class="center-horizontal">
-            <object type="image/svg+xml" data="assets/lcd_dot_matrix.svg"></object>
+            <img src="assets/lcd_dot_matrix.svg" />
             <div id="lcd-matrix" class="center">
                 <p></p>
                 <p></p>
@@ -31,3 +33,4 @@
     </div>
     {{CONTENT}}
 </body>
+<div style="height: 20vh"></div>

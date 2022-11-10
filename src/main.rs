@@ -59,6 +59,8 @@ fn main() -> Result<()> {
     routes::attach(&mut server);
 
     // server start
-    server.start_threaded(4).unwrap();
+    server
+        .start_threaded(std::thread::available_parallelism().unwrap().get())
+        .unwrap();
     Ok(())
 }
