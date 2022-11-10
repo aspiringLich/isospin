@@ -41,7 +41,7 @@ fn reparse_and_get_html(path: String) -> String {
     // dbg!(&path_html);
     let path_html = path.strip_filetype() + ".html";
     let path_html = format!("{}{}", &*config::PROJECTS_DIR, path_html);
-    let path_md = format!("{}{}", &*config::MARKDOWN_IN_DIR, path);
+    let path_md = format!("{}{}", &*config::PROJ_DESC_DIR, path);
 
     if need_rebuild(&path_md, &path_html) {
         // ok so read and parse the md file

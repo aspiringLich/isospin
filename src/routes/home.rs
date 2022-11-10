@@ -43,7 +43,7 @@ pub fn attach(server: &mut Server) {
         // do we need a rebuild anyway because of the markdown files?
         let rebuild = config::PROJECTS.iter().any(|name| {
             need_rebuild(
-                &format!("{}/{}.md", config::MARKDOWN_IN_DIR, name),
+                &format!("{}/{}.md", config::PROJ_DESC_DIR, name),
                 &format!("{}/{}.html", config::PROJECTS_DIR, name),
             )
         });

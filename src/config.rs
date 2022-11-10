@@ -28,10 +28,10 @@ pub const POST_IT_IMGS_DIR: &str = "./web/static/assets/post-it-imgs";
 #[allow(dead_code)]
 pub const POST_IT_IMGS_IN_DIR: &str = "./src/data/raw_pictures";
 
-/// the directory that contains markdown files before they are rendered
+/// the directory that contains markdown files for the project descriptions before they are rendered
 /// (.md)
 #[allow(dead_code)]
-pub const MARKDOWN_IN_DIR: &str = "./src/data/markdown";
+pub const PROJ_DESC_DIR: &str = "./src/data/proj_desc";
 
 /// the directory that contains the files pertianing to the home page display of projects
 /// (.html, .png)
