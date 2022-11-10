@@ -4,7 +4,7 @@
 
 Hello, yes this is in fact the website you are looking at currently. This took forever to make so yes it *does* deserve a spot on the projects page . 
 
-If I learned anything from this endeavour, its that I don't want to become a front end web developer. This was kinda fun but god; Designing anything, for me at least, takes forever and it's frustrating and annoying because I can't do it for 6 hours straight without getting diminishing returns. Not a good way to waste your 3 day weekend me, because you just waste half of it trying random stuff that doesn't work.
+Making a website was a fun endevour, not exactly my cup of tea though; I'm not a designer. I've probably implemented so many of these things super strangely because I'm a lot more comfortable with algorithms and stuff than with web dev n shiz, and this took absolutely *f o r e v e r*. Overall though, I'm really happy with how it's turned out.
 
 Anyway I did quite enjoy learning how to setup the backend, using a friend's web server [(afire)](https://github.com/Basicprogrammer10/afire). It is the only web server framework thingy I have ever used, but idk seems pretty good. Go check it out and ignore the spelling mistakes :sweat_smile:. 
 
