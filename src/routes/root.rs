@@ -1,3 +1,5 @@
+use std::default::default;
+
 use afire::prelude::*;
 
 use super::html;
@@ -8,19 +10,13 @@ pub struct Root;
 impl Middleware for Root {
     fn pre(&self, req: &error::Result<Request>) -> MiddleRequest {
         // filter out all the requests were not interested in
-        let mut req = match req {
+        let req = match req {
             Ok(r) => r,
             Err(_) => return MiddleRequest::Continue,
         }
         .clone();
         if req.method != Method::GET {
             return MiddleRequest::Continue;
-        }
-
-        // just the root path, "redirect" to home
-        if req.path == "/" {
-            req.path = "/home".to_string();
-            return MiddleRequest::Add(req);
         }
 
         let file_type = req.path.split(".").last().unwrap_or("");
@@ -37,4 +33,12 @@ impl Middleware for Root {
 
         MiddleRequest::Continue
     }
+}
+
+pub fn attach(server: &mut Server) {
+    server.route(Method::GET, "/", |_req| Response {
+        status: 301,
+        headers: vec![Header::from_string("Location: /home").unwrap()],
+        ..default()
+    });
 }

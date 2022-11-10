@@ -33,10 +33,10 @@ pub const POST_IT_IMGS_IN_DIR: &str = "./src/data/raw_pictures";
 #[allow(dead_code)]
 pub const MARKDOWN_IN_DIR: &str = "./src/data/markdown";
 
-/// the directory that contains markdown files after they are rendered
-/// (.html)
+/// the directory that contains the files pertianing to the home page display of projects
+/// (.html, .png)
 #[allow(dead_code)]
-pub const MARKDOWN_OUT_DIR: &str = "./web/static/assets/parsed_markdown";
+pub const PROJECTS_DIR: &str = "./web/static/assets/projects";
 
 /// the list of projects that i want to generate icon / descriptions for
 #[allow(dead_code)]

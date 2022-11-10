@@ -13,7 +13,7 @@ fn build_home(template: String) -> String {
 
     for name in config::PROJECTS {
         projects += &format!(
-            "<div class=\"wrapper\"><img class=\"icon\"src=\"assets/{}.png\"><div class=\"desc\">{}</div></div>",
+            "<div class=\"wrapper\"><img class=\"icon\"src=\"assets/projects/{}.png\"><div class=\"desc\">{}</div></div>",
             name,
             md::get_file(format!("/{}.md", name)).unwrap(),
         );

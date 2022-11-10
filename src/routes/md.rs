@@ -40,7 +40,7 @@ fn reparse_and_get_html(path: String) -> String {
     // get the full paths
     // dbg!(&path_html);
     let path_html = path.strip_filetype() + ".html";
-    let path_html = format!("{}{}", &*config::MARKDOWN_OUT_DIR, path_html);
+    let path_html = format!("{}{}", &*config::PROJECTS_DIR, path_html);
 
     let path_md = format!("{}{}", &*config::MARKDOWN_IN_DIR, path);
 
