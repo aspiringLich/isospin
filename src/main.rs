@@ -1,17 +1,13 @@
 #![feature(default_free_fn)]
 
 use afire::{extension::ServeStatic, prelude::*};
+use anyhow::Result;
 use chrono::Utc;
-use std::io::{stdout, Write};
-
 use crossterm::{
-    event, execute,
-    style::{
-        Color, Print, PrintStyledContent, ResetColor, SetBackgroundColor, SetForegroundColor,
-        Stylize,
-    },
-    ExecutableCommand, Result,
+    execute,
+    style::{PrintStyledContent, Stylize},
 };
+use std::io::stdout;
 
 mod config;
 mod file;
