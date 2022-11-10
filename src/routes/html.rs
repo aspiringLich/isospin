@@ -33,7 +33,7 @@ pub fn get_template(path: &str, build_fn: fn(String) -> String) -> String {
 pub fn rebuild_html_template(path: &str, build_fn: fn(String) -> String) -> String {
     let out = build_fn(
         fs::read_to_string(&format!("{}{}", config::TEMPLATE_DIR, path))
-            .expect("html file should exist"),
+            .expect("html file and ./web/template/baked/ should exist"),
     );
 
     fs::write(&format!("{}{}", config::BAKED_TEMPLATE_DIR, path), &out).expect("write successful");

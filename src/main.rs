@@ -45,7 +45,7 @@ fn main() -> Result<()> {
             let cls = || -> Result<Response> {
                 let res = Response::new()
                     .status(404)
-                    .text("Pretend theres a good 404 screen here thanks");
+                    .text("Pretend theres a good 404 screen here thanks\n\nbut yeah you're not supposed to see this. go back maybe?");
                 Ok(res)
             };
             match cls() {

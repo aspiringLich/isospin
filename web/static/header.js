@@ -82,38 +82,43 @@ function viewportToPixels(value) {
 // also thank you stack overflow
 var tolerance = 40;
 function isScrolledIntoView(elem) {
-    var docViewTop = $(window).scrollTop();
-    var docViewBottom = docViewTop + $(window).height();
+    var docViewTop = window.document.documentElement.scrollTop;
+    var docViewBottom = docViewTop + window.innerHeight;
 
-    var elemTop = $(elem).offset().top;
-    var elemBottom = elemTop + $(elem).height();
+    var elemTop = elem.getBoundingClientRect().top;
+    var elemBottom = elem.getBoundingClientRect().bottom;
+
+    // console.log(docViewBottom);
+    // console.log(elemTop);
 
     return (0.5 * (elemBottom + elemTop) <= docViewBottom);
 };
 
-
-let popup = false;
-
 let scrolln = 0;
 let elem = document.querySelectorAll(".wrapper");
 
-$("#header").css("transform", `translateY(0px)`);
-$("#lcd").css("margin-top", `calc(0px)`);
-$("#flop").css("transform", `translateY(0px)`);
+function setAttr(selector, attribute) {
+    document.querySelectorAll(selector).forEach((x) => {
+        x.setAttribute("style", attribute)
+    });
+}
+
+setAttr("#header", "transform: translateY(0px)");
+setAttr("#lcd", "margin-top: calc(0px)");
+setAttr("#flop", "transform: translateY(0px)");
 
 window.onscroll = function () {
     let scroll = getScrollTop();
 
     // header stuff, disable if scrolled too far down
     if (scroll < viewportToPixels("80vw")) {
-        $("#header").css("transform", `translateY(${scroll * 0.6}px)`);
-        $("#lcd").css("margin-top", `calc(-${scroll * 0.1}px)`);
-        $("#flop").css("transform", `translateY(-${scroll * 0.4}px)`);
+        setAttr("#header", `transform: translateY(${scroll * 0.6}px)`);
+        setAttr("#lcd", `margin-top: calc(-${scroll * 0.1}px)`);
+        setAttr("#flop", `transform: translateY(-${scroll * 0.4}px)`);
         // randomly scroll each of the post it notes
     }
 
-    // popup window, dont bother if theres no popup window
-    if (popup) $("#popup").css("transform", `translateY(-${scroll}px)`);
+    setAttr("#grid", `background-position-y: -${scroll * 0.1}px`);
 
     // if were still not scrolled past the final element
     if (scrolln < elem.length) {

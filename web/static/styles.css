@@ -5,27 +5,41 @@
   src: url("assets/FSEX300.ttf");
 }
 body {
+  margin: 0;
+  font-family: FixedSys;
   overflow-x: clip;
 }
 
+#grid {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background-color: #7697d4;
+  background-image: linear-gradient(0deg, transparent 9%, rgba(255, 255, 255, 0.2) 10%, rgba(255, 255, 255, 0.2) 12%, transparent 13%, transparent 29%, rgba(255, 255, 255, 0.1) 30%, rgba(255, 255, 255, 0.1) 31%, transparent 32%, transparent 49%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.1) 51%, transparent 52%, transparent 69%, rgba(255, 255, 255, 0.1) 70%, rgba(255, 255, 255, 0.1) 71%, transparent 72%, transparent 89%, rgba(255, 255, 255, 0.1) 90%, rgba(255, 255, 255, 0.1) 91%, transparent 92%, transparent), linear-gradient(90deg, transparent 9%, rgba(255, 255, 255, 0.2) 10%, rgba(255, 255, 255, 0.2) 12%, transparent 13%, transparent 29%, rgba(255, 255, 255, 0.1) 30%, rgba(255, 255, 255, 0.1) 31%, transparent 32%, transparent 49%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.1) 51%, transparent 52%, transparent 69%, rgba(255, 255, 255, 0.1) 70%, rgba(255, 255, 255, 0.1) 71%, transparent 72%, transparent 89%, rgba(255, 255, 255, 0.1) 90%, rgba(255, 255, 255, 0.1) 91%, transparent 92%, transparent);
+  height: 100%;
+  background-size: 50px 50px;
+}
+
 #header {
+  top: 8vh;
   transform: translate(-8px, -8px);
   width: 100vw;
-  height: 70vh;
+  height: 65vh;
   z-index: 0;
   position: relative;
 }
 #header #flop {
   position: relative;
-  width: calc(max(40vw, 300px) * 0.5);
-  height: calc(max(40vw, 300px) * 0.5);
-  top: calc(70vh - max(40vw, 300px) * 0.5);
-  left: calc(50vw - max(40vw, 300px) * 0.5 / 2);
+  width: calc(max(40vw, 300px) * 0.3);
+  height: calc(max(40vw, 300px) * 0.3);
+  top: calc(65vh - max(40vw, 300px) * 0.3 + 10px - 8vh);
+  left: calc(50vw - max(40vw, 300px) * 0.3 / 2);
 }
 
 #lcd {
+  top: 50px;
   z-index: 0;
-  top: 10px;
   width: max(40vw, 300px);
   height: calc(max(40vw, 300px) * 0.4825);
 }
@@ -180,7 +194,6 @@ p:nth-child(5) {
   margin-left: 5px;
   width: 100%;
   position: relative;
-  font-family: FixedSys;
 }
 #content .desc,
 #content .icon {
@@ -224,13 +237,16 @@ p:nth-child(5) {
   transform: translateX(0%);
 }
 
-#content #tabs {
-  position: absolute;
-  transform: translateY(-10vh);
-  height: 10vh;
-  background: none;
-}
-#content #tabs div {
-  height: 100%;
-  display: inline;
+#tabs {
+  z-index: 9001;
+  position: fixed;
+  height: 8vh;
+  width: 100vw;
+  left: 0;
+  top: 0;
+  border-bottom: 5px solid var(--gb-bg0-h);
+  text-align: center;
+  color: var(--gb-fg0);
+  font-size: x-large;
+  background-color: var(--gb-bg0);
 }/*# sourceMappingURL=styles.css.map */

@@ -8,8 +8,33 @@
 }
 
 body {
-    // background-color: var(--gb-fg0);
+    margin: 0;
+    font-family: FixedSys;
     overflow-x: clip;
+}
+
+// stole from somewhere i forget
+#grid {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    background-color: #7697d4;
+    background-image:
+        linear-gradient(0deg, transparent 9%,
+            rgba(255, 255, 255, .2) 10%, rgba(255, 255, 255, .2) 12%, transparent 13%, transparent 29%,
+            rgba(255, 255, 255, .1) 30%, rgba(255, 255, 255, .1) 31%, transparent 32%, transparent 49%,
+            rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, .1) 51%, transparent 52%, transparent 69%,
+            rgba(255, 255, 255, .1) 70%, rgba(255, 255, 255, .1) 71%, transparent 72%, transparent 89%,
+            rgba(255, 255, 255, .1) 90%, rgba(255, 255, 255, .1) 91%, transparent 92%, transparent),
+        linear-gradient(90deg, transparent 9%,
+            rgba(255, 255, 255, .2) 10%, rgba(255, 255, 255, .2) 12%, transparent 13%, transparent 29%,
+            rgba(255, 255, 255, .1) 30%, rgba(255, 255, 255, .1) 31%, transparent 32%, transparent 49%,
+            rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, .1) 51%, transparent 52%, transparent 69%,
+            rgba(255, 255, 255, .1) 70%, rgba(255, 255, 255, .1) 71%, transparent 72%, transparent 89%,
+            rgba(255, 255, 255, .1) 90%, rgba(255, 255, 255, .1) 91%, transparent 92%, transparent);
+    height: 100%;
+    background-size: 50px 50px;
 }
 
 // size variables i reference later
@@ -17,9 +42,10 @@ $lcd-width: max(40vw, 300px);
 $lcd-height: calc($lcd-width * 0.4825);
 $unit-width: calc($lcd-width / 114);
 
-$header-height: 70vh;
+$header-height: 65vh;
 
 #header {
+    top: 8vh;
     transform: translate(-8px, -8px);
     width: 100vw;
     height: $header-height;
@@ -27,13 +53,13 @@ $header-height: 70vh;
     position: relative;
     // animation: scanlines 1s steps($scan-fps) infinite;
 
-    $flop-size: calc($lcd-width * 0.5);
+    $flop-size: calc($lcd-width * 0.3);
 
     #flop {
         position: relative;
         width: $flop-size;
         height: $flop-size;
-        top: calc($header-height - $flop-size);
+        top: calc($header-height - $flop-size + 10px - 8vh);
         left: calc(50vw - $flop-size / 2);
     }
 }
@@ -43,8 +69,8 @@ $header-height: 70vh;
 
 // the lcd - what you
 #lcd {
+    top: 50px;
     z-index: 0;
-    top: 10px;
     width: $lcd-width;
     height: $lcd-height;
 }
@@ -147,7 +173,6 @@ $post-it-size: 20vw;
 }
 
 $pane-width: 0.75;
-
 $border-radius: 10px;
 
 // the meat and bones of the websites, or, shockingly, the content
@@ -207,7 +232,6 @@ $border-radius: 10px;
             margin-left: 5px;
             width: 100%;
             position: relative;
-            font-family: FixedSys;
             // background-color: var(--gb-f-blue);
         }
     }
@@ -243,7 +267,6 @@ $border-radius: 10px;
         width: 100%;
         margin-left: 5px;
         margin-right: 5px;
-
     }
 
     .wrapper {
@@ -274,16 +297,18 @@ $border-radius: 10px;
 }
 
 
-#content {
-    #tabs {
-        position: absolute;
-        transform: translateY(-10vh);
-        height: 10vh;
-        background: none;
+#tabs {
+    z-index: 9001;
 
-        div {
-            height: 100%;
-            display: inline;
-        }
-    }
+    position: fixed;
+    height: 8vh;
+    width: 100vw;
+    left: 0;
+    top: 0;
+    border-bottom: 5px solid var(--gb-bg0-h);
+
+    text-align: center;
+    color: var(--gb-fg0);
+    font-size: x-large;
+    background-color: var(--gb-bg0);
 }
