@@ -44,7 +44,7 @@ fn reparse_and_get_html(path: String) -> String {
 
     let path_md = format!("{}{}", &*config::MARKDOWN_IN_DIR, path);
 
-    if need_rebuild(&path_html, &path_md) {
+    if need_rebuild(&path_md, &path_html) {
         // ok so read and parse the md file
         let string = fs::read_to_string(&path_md).expect("md file should be there");
         let html = format!(
