@@ -1,7 +1,7 @@
 #![feature(default_free_fn)]
 #![feature(iter_array_chunks)]
 
-use afire::{extension::ServeStatic, prelude::*};
+use afire::{extension::ServeStatic, internal::common::remove_address_port, prelude::*};
 use anyhow::Result;
 use chrono::Utc;
 use crossterm::{execute, style::PrintStyledContent};
@@ -13,6 +13,16 @@ mod routes;
 mod setup;
 #[macro_use]
 mod sh;
+
+pub fn get_ip(req: &Request) -> String {
+    let mut ip = remove_address_port(&req.address);
+    if ip == "127.0.0.1" {
+        if let Some(i) = req.headers.iter().find(|x| x.name == "X-Forwarded-For") {
+            ip = i.value.to_owned();
+        }
+    }
+    ip
+}
 
 fn main() -> Result<()> {
     // let args = std::env::args().skip(1).collect::<Vec<_>>();
@@ -34,7 +44,7 @@ fn main() -> Result<()> {
         .not_found(|req, _dis| -> Response {
             warn!(
                 PrintStyledContent("failed to serve static to\t".blue()),
-                PrintStyledContent(format!("{}\t", req.address).green()),
+                PrintStyledContent(format!("{}\t", get_ip(req)).green()),
                 PrintStyledContent(format!("{}\n", req.path).yellow()),
             );
             let cls = || -> Result<Response> {
