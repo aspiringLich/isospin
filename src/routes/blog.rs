@@ -1,18 +1,15 @@
 use afire::prelude::*;
 use afire::{Content, Response};
-use comrak::{format_commonmark, parse_document, Arena};
 
-use std::default::default;
+use chrono::{DateTime, Local};
 use std::fs;
-use std::io::BufRead;
-use std::{fs::File, io::BufReader};
 
 use crate::{config, file::*};
 #[path = "header.rs"]
 mod header;
 
 use super::html::{get_template, rebuild_html_template};
-use super::md::{self, OPTIONS};
+use super::md::OPTIONS;
 
 #[derive(Default, Debug)]
 struct FrontMatter {
@@ -74,9 +71,17 @@ impl FrontMatter {
 
 fn blog_item(path: String) -> String {
     let preview = FrontMatter::new(&path);
+    let time: DateTime<Local> = DateTime::from(fs::metadata(&path).unwrap().created().unwrap());
     format!(
-        r#"<div id="preview"><h1>{}</h1><p>{}</p></div>"#,
-        preview.title, preview.description,
+        r#"<div id="preview"><div id="t">
+            [{}] Viewing {}
+        </div><div id="h">{}</div><div id="p">{}</div></div>"#,
+        // ""title"" stuff
+        time.format("%c"),
+        path,
+        // actual content thingies
+        preview.title,
+        preview.description,
     )
 }
 

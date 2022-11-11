@@ -45,7 +45,7 @@ $unit-width: calc($lcd-width / 114);
 $header-height: 65vh;
 
 #header {
-    top: 8vh;
+    top: 4vh;
     transform: translate(-8px, -8px);
     width: 100vw;
     height: $header-height;
@@ -59,15 +59,12 @@ $header-height: 65vh;
         position: relative;
         width: $flop-size;
         height: $flop-size;
-        top: calc($header-height - $flop-size + 10px - 8vh);
+        top: calc($header-height - $flop-size + 10px - 4vh);
         left: calc(50vw - $flop-size / 2);
     }
 }
 
-
-
-
-// the lcd - what you
+// the lcd (self explanatory)
 #lcd {
     top: 50px;
     z-index: 0;
@@ -378,24 +375,54 @@ $tab-info: (
     width: 100%;
 
     align-items: center;
+    display: flex;
 
     #preview {
+        flex: auto;
+
         display: inline-block;
         position: relative;
         margin: 7.5px;
-        width: calc(50% - 60px);
-        height: 20vh;
+        width: calc(50% - 80px);
+        height: 100%;
 
-        padding: 16px 16px;
+        padding: 21px 16px 16px 16px;
+
+        border-radius: 10px;
+        border: 5px solid var(--gb-f-green);
 
         background-color: var(--gb-b-green);
         text-align: left;
 
-        border-radius: 5px;
-        border: 5px solid var(--gb-f-green);
+        #t {
+            position: absolute;
+            width: calc(100%);
+            padding-left: 5px;
+            transform: translateY(-21px) translateX(-16px);
 
-        h1 {
+            color: var(--gb-f-green);
+            font-style: italic;
+            font-size: small;
+
+            border-bottom: 5px double var(--gb-f-green);
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        #h {
+            color: var(--gb-bg1);
+            display: static;
+            font-size: x-large;
             margin: 0;
+        }
+
+        #p {
+            margin-left: 16px;
+            color: var(--gb-bg1);
+            display: static;
+            font-size: medium;
         }
     }
 }
