@@ -3,14 +3,16 @@
 
 use afire::{extension::ServeStatic, internal::common::remove_address_port, prelude::*};
 use anyhow::Result;
-use chrono::Utc;
-use crossterm::{execute, style::PrintStyledContent};
-use std::io::stdout;
+use crossterm::style::PrintStyledContent;
+
+extern crate chrono;
+extern crate sqlite;
 
 mod config;
 mod file;
 mod routes;
-mod setup;
+mod sql;
+
 #[macro_use]
 mod sh;
 
@@ -25,14 +27,6 @@ pub fn get_ip(req: &Request) -> String {
 }
 
 fn main() -> Result<()> {
-    // let args = std::env::args().skip(1).collect::<Vec<_>>();
-
-    // do this in another thing
-    // if args.contains(&"setup".to_string()) {
-    //     println!("Processing images!");
-    //     setup::process_imgs();
-    // }
-
     let mut server: Server = Server::<()>::new("localhost", 8080);
 
     // serve static fles
@@ -43,8 +37,8 @@ fn main() -> Result<()> {
         })
         .not_found(|req, _dis| -> Response {
             warn!(
-                PrintStyledContent("failed to serve static to\t".blue()),
-                PrintStyledContent(format!("{}\t", get_ip(req)).green()),
+                PrintStyledContent("failed to serve static to ".blue()),
+                PrintStyledContent(format!("{} ", get_ip(req)).green()),
                 PrintStyledContent(format!("{}\n", req.path).yellow()),
             );
             let cls = || -> Result<Response> {

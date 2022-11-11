@@ -24,3 +24,5 @@ anyhow = "1.0"
 chrono = "0.4.22"
 # pretty printing
 crossterm = "0.25.0"
+# i *need* to know how many views my articles get its very important for me and for my ego and for you and for me
+sqlite = "0.28.1"
