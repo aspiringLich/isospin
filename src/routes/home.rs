@@ -26,7 +26,7 @@ fn build_home(template: String) -> String {
 
     for name in config::PROJECTS {
         projects += &format!(
-            "<div class=\"wrapper\"><img class=\"icon\"src=\"projects/{}.png\"><div class=\"desc\">{}{}</div></div>",
+            "<div class=\"proj-wrapper\"><img class=\"icon\"src=\"projects/{}.png\"><div class=\"desc\">{}{}</div></div>",
             name,
             title_bar(name),
             md::get_file(format!("/{}.md", name)).unwrap(),

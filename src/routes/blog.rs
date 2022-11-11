@@ -1,7 +1,9 @@
 use afire::prelude::*;
 use afire::{Content, Response};
+use comrak::{format_commonmark, parse_document, Arena};
 
 use std::default::default;
+use std::fs;
 use std::io::BufRead;
 use std::{fs::File, io::BufReader};
 
@@ -10,70 +12,71 @@ use crate::{config, file::*};
 mod header;
 
 use super::html::{get_template, rebuild_html_template};
-use super::md;
+use super::md::{self, OPTIONS};
 
 #[derive(Default, Debug)]
-struct Preview {
-    title: Option<String>,
-    description: Option<String>,
+struct FrontMatter {
+    title: String,
+    description: String,
 }
 
-impl Preview {
+impl FrontMatter {
     fn new(path: &str) -> Self {
-        let file = File::open(path).expect("can open {path}");
-        let mut reader = BufReader::new(file);
+        let buf = &fs::read_to_string(path).expect("can read path of file");
+        let delimiter = &OPTIONS
+            .extension
+            .front_matter_delimiter
+            .as_ref()
+            .expect("valid delimiter in options");
 
-        let mut lines = reader.lines();
-        // assert that the md file starts with "<!-- isospin.dev header" or something
-        // this is the header of the md file
-        assert_eq!(
-            lines
-                .next()
-                .expect("at least one line")
-                .unwrap()
-                .chars()
-                .filter(|&x| !x.is_whitespace())
-                .collect::<String>(),
-            "<!--isospin.devheader",
-            "asserting that the md file we're trying to read ({}) has a valid header start",
-            path
-        );
+        // strip extraneous whitespace
+        let strip_whitespace = |string: &str| {
+            let mut split = string.split_whitespace();
+            let first = split.next().expect("string not empty").to_owned();
+            split.fold(first, |acc, x| acc + " " + x)
+        };
 
-        let mut out: Preview = default();
-        // get lines until a line contains the end of a comment
-        lines
-            .filter_map(|x| x.ok())
-            .take_while(|x| !x.contains("-->"))
-            // now for each of these lines, process them and do the coorosponding thing
-            .for_each(|line| {
-                let (field, value) = line
-                    .split_once(":")
-                    .expect("header config lines should have a colon");
+        let front_matter = buf
+            // split by line endings
+            .split(|ch| ch == '\n' || ch == '\r')
+            // remove empty lines
+            .filter(|line| !line.is_empty())
+            // skip until delimiter line
+            .skip_while(|&line| line != **delimiter)
+            .skip(1)
+            // get until ending of delimiter line
+            .take_while(|&line| line != **delimiter)
+            // turn "title: whatever" -> ("title","whatever")
+            .map(|line| line.split_once(':').expect("colon in front matter lines"))
+            .map(|(key, value)| (strip_whitespace(key), strip_whitespace(value)));
 
-                // remove leading whitespace
-                let value: String = value.chars().skip_while(|&ch| ch.is_whitespace()).collect();
-                // set the corresponding field in out
-                *match field {
-                    "title" => &mut out.title,
-                    "description" => &mut out.description,
-                    _ => panic!("expected valid header fields"),
-                } = Some(value);
-            });
-
+        let mut out = FrontMatter::default();
+        for (key, value) in front_matter {
+            let valid_key_values = [
+                ("title", &mut out.title),
+                ("description", &mut out.description),
+            ];
+            // find the most similar string and set it
+            let ret = valid_key_values.into_iter().find(|x| x.0 == key);
+            // if its not exactly equal tho warn
+            if let Some((_, field)) = ret {
+                *field = value;
+            } else {
+                eprintln!(
+                    "possible misspelling in {} front matter header: {}",
+                    path, key
+                )
+            }
+        }
         out
     }
 }
 
 fn blog_item(path: String) -> String {
-    // the formatter *really* fucks this up
-    // :(
-    // looks so ugly bro
-    dbg!(Preview::new(&path));
+    let preview = FrontMatter::new(&path);
     format!(
-        "
-<div style=\"position: relative\">{}</div>
-",
-        path
+        r#"<div id="preview"><h1>{}</h1><p>{}</p></div>"#,
+        preview.title, preview.description,
     )
 }
 
@@ -81,7 +84,7 @@ fn build_blog(template: String) -> String {
     let mut blog = "".to_string();
 
     // get all the file paths
-    std::fs::read_dir(config::ARTICLE_DIR)
+    let mut paths = std::fs::read_dir(config::ARTICLE_DIR)
         .expect("article_dir should exist")
         .map(|x| {
             let item = x.ok()?;
@@ -93,10 +96,23 @@ fn build_blog(template: String) -> String {
             ))
         })
         // filter out all the nones
-        .filter(|x| x.is_some())
-        .map(|x| x.unwrap())
-        // and add all the blog thingies to blog
-        .for_each(|x| blog += &blog_item(x));
+        .filter_map(|x| x)
+        .array_chunks();
+
+    while let Some([a, b]) = paths.next() {
+        blog += &format!(
+            r#"<div id="preview-wrapper">{}{}</div>"#,
+            blog_item(a),
+            blog_item(b)
+        );
+    }
+    let rem = paths.into_remainder();
+    if let Some(odd) = rem.unwrap().as_slice().get(0) {
+        blog += &format!(
+            r#"<div id="preview-wrapper">{}</div>"#,
+            blog_item(odd.clone())
+        );
+    }
 
     template.replacen("{{CONTENT}}", &blog, 1)
 }

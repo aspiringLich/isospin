@@ -1,5 +1,6 @@
 use afire::prelude::*;
-use comrak::{markdown_to_html, ComrakOptions, ComrakRenderOptions};
+use comrak::{markdown_to_html, ComrakExtensionOptions, ComrakOptions, ComrakRenderOptions};
+use lazy_static::lazy_static;
 use std::{default::default, fs};
 
 use crate::{config, file::*};
@@ -22,14 +23,21 @@ pub fn get_req(req: Request) -> Result<Request> {
     return Ok(out);
 }
 
-/// returns the path of the new html, reparsing if necessary
-/// will not unecessarily reparse markdown files
-/// will reparse if:
-///  - theres no html file
-///  - if the md file has been modified more recently
-fn reparse_and_get_html(path: String) -> String {
+lazy_static! {
     // options
-    let options: ComrakOptions = ComrakOptions {
+    pub static ref OPTIONS: ComrakOptions = ComrakOptions {
+        extension: ComrakExtensionOptions {
+            strikethrough: true,
+            tagfilter: true,
+            table: true,
+            autolink: true,
+            tasklist: true,
+            superscript: true,
+            footnotes: true,
+            description_lists: true,
+            front_matter_delimiter: Some("---".to_string()),
+            ..default()
+        },
         render: ComrakRenderOptions {
             unsafe_: true,
             ..default()
@@ -37,6 +45,14 @@ fn reparse_and_get_html(path: String) -> String {
         ..default()
     };
 
+}
+
+/// returns the path of the new html, reparsing if necessary
+/// will not unecessarily reparse markdown files
+/// will reparse if:
+///  - theres no html file
+///  - if the md file has been modified more recently
+fn reparse_and_get_html(path: String) -> String {
     // get the full paths
     // dbg!(&path_html);
     let path_html = path.strip_filetype() + ".html";
@@ -48,7 +64,7 @@ fn reparse_and_get_html(path: String) -> String {
         let string = fs::read_to_string(&path_md).expect("md file should be there");
         let html = format!(
             "<div class=\"markdown-body\">{}</div>",
-            markdown_to_html(&string, &options)
+            markdown_to_html(&string, &OPTIONS)
         );
 
         // write it out!

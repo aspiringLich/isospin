@@ -278,13 +278,13 @@ $border-radius: 10px;
         width: $item-size;
     }
 
-    .wrapper {
+    .proj-wrapper {
         width: 100%;
         margin-left: 5px;
         margin-right: 5px;
     }
 
-    .wrapper {
+    .proj-wrapper {
         .desc {
             visibility: hidden;
             border: none;
@@ -369,5 +369,33 @@ $tab-info: (
 
     #tab:nth-child(#{$i}):hover {
         background-color: $hover-color;
+    }
+}
+
+#preview-wrapper {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 100%;
+
+    align-items: center;
+
+    #preview {
+        display: inline-block;
+        position: relative;
+        margin: 7.5px;
+        width: calc(50% - 60px);
+        height: 20vh;
+
+        padding: 16px 16px;
+
+        background-color: var(--gb-b-green);
+        text-align: left;
+
+        border-radius: 5px;
+        border: 5px solid var(--gb-f-green);
+
+        h1 {
+            margin: 0;
+        }
     }
 }

@@ -33,7 +33,7 @@ pub const POST_IT_IMGS_IN_DIR: &str = "./src/data/raw_pictures";
 /// the directory that contains markdown files for the project descriptions before they are rendered
 /// (.md)
 #[allow(dead_code)]
-pub const PROJ_DESC_DIR: &str = "./isospin_media/proj_desc";
+pub const PROJ_DESC_DIR: &str = "./isospin_media/project_desc";
 
 /// the directory that contains the files pertianing to the home page display of projects
 /// (.html, .png)

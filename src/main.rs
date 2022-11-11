@@ -1,4 +1,5 @@
 #![feature(default_free_fn)]
+#![feature(iter_array_chunks)]
 
 use afire::{extension::ServeStatic, prelude::*};
 use anyhow::Result;

@@ -94,9 +94,6 @@ function isScrolledIntoView(elem) {
     return (0.5 * (elemBottom + elemTop) <= docViewBottom);
 };
 
-let scrolln = 0;
-let elem = document.querySelectorAll(".wrapper");
-
 function setAttr(selector, attribute) {
     document.querySelectorAll(selector).forEach((x) => {
         x.setAttribute("style", attribute)
@@ -106,6 +103,9 @@ function setAttr(selector, attribute) {
 setAttr("#header", "transform: translateY(0px)");
 setAttr("#lcd", "margin-top: calc(0px)");
 setAttr("#flop", "transform: translateY(0px)");
+
+let scrolln = 0;
+let elem = document.querySelectorAll(".proj-wrapper");
 
 window.onscroll = function () {
     let scroll = getScrollTop();
@@ -129,5 +129,12 @@ window.onscroll = function () {
     }
 };
 
+// run this once
+if (scrolln < elem.length) {
+    if (isScrolledIntoView(elem[scrolln])) {
+        elem[scrolln].classList.add("active");
+        scrolln++;
+    }
+}
 
 // document.querySelectorAll("#btn").forEach();
