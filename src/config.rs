@@ -48,4 +48,4 @@ pub const PROJECTS: [&str; 1] = ["isospin"];
 
 /// the directory that contains the writing for da blog
 #[allow(dead_code)]
-pub const ARTICLE_DIR: &str = "./isospin_media/articles";
+pub const ARTICLE_DIR: &str = "./media/articles";
