@@ -4,10 +4,7 @@
 use afire::{extension::ServeStatic, prelude::*};
 use anyhow::Result;
 use chrono::Utc;
-use crossterm::{
-    execute,
-    style::{PrintStyledContent, Stylize},
-};
+use crossterm::{execute, style::PrintStyledContent};
 use std::io::stdout;
 
 mod config;
@@ -35,14 +32,11 @@ fn main() -> Result<()> {
             Some((res.header("X-Static-Serve", "true"), suc))
         })
         .not_found(|req, _dis| -> Response {
-            execute!(
-                stdout(),
-                PrintStyledContent(format!("[{}] ", Utc::now().time().format("%H:%M:%S")).green()),
+            warn!(
                 PrintStyledContent("failed to serve static to\t".blue()),
                 PrintStyledContent(format!("{}\t", req.address).green()),
                 PrintStyledContent(format!("{}\n", req.path).yellow()),
-            )
-            .unwrap();
+            );
             let cls = || -> Result<Response> {
                 let res = Response::new()
                     .status(404)

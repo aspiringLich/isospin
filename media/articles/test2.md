@@ -1,6 +1,6 @@
 ---
 title: Test2
-description: This is to test if the blog thingy works. (2 electric boogaloo)
+description: This is to test if the blog thingy works. (2 electric boogaloo).
 ---
 
 # Test2

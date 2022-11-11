@@ -1,4 +1,4 @@
-use afire::prelude::*;
+use afire::{internal::path, prelude::*};
 use comrak::{markdown_to_html, ComrakExtensionOptions, ComrakOptions, ComrakRenderOptions};
 use lazy_static::lazy_static;
 use std::{default::default, fs};
@@ -11,7 +11,7 @@ pub fn get_file(path: String) -> Result<String> {
     Ok(fs::read_to_string(reparse_and_get_html(path))?)
 }
 
-/// returns a new request for the coorosponding html file
+/// returns a new request for the coorosponding md file
 pub fn get_req(req: Request) -> Result<Request> {
     let mut out = req.clone();
 
@@ -66,11 +66,24 @@ fn reparse_and_get_html(path: String) -> String {
             "<div class=\"markdown-body\">{}</div>",
             markdown_to_html(&string, &OPTIONS)
         );
-
         // write it out!
-        // dbg!(&path_html);
         fs::write(&path_html, &html).expect("should be able to write the parsed md successfully");
     }
 
     path_html
+}
+
+/// parse the file from path_orig, and stick it in path_parsed if necessary
+/// return whether any reparsing / building / whatever was necessary
+pub fn parse_md(path_orig: &str, path_parsed: &str) -> bool {
+    let rb = need_rebuild(&path_orig, &path_parsed);
+    if rb {
+        let string = fs::read_to_string(path_orig).expect("md file should be there");
+        let html = format!(
+            "<div class=\"markdown-body\">{}</div>",
+            markdown_to_html(&string, &OPTIONS)
+        );
+        fs::write(path_parsed, &html).expect("should be able to write the parsed md successfully");
+    }
+    rb
 }

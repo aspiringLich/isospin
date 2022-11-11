@@ -4,7 +4,10 @@ use afire::{Content, Response};
 use chrono::{DateTime, Local};
 use std::fs;
 
-use crate::{config, file::*};
+use crate::config::{self};
+use crate::file::need_rebuild;
+use crate::routes::md::parse_md;
+
 #[path = "header.rs"]
 mod header;
 
@@ -94,11 +97,8 @@ fn build_blog(template: String) -> String {
         .map(|x| {
             let item = x.ok()?;
             let name = item.file_name();
-            Some(format!(
-                "{}/{}",
-                config::ARTICLE_DIR,
-                name.as_os_str().to_str()?
-            ))
+            let name = name.as_os_str().to_str()?;
+            Some(format!("{}/{}", config::ARTICLE_DIR, name))
         })
         // filter out all the nones
         .filter_map(|x| x)
@@ -126,12 +126,30 @@ fn build_blog(template: String) -> String {
 pub fn attach(server: &mut Server) {
     // home screen
     server.route(Method::GET, "/blog", |_req| {
-        // do we need a rebuild anyway because of the markdown files?
-        let rebuild = config::PROJECTS
-            .iter()
-            .any(|name| need_rebuild(&format!("/{}.md", name), &format!("/{}.html", name)));
-
         let template = header::generate_header();
+        // do any of the md files need rebuilding? (basically)
+        let rebuild = {
+            let mut ret = false;
+            let paths = std::fs::read_dir(config::ARTICLE_DIR).expect("article_dir should exist");
+            for path in paths {
+                let item = path
+                    .expect("can read from the files we scanned for")
+                    .file_name();
+                let name = item
+                    .as_os_str()
+                    .to_str()
+                    .expect("successful conversion to str");
+
+                let fin = format!("{}/{}", config::ARTICLE_DIR, name);
+                let fout = format!("{}/{}", config::ARTICLE_OUT_DIR, name);
+
+                if parse_md(&fin, &fout) {
+                    ret = true;
+                }
+            }
+            ret
+        };
+
         let content = if rebuild {
             rebuild_html_template("/blog.html", build_blog)
         } else {

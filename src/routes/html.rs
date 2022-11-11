@@ -1,9 +1,10 @@
 use std::fs;
 
-use crate::{config, file::*};
+use crate::{config, file::*, info};
 use afire::Request;
 
-use anyhow::*;
+use anyhow::Result;
+use crossterm::style::PrintStyledContent;
 
 // use anyhow::Result;
 
@@ -13,13 +14,16 @@ pub fn get_req(req: Request) -> Result<Request> {
     Ok(req)
 }
 
-pub fn template_needs_rebuild(path: &str) -> bool {
+fn template_needs_rebuild(path: &str) -> bool {
     need_rebuild(
         &format!("{}{}", config::TEMPLATE_DIR, path),
         &format!("{}{}", config::BAKED_TEMPLATE_DIR, path),
     )
 }
 
+/// gets the built template
+/// will check if its necessary before running the build_fn
+/// handles writing out to file
 pub fn get_template(path: &str, build_fn: fn(String) -> String) -> String {
     if template_needs_rebuild(&path) {
         rebuild_html_template(path, build_fn)
@@ -30,7 +34,14 @@ pub fn get_template(path: &str, build_fn: fn(String) -> String) -> String {
     }
 }
 
+/// rebuilds a template given a path like "/blog.html"
+/// will NOT check if its necessary before running the build_fn
+/// handles writing out to file
 pub fn rebuild_html_template(path: &str, build_fn: fn(String) -> String) -> String {
+    info!(
+        PrintStyledContent("Rebuilding html file: ".blue()),
+        PrintStyledContent(format!("{}\n", path).yellow()),
+    );
     let out = build_fn(
         fs::read_to_string(&format!("{}{}", config::TEMPLATE_DIR, path))
             .expect("html file and ./web/template/baked/ should exist"),

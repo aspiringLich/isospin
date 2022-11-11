@@ -49,3 +49,7 @@ pub const PROJECTS: [&str; 1] = ["isospin"];
 /// the directory that contains the writing for da blog
 #[allow(dead_code)]
 pub const ARTICLE_DIR: &str = "./media/articles";
+
+/// the directory that contains the writing for da blog after crunching it
+#[allow(dead_code)]
+pub const ARTICLE_OUT_DIR: &str = "./web/static/articles";
