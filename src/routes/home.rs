@@ -6,7 +6,7 @@ use crate::{config, file::*};
 mod header;
 
 use super::html::{get_template, rebuild_html_template};
-use super::md;
+use super::md::{self, write_md_get_rebuild};
 
 fn title_bar(name: &str) -> String {
     format!("
@@ -42,7 +42,7 @@ pub fn attach(server: &mut Server) {
     server.route(Method::GET, "/home", |_req| {
         // do we need a rebuild anyway because of the markdown files?
         let rebuild = config::PROJECTS.iter().any(|name| {
-            need_rebuild(
+            write_md_get_rebuild(
                 &format!("{}/{}.md", config::PROJ_DESC_DIR, name),
                 &format!("{}/{}.html", config::PROJECTS_DIR, name),
             )
