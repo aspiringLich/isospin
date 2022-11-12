@@ -1,11 +1,11 @@
-use afire::{internal::path, prelude::*};
+
 use comrak::{markdown_to_html, ComrakExtensionOptions, ComrakOptions, ComrakRenderOptions};
 use lazy_static::lazy_static;
 use std::{default::default, fs};
 
-use crate::{config, file::*};
+use crate::{file::*};
 
-use anyhow::Result;
+
 
 // pub fn get_file(path_orig: &str, path_parsed: &str) -> String {
 //     write_md_and_get_string(path_orig, path_parsed)

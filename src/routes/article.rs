@@ -5,11 +5,10 @@ use crossterm::style::Print;
 
 use super::{
     blog::FrontMatter,
-    html::{get_template, rebuild_html_template},
     md::parse_md,
 };
-use crate::{config, file::PathMethods, info};
-use crate::{file::need_rebuild, routes::md::write_md_and_get_string};
+use crate::{config, info};
+use crate::{file::need_rebuild};
 
 /// build article off of /article.html
 ///
