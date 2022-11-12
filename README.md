@@ -11,5 +11,6 @@ website.
 |Projects/Home page|🟢|Make the projects page, or the first draft of it at least, so I can show off other stuff I make|
 |Bake HTML|🟢|Using iframes is kind of jank to display the parsed markdown, pre-bake the html in the home page (requires some restructuring of the server logic)|
 |Navbar|🟢|Figure out how to add a navbar for different sections of the website. Then add it. Maybe with a fancy page transition or something.|
-|Writing / Blog|🟡|Add a writing / blog section to the website so my schizophrenic rambling can be immortalized for the whole world to see|
+|Writing / Blog|🟢|Add a writing / blog section to the website so my schizophrenic rambling can be immortalized for the whole world to see|
+|Articles|🟡|Believe it or not this is seperate from the blog. Basically i have the markdown html stuff, but now I need a reasonable looking article page to put it in.|
 |Image Gallery Implementation|🔵|Move floppa stash online|
