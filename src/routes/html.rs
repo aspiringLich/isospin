@@ -46,7 +46,7 @@ where
 {
     info!(
         PrintStyledContent("Rebuilding html file: ".blue()),
-        PrintStyledContent(format!("{}\n", path).yellow()),
+        PrintStyledContent(format!("{}", path).yellow()),
     );
     let out = build_fn(
         fs::read_to_string(&format!("{}{}", config::TEMPLATE_DIR, path))
