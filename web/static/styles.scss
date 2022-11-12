@@ -393,6 +393,12 @@ $tab-info: (
         background-color: var(--gb-b-green);
         text-align: left;
 
+        transition: 0.3s;
+
+        &:hover {
+            transform: scale(1.02) translateY(-5px);
+        }
+
         #t {
             position: absolute;
             width: calc(100%);
@@ -424,4 +430,8 @@ $tab-info: (
             font-size: medium;
         }
     }
+}
+
+#article {
+    background: rgb(88, 88, 88);
 }

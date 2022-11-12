@@ -1,1 +1,1 @@
-use sqlite::*;
+use rusqlite::*;

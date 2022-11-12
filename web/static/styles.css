@@ -325,6 +325,10 @@ p:nth-child(5) {
   border: 5px solid var(--gb-f-green);
   background-color: var(--gb-b-green);
   text-align: left;
+  transition: 0.3s;
+}
+#preview-wrapper #preview:hover {
+  transform: scale(1.02) translateY(-5px);
 }
 #preview-wrapper #preview #t {
   position: absolute;
@@ -350,4 +354,8 @@ p:nth-child(5) {
   color: var(--gb-bg1);
   display: static;
   font-size: medium;
+}
+
+#article {
+  background: rgb(88, 88, 88);
 }/*# sourceMappingURL=styles.css.map */

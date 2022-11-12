@@ -6,7 +6,7 @@ use anyhow::Result;
 use crossterm::style::PrintStyledContent;
 
 extern crate chrono;
-extern crate sqlite;
+extern crate rusqlite;
 
 mod config;
 mod file;
@@ -39,7 +39,7 @@ fn main() -> Result<()> {
             warn!(
                 PrintStyledContent("failed to serve static to ".blue()),
                 PrintStyledContent(format!("{} ", get_ip(req)).green()),
-                PrintStyledContent(format!("{}\n", req.path).yellow()),
+                PrintStyledContent(format!("{}", req.path).yellow()),
             );
             let cls = || -> Result<Response> {
                 let res = Response::new()

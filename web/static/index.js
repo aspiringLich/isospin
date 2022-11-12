@@ -33,6 +33,9 @@ function isScrolledIntoView(elem) {
 function setAttr(selector, attribute) {
     document.querySelectorAll(selector).forEach((x) => x.setAttribute("style", attribute));
 }
+let scrolln = 0;
+let url = window.location.href;
+let main_subpage = url.split("//", 2)[1].split("/", 2)[1];
 
 
 // * LCD HEADER STUFFS
@@ -60,6 +63,7 @@ scrolling.forEach((x) => {
     x.addEventListener("animationstart", () => { change_text(x) });
     x.addEventListener("animationiteration", () => { change_text(x) });
 })
+let big_header = ["home", "blog"].findIndex((x) => { x == main_subpage }) != -1;
 
 
 // * SCROLL BASED EFFECTS
@@ -70,20 +74,16 @@ setAttr("#header", "transform: translateY(0px)");
 setAttr("#lcd", "margin-top: calc(0px)");
 setAttr("#flop", "transform: translateY(0px)");
 
-let scrolln = 0;
-let url = window.location.href;
-let main_subpage = url.split("//", 2)[1].split("/", 2)[1];
-
 function do_onscroll() {
     let scroll = getScrollTop();
-    // header stuff, disable if scrolled too far down
-    if (scroll < viewportToPixels("80vw")) {
+    // header stuff, disable if scrolled too far down or we dont have the big header
+    if (big_header && scroll < viewportToPixels("80vw")) {
         setAttr("#header", `transform: translateY(${scroll * 0.6}px)`);
         setAttr("#lcd", `margin-top: calc(-${scroll * 0.1}px)`);
         setAttr("#flop", `transform: translateY(-${scroll * 0.4}px)`);
+        setAttr("#grid", `background-position-y: -${scroll * 0.1}px`);
         // TODO: randomly scroll each of the post it notes ?
     }
-    setAttr("#grid", `background-position-y: -${scroll * 0.1}px`);
     // subpage specific stuff
     switch (main_subpage) {
         case "home":
@@ -102,21 +102,26 @@ function do_onscroll() {
     }
 }
 // run it once so these effects activate before the user has to scroll (if applicable)
+
 do_onscroll();
 window.onscroll = do_onscroll;
 
 
 // * SIZE BASED EFFECTS
 
+
 function calc_vpadding() {
-    let preview_s = window.getComputedStyle(document.querySelector("#preview"));
+    let elem = document.querySelector("#preview");
+    console.log(elem);
+    let preview_s = window.getComputedStyle(elem);
     let b = preview_s.paddingBottom;
     let t = preview_s.paddingTop;
     b = b.substring(0, b.length - 2);
     t = t.substring(0, t.length - 2);
     return parseInt(b, 10) + parseInt(t, 10);
 }
-let preview_vpadding = calc_vpadding();
+let preview_vpadding;
+if (main_subpage == "blog") preview_vpadding = calc_vpadding();
 
 function do_onresize() {
     switch (main_subpage) {
@@ -135,6 +140,7 @@ function do_onresize() {
                     x.setAttribute("style", `height: ${height}px`);
                 });
             });
+            break;
     }
 }
 do_onresize();

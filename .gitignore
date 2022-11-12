@@ -1,6 +1,7 @@
 /node_modules
 /web/static/assets/parsed_markdown/*
 /web/template/baked/*
+/web/static/article/*
 
 # Added by cargo
 

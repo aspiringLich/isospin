@@ -25,6 +25,7 @@ macro_rules! log {
             crossterm::style::style(format!("[{}] ", chrono::Utc::now().time().format("%H:%M:%S"))).green()
         );
         let _go_away_warning = crossterm::execute!(std::io::stdout(), $($command),*);
+        println!();
     }};
 }
 

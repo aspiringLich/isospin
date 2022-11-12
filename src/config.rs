@@ -8,6 +8,11 @@ pub const TEMPLATE_DIR: &str = "./web/template";
 #[allow(dead_code)]
 pub const BAKED_TEMPLATE_DIR: &str = "./web/template/baked";
 
+/// the directory that contains the static resources for the website
+/// (.png .gif .svg etc.)
+#[allow(dead_code)]
+pub const STATIC_DIR: &str = "./web/static";
+
 /// the directory that contains the assets for the website
 /// (.png .gif .svg etc.)
 #[allow(dead_code)]
@@ -28,12 +33,17 @@ pub const POST_IT_IMGS_DIR: &str = "./web/static/assets/post-it-imgs";
 #[allow(dead_code)]
 pub const POST_IT_IMGS_IN_DIR: &str = "./src/data/raw_pictures";
 
+/// the directory that contains media for use in the website
+/// (.png .webp .md etc.)
+#[allow(dead_code)]
+pub const MEDIA_DIR: &str = "./media";
+
 // * /home related stuff
 
 /// the directory that contains markdown files for the project descriptions before they are rendered
 /// (.md)
 #[allow(dead_code)]
-pub const PROJ_DESC_DIR: &str = "./isospin_media/project_desc";
+pub const PROJ_DESC_DIR: &str = "./media/project_desc";
 
 /// the directory that contains the files pertianing to the home page display of projects
 /// (.html, .png)
@@ -48,8 +58,8 @@ pub const PROJECTS: [&str; 1] = ["isospin"];
 
 /// the directory that contains the writing for da blog
 #[allow(dead_code)]
-pub const ARTICLE_DIR: &str = "./media/articles";
+pub const ARTICLE_DIR: &str = "./media/article";
 
 /// the directory that contains the writing for da blog after crunching it
 #[allow(dead_code)]
-pub const ARTICLE_OUT_DIR: &str = "./web/static/articles";
+pub const ARTICLE_OUT_DIR: &str = "./web/static/article";

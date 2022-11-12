@@ -22,7 +22,7 @@ impl Middleware for Root {
         let file_type = req.path.split(".").last().unwrap_or("");
         // dbg!(file_type);
         let ret = match file_type {
-            "md" => md::get_req(req),
+            // "md" => md::get_req(req),
             "html" => html::get_req(req),
             _ => return MiddleRequest::Continue,
         };

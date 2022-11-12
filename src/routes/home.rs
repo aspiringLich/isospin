@@ -29,7 +29,7 @@ fn build_home(template: String) -> String {
             "<div class=\"proj-wrapper\"><img class=\"icon\"src=\"projects/{}.png\"><div class=\"desc\">{}{}</div></div>",
             name,
             title_bar(name),
-            md::get_file(format!("/{}.md", name)).unwrap(),
+            md::write_md_and_get_string(&format!("{}/{}.md", config::PROJ_DESC_DIR, name), &format!("{}/{}.md", config::PROJECTS_DIR, name)),
         );
     }
 
@@ -48,15 +48,15 @@ pub fn attach(server: &mut Server) {
             )
         });
 
-        let template = header::generate_header();
-        let content = if rebuild {
+        let html = if rebuild {
             rebuild_html_template("/home.html", build_home)
         } else {
             get_template("/home.html", build_home)
         };
+        let template = header::generate_header();
 
         Response::new()
-            .text(template.replacen("{{CONTENT}}", &content, 1))
+            .text(template.replacen("{{CONTENT}}", &html, 1))
             .content(Content::HTML)
     });
 }

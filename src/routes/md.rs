@@ -7,21 +7,21 @@ use crate::{config, file::*};
 
 use anyhow::Result;
 
-pub fn get_file(path: String) -> Result<String> {
-    Ok(fs::read_to_string(reparse_and_get_html(path))?)
-}
+// pub fn get_file(path_orig: &str, path_parsed: &str) -> String {
+//     write_md_and_get_string(path_orig, path_parsed)
+// }
 
-/// returns a new request for the coorosponding md file
-pub fn get_req(req: Request) -> Result<Request> {
-    let mut out = req.clone();
+// /// returns a new request for the coorosponding md file
+// pub fn get_req(req: Request) -> Result<Request> {
+//     let mut out = req.clone();
 
-    out.path = reparse_and_get_html(req.path)
-        .split("static")
-        .last()
-        .unwrap()
-        .to_string();
-    return Ok(out);
-}
+//     out.path = parse_md_to_string(req.path)
+//         .split("static")
+//         .last()
+//         .unwrap()
+//         .to_string();
+//     return Ok(out);
+// }
 
 lazy_static! {
     // options
@@ -47,43 +47,41 @@ lazy_static! {
 
 }
 
-/// returns the path of the new html, reparsing if necessary
+/// returns a string of the parsed markdown, reparsing if necessary
 /// will not unecessarily reparse markdown files
-/// will reparse if:
-///  - theres no html file
-///  - if the md file has been modified more recently
-fn reparse_and_get_html(path: String) -> String {
-    // get the full paths
-    // dbg!(&path_html);
-    let path_html = path.strip_filetype() + ".html";
-    let path_html = format!("{}{}", &*config::PROJECTS_DIR, path_html);
-    let path_md = format!("{}{}", &*config::PROJ_DESC_DIR, path);
-
-    if need_rebuild(&path_md, &path_html) {
+///
+/// will write to path_parsed
+pub fn write_md_and_get_string(path_orig: &str, path_parsed: &str) -> String {
+    if need_rebuild(path_orig, path_parsed) {
         // ok so read and parse the md file
-        let string = fs::read_to_string(&path_md).expect("md file should be there");
-        let html = format!(
-            "<div class=\"markdown-body\">{}</div>",
-            markdown_to_html(&string, &OPTIONS)
-        );
-        // write it out!
-        fs::write(&path_html, &html).expect("should be able to write the parsed md successfully");
-    }
-
-    path_html
-}
-
-/// parse the file from path_orig, and stick it in path_parsed if necessary
-/// return whether any reparsing / building / whatever was necessary
-pub fn parse_md(path_orig: &str, path_parsed: &str) -> bool {
-    let rb = need_rebuild(&path_orig, &path_parsed);
-    if rb {
         let string = fs::read_to_string(path_orig).expect("md file should be there");
         let html = format!(
             "<div class=\"markdown-body\">{}</div>",
             markdown_to_html(&string, &OPTIONS)
         );
+        // write it out!
         fs::write(path_parsed, &html).expect("should be able to write the parsed md successfully");
+        return html;
     }
-    rb
+
+    fs::read_to_string(path_parsed).expect("read successful")
+}
+
+// /// parse the file from path_orig, and stick it in path_parsed if necessary
+// /// return whether any reparsing / building / whatever was necessary
+// ///
+// /// will write to path_parsed
+// pub fn write_md(path_orig: &str, path_parsed: &str) -> bool {
+//     let ret = need_rebuild(path_orig, path_parsed);
+//     write_md_and_get_string(path_orig, path_parsed);
+//     ret
+// }
+
+/// dont do anything fancy, just get me the parsed md
+pub fn parse_md(path: &str) -> String {
+    let string = fs::read_to_string(path).expect("md file should be there");
+    format!(
+        "<div class=\"markdown-body\">{}</div>",
+        markdown_to_html(&string, &OPTIONS)
+    )
 }
