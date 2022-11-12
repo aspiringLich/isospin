@@ -114,9 +114,14 @@ fn blog_item(path: String) -> String {
     // dbg!(&preview);
     let time: DateTime<Local> = DateTime::from(fs::metadata(&path).unwrap().created().unwrap());
     format!(
-        r#"<div id="preview"><div id="t">
-            [{}] Viewing {}
-        </div><div id="h">{}</div><div id="p">{}</div></div>"#,
+        r#"
+<a id="preview" href="/article/{}"><div id="t">
+    [{}] Viewing {}
+    </div><div id="h">{}</div>
+    <div id="p">{}</div>
+</a>"#,
+        // link
+        path.split('/').last().unwrap().to_string().strip_filetype(),
         // ""title"" stuff
         time.format("%c"),
         path,

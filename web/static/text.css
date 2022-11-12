@@ -38,7 +38,7 @@
     width: calc(100% - 10px) !important;
 }
 
-.markdown-body {
+.desc .markdown-body {
     overflow-y: scroll;
     scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.09);
     scrollbar-width: thin;

@@ -315,6 +315,7 @@ p:nth-child(5) {
 }
 #preview-wrapper #preview {
   flex: auto;
+  text-decoration: none;
   display: inline-block;
   position: relative;
   margin: 7.5px;

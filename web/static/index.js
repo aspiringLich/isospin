@@ -112,7 +112,6 @@ window.onscroll = do_onscroll;
 
 function calc_vpadding() {
     let elem = document.querySelector("#preview");
-    console.log(elem);
     let preview_s = window.getComputedStyle(elem);
     let b = preview_s.paddingBottom;
     let t = preview_s.paddingTop;
@@ -133,9 +132,7 @@ function do_onresize() {
                 children.forEach((x) => {
                     x.setAttribute("style", `height: auto`);
                 });
-                console.log(children);
                 let height = Math.max(children[0].clientHeight, children[1].clientHeight) - preview_vpadding;
-                console.log(height);
                 children.forEach((x) => {
                     x.setAttribute("style", `height: ${height}px`);
                 });
