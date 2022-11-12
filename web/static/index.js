@@ -63,7 +63,7 @@ scrolling.forEach((x) => {
     x.addEventListener("animationstart", () => { change_text(x) });
     x.addEventListener("animationiteration", () => { change_text(x) });
 })
-let big_header = ["home", "blog"].findIndex((x) => { x == main_subpage }) != -1;
+let big_header = main_subpage == "home" || main_subpage == "blog";
 
 
 // * SCROLL BASED EFFECTS
