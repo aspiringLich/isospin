@@ -1,6 +1,8 @@
 #![feature(default_free_fn)]
 #![feature(iter_array_chunks)]
 
+use std::fs;
+
 use afire::{extension::ServeStatic, internal::common::remove_address_port, prelude::*};
 use anyhow::Result;
 use crossterm::style::PrintStyledContent;
@@ -27,6 +29,12 @@ pub fn get_ip(req: &Request) -> String {
 }
 
 fn main() -> Result<()> {
+    use crate::config::*;
+    let possibly_ungenned_dirs = [BAKED_TEMPLATE_DIR, ARTICLE_OUT_DIR];
+    for dir in possibly_ungenned_dirs {
+        fs::create_dir_all(dir)?;
+    }
+
     let mut server: Server = Server::<()>::new("localhost", 8080);
 
     // serve static fles
