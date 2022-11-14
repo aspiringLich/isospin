@@ -52,17 +52,18 @@ function type_title(count) {
     title.innerHTML = transitions[count];
     setTimeout(type_title, Math.random() * delay * variance + delay * (1 - variance), count + 1)
 }
+
 type_title(0);
-// scrolling text
-let scrolling = document.querySelectorAll("#lcd-matrix p");
-let cnt = 0;
-function change_text(element) {
-    element.innerHTML = [cnt += 1, "Fizz", "Buzz", "FizzBuzz"][(cnt % 3 == 0 ? 1 : 0) + ((cnt % 5 == 0 ? 1 : 0) * 2)];
-}
-scrolling.forEach((x) => {
-    x.addEventListener("animationstart", () => { change_text(x) });
-    x.addEventListener("animationiteration", () => { change_text(x) });
-})
+// // scrolling text
+// let scrolling = document.querySelectorAll("#lcd-matrix p");
+// let cnt = 0;
+// function change_text(element) {
+//     element.innerHTML = [cnt += 1, "Fizz", "Buzz", "FizzBuzz"][(cnt % 3 == 0 ? 1 : 0) + ((cnt % 5 == 0 ? 1 : 0) * 2)];
+// }
+// scrolling.forEach((x) => {
+//     x.addEventListener("animationstart", () => { change_text(x) });
+//     x.addEventListener("animationiteration", () => { change_text(x) });
+// })
 let big_header = main_subpage == "home" || main_subpage == "blog";
 
 
