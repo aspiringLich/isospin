@@ -1,7 +1,7 @@
 use afire::prelude::*;
 use afire::{Content, Response};
 
-use crate::{config, file::*};
+use crate::config;
 #[path = "header.rs"]
 mod header;
 

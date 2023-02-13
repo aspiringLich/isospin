@@ -3,12 +3,9 @@ use std::fs;
 use afire::prelude::*;
 use crossterm::style::Print;
 
-use super::{
-    blog::FrontMatter,
-    md::parse_md,
-};
+use super::{blog::FrontMatter, md::parse_md};
+use crate::file::need_rebuild;
 use crate::{config, info};
-use crate::{file::need_rebuild};
 
 /// build article off of /article.html
 ///

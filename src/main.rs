@@ -1,9 +1,9 @@
 #![feature(default_free_fn)]
 #![feature(iter_array_chunks)]
 
-use std::fs;
+use std::{fs, net::IpAddr, thread};
 
-use afire::{extension::ServeStatic, internal::common::remove_address_port, prelude::*};
+use afire::{extension::ServeStatic, prelude::*};
 use anyhow::Result;
 use crossterm::style::PrintStyledContent;
 
@@ -18,14 +18,28 @@ mod sql;
 #[macro_use]
 mod sh;
 
-pub fn get_ip(req: &Request) -> String {
-    let mut ip = remove_address_port(&req.address);
-    if ip == "127.0.0.1" {
-        if let Some(i) = req.headers.iter().find(|x| x.name == "X-Forwarded-For") {
-            ip = i.value.to_owned();
+// https://github.com/Basicprogrammer10/connorcode/blob/8b0755c3578d289f1172729263da93fa743fb321/src/common.rs#L55
+pub trait RealIp {
+    fn real_ip(&self) -> IpAddr;
+}
+
+impl RealIp for Request {
+    fn real_ip(&self) -> IpAddr {
+        let mut ip = self.address.ip();
+
+        // If Ip is Localhost and 'X-Forwarded-For' Header is present
+        // Use that as Ip
+        if ip.is_loopback() && self.headers.has("X-Forwarded-For") {
+            ip = self
+                .headers
+                .get("X-Forwarded-For")
+                .unwrap()
+                .parse()
+                .unwrap();
         }
+
+        ip
     }
-    ip
 }
 
 fn main() -> Result<()> {
@@ -39,14 +53,13 @@ fn main() -> Result<()> {
 
     // serve static fles
     ServeStatic::new("./web/static")
-        .middleware(|_req, res, suc| {
-            // println!("{} made a request", req.address);
-            Some((res.header("X-Static-Serve", "true"), suc))
+        .middleware(|_req, res, _suc| {
+            res.headers.push(Header::new("X-Static-Serve", "true"));
         })
         .not_found(|req, _dis| -> Response {
             warn!(
                 PrintStyledContent("failed to serve static to ".blue()),
-                PrintStyledContent(format!("{} ", get_ip(req)).green()),
+                PrintStyledContent(format!("{} ", req.real_ip()).green()),
                 PrintStyledContent(format!("{}", req.path).yellow()),
             );
             let cls = || -> Result<Response> {
@@ -67,7 +80,7 @@ fn main() -> Result<()> {
 
     // server start
     server
-        .start_threaded(std::thread::available_parallelism().unwrap().get())
+        .start_threaded(thread::available_parallelism().unwrap().get())
         .unwrap();
     Ok(())
 }
