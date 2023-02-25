@@ -5,6 +5,9 @@ use rand::prelude::*;
 #[path = "../config.rs"]
 mod config;
 
+const X: i32 = 12;
+const Y: i32 = 5;
+
 pub fn generate_header() -> String {
     let template = fs::read_to_string(&format!("{}{}", config::TEMPLATE_DIR, "/header.html"))
         .expect("header.html exists");
@@ -20,7 +23,7 @@ pub fn generate_header() -> String {
 
     let mut generate_html = || {
         let mut out: String = Default::default();
-
+        
         let mut img_x: Vec<u32> = (1..=(POST_ITS / 2)).collect();
         img_x.shuffle(&mut rng);
         let mut img_y: Vec<u32> = (1..=(POST_ITS / 2)).collect();
@@ -28,8 +31,8 @@ pub fn generate_header() -> String {
 
         for i in 0..POST_ITS as usize / 2 {
             let rot = rand::random::<f32>() * 45. - 22.5;
-            let x = img_x[i] as i32 * 5 - 8;
-            let y = img_y[i] as i32 * 3 - 5;
+            let x = img_x[i] as i32 * (X / 2 + 1) - X;
+            let y = img_y[i] as i32 * (Y / 2 + 1) - Y;
             let post_it_col = ["blue", "green", "purple", "red", "yellow"][random::<usize>() % 5];
             let post_it_img = img_order.next().unwrap();
 

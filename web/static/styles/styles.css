@@ -1,5 +1,5 @@
 @import "text.css";
-@import "gruvbox-color.css";
+@import "config.css";
 @font-face {
   font-family: "FixedSys";
   src: url("assets/FSEX300.ttf");
@@ -15,8 +15,8 @@ body {
   left: 0;
   width: 100%;
   height: 200%;
-  background-color: #7697d4;
-  background-image: linear-gradient(0deg, transparent 9%, rgba(255, 255, 255, 0.2) 10%, rgba(255, 255, 255, 0.2) 12%, transparent 13%, transparent 29%, rgba(255, 255, 255, 0.1) 30%, rgba(255, 255, 255, 0.1) 31%, transparent 32%, transparent 49%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.1) 51%, transparent 52%, transparent 69%, rgba(255, 255, 255, 0.1) 70%, rgba(255, 255, 255, 0.1) 71%, transparent 72%, transparent 89%, rgba(255, 255, 255, 0.1) 90%, rgba(255, 255, 255, 0.1) 91%, transparent 92%, transparent), linear-gradient(90deg, transparent 9%, rgba(255, 255, 255, 0.2) 10%, rgba(255, 255, 255, 0.2) 12%, transparent 13%, transparent 29%, rgba(255, 255, 255, 0.1) 30%, rgba(255, 255, 255, 0.1) 31%, transparent 32%, transparent 49%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.1) 51%, transparent 52%, transparent 69%, rgba(255, 255, 255, 0.1) 70%, rgba(255, 255, 255, 0.1) 71%, transparent 72%, transparent 89%, rgba(255, 255, 255, 0.1) 90%, rgba(255, 255, 255, 0.1) 91%, transparent 92%, transparent);
+  background-color: var(--color-bg);
+  background-image: linear-gradient(0deg, transparent 9%, var(--color-grid-2) 10%, var(--color-grid-2) 12%, transparent 13%, transparent 29%, var(--color-grid-1) 30%, var(--color-grid-1) 31%, transparent 32%, transparent 49%, var(--color-grid-1) 50%, var(--color-grid-1) 51%, transparent 52%, transparent 69%, var(--color-grid-1) 70%, var(--color-grid-1) 71%, transparent 72%, transparent 89%, var(--color-grid-1) 90%, var(--color-grid-1) 91%, transparent 92%, transparent), linear-gradient(90deg, transparent 9%, var(--color-grid-2) 10%, var(--color-grid-2) 12%, transparent 13%, transparent 29%, var(--color-grid-1) 30%, var(--color-grid-1) 31%, transparent 32%, transparent 49%, var(--color-grid-1) 50%, var(--color-grid-1) 51%, transparent 52%, transparent 69%, var(--color-grid-1) 70%, var(--color-grid-1) 71%, transparent 72%, transparent 89%, var(--color-grid-1) 90%, var(--color-grid-1) 91%, transparent 92%, transparent);
   height: 100%;
   background-size: 50px 50px;
 }
@@ -25,23 +25,23 @@ body {
   top: 4vh;
   transform: translate(-8px, -8px);
   width: 100vw;
-  height: 65vh;
+  height: 50vh;
   z-index: 0;
   position: relative;
 }
 #header #flop {
   position: relative;
-  width: calc(max(40vw, 300px) * 0.3);
-  height: calc(max(40vw, 300px) * 0.3);
-  top: calc(65vh - max(40vw, 300px) * 0.3 + 10px - 4vh);
-  left: calc(50vw - max(40vw, 300px) * 0.3 / 2);
+  width: calc(max(35vw, 300px) * 0.3);
+  height: calc(max(35vw, 300px) * 0.3);
+  top: calc(50vh - max(35vw, 300px) * 0.3 + 10px - 4vh);
+  left: calc(50vw - max(35vw, 300px) * 0.3 / 2);
 }
 
 #lcd {
   top: 50px;
   z-index: 0;
-  width: max(40vw, 300px);
-  height: calc(max(40vw, 300px) * 0.4825);
+  width: max(35vw, 300px);
+  height: calc(max(35vw, 300px) * 0.4825);
 }
 
 #lcd-matrix {
@@ -55,63 +55,45 @@ body {
   margin: auto;
 }
 #lcd-matrix h1 {
-  font-size: calc(max(40vw, 300px) * 0.0875 * 1.8);
+  font-size: calc(max(35vw, 300px) * 0.0875 * 1.8);
 }
 #lcd-matrix p {
   position: absolute;
   -webkit-text-fill-color: rgba(201, 225, 255, 0.2509803922);
   margin-top: 0;
   margin-bottom: 0;
-  top: calc(max(40vw, 300px) * 0.0875 * -1);
-  font-size: calc(max(40vw, 300px) * 0.0875);
-  -webkit-animation-name: text-scroll-down;
-          animation-name: text-scroll-down;
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
-  -webkit-animation-duration: 5s;
-          animation-duration: 5s;
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
+  top: calc(max(35vw, 300px) * 0.0875 * -1);
+  font-size: calc(max(35vw, 300px) * 0.0875);
+  animation-name: text-scroll-down;
+  animation-timing-function: linear;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
   transform-origin: center center;
 }
 
 p:nth-child(1) {
-  -webkit-animation-delay: 4s;
-          animation-delay: 4s;
+  animation-delay: 4s;
   -moz-animation-delay: 4s;
 }
 
 p:nth-child(2) {
-  -webkit-animation-delay: 5s;
-          animation-delay: 5s;
+  animation-delay: 5s;
   -moz-animation-delay: 5s;
 }
 
 p:nth-child(3) {
-  -webkit-animation-delay: 6s;
-          animation-delay: 6s;
+  animation-delay: 6s;
   -moz-animation-delay: 6s;
 }
 
 p:nth-child(4) {
-  -webkit-animation-delay: 7s;
-          animation-delay: 7s;
+  animation-delay: 7s;
   -moz-animation-delay: 7s;
 }
 
 p:nth-child(5) {
-  -webkit-animation-delay: 8s;
-          animation-delay: 8s;
+  animation-delay: 8s;
   -moz-animation-delay: 8s;
-}
-
-@-webkit-keyframes text-scroll-down {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(0, calc(max(40vw, 300px) * 0.0875 * 5));
-  }
 }
 
 @keyframes text-scroll-down {
@@ -119,7 +101,7 @@ p:nth-child(5) {
     transform: translate(0, 0);
   }
   100% {
-    transform: translate(0, calc(max(40vw, 300px) * 0.0875 * 5));
+    transform: translate(0, calc(max(35vw, 300px) * 0.0875 * 5));
   }
 }
 .center {
@@ -137,7 +119,7 @@ p:nth-child(5) {
 }
 
 #post-it {
-  width: calc((100vw - max(40vw, 300px)) / 2);
+  width: calc((100vw - max(35vw, 300px)) / 2);
   position: relative;
 }
 #post-it:nth-child(2) {
@@ -171,12 +153,12 @@ p:nth-child(5) {
   height: 100%;
 }
 #content #frame.blue {
-  border: 5px solid var(--gb-f-blue);
-  background-color: var(--gb-blue);
+  border: 5px solid var(--color-frame-blue);
+  background-color: var(--color-inner-blue);
 }
 #content #frame.green {
-  border: 5px solid var(--gb-f-green);
-  background-color: var(--gb-green);
+  border: 5px solid var(--color-frame-green);
+  background-color: var(--color-inner-green);
 }
 #content #title-bar {
   height: 20px;
@@ -202,7 +184,7 @@ p:nth-child(5) {
   flex-direction: column;
 }
 #content .flex #h {
-  font-size: calc(max(40vw, 300px) * 0.0875 * 1);
+  font-size: calc(max(35vw, 300px) * 0.0875 * 1);
   margin-top: 0;
   margin-left: 5px;
   width: 100%;
