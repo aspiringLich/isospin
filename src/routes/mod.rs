@@ -7,6 +7,7 @@ mod home;
 mod html;
 mod md;
 mod root;
+mod header;
 
 pub fn attach(server: &mut Server) {
     home::attach(server);

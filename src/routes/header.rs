@@ -2,8 +2,7 @@ use std::fs;
 
 use rand::prelude::*;
 
-#[path = "../config.rs"]
-mod config;
+use crate::config;
 
 const X: i32 = 12;
 const Y: i32 = 5;

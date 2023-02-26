@@ -4,7 +4,7 @@
 use std::{fs, net::IpAddr, thread};
 
 use afire::{extension::ServeStatic, prelude::*};
-use anyhow::Result;
+use anyhow::{Result, Context};
 use crossterm::style::PrintStyledContent;
 
 extern crate chrono;
@@ -44,9 +44,15 @@ impl RealIp for Request {
 
 fn main() -> Result<()> {
     use crate::config::*;
+    // these folders may not there
     let possibly_ungenned_dirs = [BAKED_TEMPLATE_DIR, ARTICLE_OUT_DIR];
     for dir in possibly_ungenned_dirs {
         fs::create_dir_all(dir)?;
+    }
+    
+    // now clear em out
+    for entry in fs::read_dir(BAKED_TEMPLATE_DIR).context("can access BAKED_TEMPLATE_DIR")? {
+        fs::remove_file(entry?.path())?;
     }
 
     let mut server: Server = Server::<()>::new("localhost", 8080);

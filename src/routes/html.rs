@@ -3,7 +3,7 @@ use std::fs;
 use crate::{config, file::*, info};
 use afire::Request;
 
-use anyhow::Result;
+use anyhow::{Result, Context};
 use crossterm::style::PrintStyledContent;
 
 // use anyhow::Result;
@@ -32,9 +32,20 @@ where
         rebuild_html_template(path, build_fn)
     } else {
         // dbg!("bababooey");
-        fs::read_to_string(&format!("{}{}", config::BAKED_TEMPLATE_DIR, path))
-            .expect("html file should exist")
+        read_baked_template(path)
     }
+}
+
+/// gets the baked html file
+pub fn read_baked_template(path: &str) -> String {
+    fs::read_to_string(&format!("{}{}", config::BAKED_TEMPLATE_DIR, path))
+        .expect("html file should exist")
+}
+
+/// gets the html file before baking / preprocessing
+pub fn read_template(path: &str) -> String {
+    fs::read_to_string(&format!("{}{}", config::TEMPLATE_DIR, path))
+        .expect("html file should exist")
 }
 
 /// rebuilds a template given a path like "/blog.html"
