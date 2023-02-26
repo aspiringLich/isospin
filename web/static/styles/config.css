@@ -6,7 +6,7 @@
     --color-frame-green: hsl(132, 69%, 60%);
     --color-inner-green: hsl(132, 88%, 72%);
     
-    --color-bg: hsl(0, 2%, 92%);
+    --color-bg: hsl(0, 0%, 100%);
     --color-grid-1: rgba(255, 255, 255, 0.2);
-    --color-grid-2: rgba(255, 255, 255, 0.5);
+    --color-grid-2: rgba(255, 255, 255, 0.3);
 }

@@ -2,7 +2,7 @@
 @import "config.css";
 @font-face {
   font-family: "FixedSys";
-  src: url("../assets/FSEX300.ttf");
+  src: url("assets/FSEX300.ttf");
 }
 body {
   margin: 0;
@@ -341,6 +341,4 @@ p:nth-child(5) {
 
 #article {
   background: rgb(88, 88, 88);
-}
-
-/*# sourceMappingURL=styles.css.map */
+}/*# sourceMappingURL=styles.css.map */

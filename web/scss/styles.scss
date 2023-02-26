@@ -1,10 +1,8 @@
-@import "text.css";
-@import "config.css";
-
+@import "text.css", "config.css";
 // font stuff (noway)
 @font-face {
     font-family: 'FixedSys';
-    src: url('assets/FSEX300.ttf');
+    src: url('../assets/FSEX300.ttf');
 }
 
 body {
@@ -41,6 +39,7 @@ body {
 $lcd-width: max(35vw, 300px);
 $lcd-height: calc($lcd-width * 0.4825);
 $unit-width: calc($lcd-width / 114);
+$flop-size: calc($lcd-width * 0.3);
 
 $header-height: 50vh;
 
@@ -49,12 +48,10 @@ $header-height: 50vh;
     transform: translate(-8px, -8px);
     width: 100vw;
     height: $header-height;
-    z-index: 0; 
+    z-index: 0;
     position: relative;
-    // animation: scanlines 1s steps($scan-fps) infinite;
-
-    $flop-size: calc($lcd-width * 0.3);
-
+    // animation: scanlines 1s steps($scan-fps) infinite    
+    
     #flop {
         position: relative;
         width: $flop-size;
@@ -188,7 +185,7 @@ $border-radius: 10px;
             border: 5px solid var(--color-frame-blue);
             background-color: var(--color-inner-blue);
         }
-        
+
         &.green {
             border: 5px solid var(--color-frame-green);
             background-color: var(--color-inner-green);
@@ -385,7 +382,7 @@ $tab-info: (
         margin: 7.5px;
         width: calc(50% - 80px);
         height: 100%;
-
+        
         padding: 21px 16px 16px 16px;
 
         border-radius: 10px;
@@ -405,7 +402,7 @@ $tab-info: (
             width: calc(100%);
             padding-left: 5px;
             transform: translateY(-21px) translateX(-16px);
-
+            
             color: var(--gb-f-green);
             font-style: italic;
             font-size: small;
