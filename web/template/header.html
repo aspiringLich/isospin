@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Isospin</title>
+    <link rel="stylesheet" href="/styles/header.css">
     <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="/styles/project.css">
     <script defer src="/index.js"></script>
+    <link rel="preload" href="assets/lcd_dot_matrix.svg" as="image">
 </head>
 
-<body style="background-color: rgb(118, 151, 212)">
+<body>
     <div id="grid"></div>
     <div id="tabs">
         <a id="tab" href="/home">home</a>
@@ -16,8 +19,10 @@
                 src="assets/github.png"></a>
     </div>
     <div id="header">
-        <div id="post-it">{{POST-IT-L}}</div>
-        <div id="post-it">{{POST-IT-R}}</div>
+        <div>
+            <div id="post-it">{{POST-IT-L}}</div>
+            <div id="post-it" class="right">{{POST-IT-R}}</div>
+        </div>
         <div id="lcd" class="center-horizontal">
             <img src="assets/lcd_dot_matrix.svg" />
             <div id="lcd-matrix" class="center">

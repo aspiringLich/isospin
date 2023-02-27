@@ -1,5 +1,15 @@
+/* GRUVBOX but slightly modified */
 @import "text.css";
-@import "config.css";
+:root {
+  --color-frame-blue: hsl(192, 32%, 75%);
+  --color-inner-blue: hsl(193, 56%, 84%);
+  --color-frame-green: hsl(132, 69%, 60%);
+  --color-inner-green: hsl(132, 88%, 72%);
+  --color-bg: hsl(0, 0%, 100%);
+  --color-grid-1: rgba(255, 255, 255, 0.2);
+  --color-grid-2: rgba(255, 255, 255, 0.3);
+}
+
 @font-face {
   font-family: "FixedSys";
   src: url("../assets/FSEX300.ttf");
@@ -8,6 +18,7 @@ body {
   margin: 0;
   font-family: FixedSys;
   overflow-x: clip;
+  background-color: white;
 }
 
 #grid {
@@ -19,121 +30,6 @@ body {
   background-image: linear-gradient(0deg, transparent 9%, var(--color-grid-2) 10%, var(--color-grid-2) 12%, transparent 13%, transparent 29%, var(--color-grid-1) 30%, var(--color-grid-1) 31%, transparent 32%, transparent 49%, var(--color-grid-1) 50%, var(--color-grid-1) 51%, transparent 52%, transparent 69%, var(--color-grid-1) 70%, var(--color-grid-1) 71%, transparent 72%, transparent 89%, var(--color-grid-1) 90%, var(--color-grid-1) 91%, transparent 92%, transparent), linear-gradient(90deg, transparent 9%, var(--color-grid-2) 10%, var(--color-grid-2) 12%, transparent 13%, transparent 29%, var(--color-grid-1) 30%, var(--color-grid-1) 31%, transparent 32%, transparent 49%, var(--color-grid-1) 50%, var(--color-grid-1) 51%, transparent 52%, transparent 69%, var(--color-grid-1) 70%, var(--color-grid-1) 71%, transparent 72%, transparent 89%, var(--color-grid-1) 90%, var(--color-grid-1) 91%, transparent 92%, transparent);
   height: 100%;
   background-size: 50px 50px;
-}
-
-#header {
-  top: 4vh;
-  transform: translate(-8px, -8px);
-  width: 100vw;
-  height: 50vh;
-  z-index: 0;
-  position: relative;
-}
-#header #flop {
-  position: relative;
-  width: calc(max(35vw, 300px) * 0.3);
-  height: calc(max(35vw, 300px) * 0.3);
-  top: calc(50vh - max(35vw, 300px) * 0.3 + 10px - 4vh);
-  left: calc(50vw - max(35vw, 300px) * 0.3 / 2);
-}
-
-#lcd {
-  top: 50px;
-  z-index: 0;
-  width: max(35vw, 300px);
-  height: calc(max(35vw, 300px) * 0.4825);
-}
-
-#lcd-matrix {
-  overflow: hidden;
-  font-family: "FixedSys";
-  text-align: center;
-  -webkit-text-fill-color: #c9e1ff;
-  -webkit-text-stroke-color: #c9e1ff;
-  width: 84.2105263158%;
-  height: 63.6363636364%;
-  margin: auto;
-}
-#lcd-matrix h1 {
-  font-size: calc(max(35vw, 300px) * 0.0875 * 1.8);
-}
-#lcd-matrix p {
-  position: absolute;
-  -webkit-text-fill-color: rgba(201, 225, 255, 0.2509803922);
-  margin-top: 0;
-  margin-bottom: 0;
-  top: calc(max(35vw, 300px) * 0.0875 * -1);
-  font-size: calc(max(35vw, 300px) * 0.0875);
-  animation-name: text-scroll-down;
-  animation-timing-function: linear;
-  animation-duration: 5s;
-  animation-iteration-count: infinite;
-  transform-origin: center center;
-}
-
-p:nth-child(1) {
-  animation-delay: 4s;
-  -moz-animation-delay: 4s;
-}
-
-p:nth-child(2) {
-  animation-delay: 5s;
-  -moz-animation-delay: 5s;
-}
-
-p:nth-child(3) {
-  animation-delay: 6s;
-  -moz-animation-delay: 6s;
-}
-
-p:nth-child(4) {
-  animation-delay: 7s;
-  -moz-animation-delay: 7s;
-}
-
-p:nth-child(5) {
-  animation-delay: 8s;
-  -moz-animation-delay: 8s;
-}
-
-@keyframes text-scroll-down {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(0, calc(max(35vw, 300px) * 0.0875 * 5));
-  }
-}
-.center {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.center-horizontal {
-  margin: 0;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0%);
-}
-
-#post-it {
-  width: calc((100vw - max(35vw, 300px)) / 2);
-  position: relative;
-}
-#post-it:nth-child(2) {
-  right: -70vw;
-}
-#post-it #note {
-  position: absolute;
-  width: 20vw;
-  height: 20vw;
-}
-#post-it img {
-  position: absolute;
-  width: 80%;
-  height: 80%;
 }
 
 #content {
@@ -177,61 +73,6 @@ p:nth-child(5) {
   position: absolute;
   right: 0;
   top: 0;
-}
-#content .flex {
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-}
-#content .flex #h {
-  font-size: calc(max(35vw, 300px) * 0.0875 * 1);
-  margin-top: 0;
-  margin-left: 5px;
-  width: 100%;
-  position: relative;
-}
-#content .desc,
-#content .icon {
-  margin-top: 10px;
-  position: relative;
-  display: inline-block;
-  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1725490196);
-  height: 21.25vw;
-  transition: transform 1.5s, filter 0.4s;
-}
-#content .desc {
-  text-align: left;
-  width: 59.5vw;
-  margin-left: 8px;
-}
-#content .desc .markdown-body {
-  height: calc(21.25vw - 30px - 32px);
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-#content .icon {
-  border-radius: 10px;
-  width: 21.25vw;
-}
-#content .proj-wrapper {
-  width: 100%;
-  margin-left: 5px;
-  margin-right: 5px;
-}
-#content .proj-wrapper .desc {
-  visibility: hidden;
-  border: none;
-  transform: scaleX(0);
-}
-#content .proj-wrapper .icon {
-  transform: translateX(140%);
-}
-#content .active .desc {
-  visibility: visible;
-  transform: scaleX(1);
-}
-#content .active .icon {
-  transform: translateX(0%);
 }
 
 #tabs {

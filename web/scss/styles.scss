@@ -1,15 +1,20 @@
-@import "text.css", "config.css";
+@import "variables";
+@import "config";
+// other css files
+@import "text.css";
 // font stuff (noway)
 @font-face {
-    font-family: 'FixedSys';
-    src: url('../assets/FSEX300.ttf');
+    font-family: "FixedSys";
+    src: url("../assets/FSEX300.ttf");
 }
 
 body {
     margin: 0;
     font-family: FixedSys;
     overflow-x: clip;
+    background-color: white;
 }
+
 
 // stole from somewhere i forget
 #grid {
@@ -18,156 +23,57 @@ body {
     width: 100%;
     height: 200%;
     background-color: var(--color-bg);
-    background-image:
-        linear-gradient(0deg, transparent 9%,
-            var(--color-grid-2) 10%, var(--color-grid-2) 12%, transparent 13%, transparent 29%,
-            var(--color-grid-1) 30%, var(--color-grid-1) 31%, transparent 32%, transparent 49%,
-            var(--color-grid-1) 50%, var(--color-grid-1) 51%, transparent 52%, transparent 69%,
-            var(--color-grid-1) 70%, var(--color-grid-1) 71%, transparent 72%, transparent 89%,
-            var(--color-grid-1) 90%, var(--color-grid-1) 91%, transparent 92%, transparent),
-        linear-gradient(90deg, transparent 9%,
-            var(--color-grid-2) 10%, var(--color-grid-2) 12%, transparent 13%, transparent 29%,
-            var(--color-grid-1) 30%, var(--color-grid-1) 31%, transparent 32%, transparent 49%,
-            var(--color-grid-1) 50%, var(--color-grid-1) 51%, transparent 52%, transparent 69%,
-            var(--color-grid-1) 70%, var(--color-grid-1) 71%, transparent 72%, transparent 89%,
-            var(--color-grid-1) 90%, var(--color-grid-1) 91%, transparent 92%, transparent);
+    background-image: linear-gradient(
+            0deg,
+            transparent 9%,
+            var(--color-grid-2) 10%,
+            var(--color-grid-2) 12%,
+            transparent 13%,
+            transparent 29%,
+            var(--color-grid-1) 30%,
+            var(--color-grid-1) 31%,
+            transparent 32%,
+            transparent 49%,
+            var(--color-grid-1) 50%,
+            var(--color-grid-1) 51%,
+            transparent 52%,
+            transparent 69%,
+            var(--color-grid-1) 70%,
+            var(--color-grid-1) 71%,
+            transparent 72%,
+            transparent 89%,
+            var(--color-grid-1) 90%,
+            var(--color-grid-1) 91%,
+            transparent 92%,
+            transparent
+        ),
+        linear-gradient(
+            90deg,
+            transparent 9%,
+            var(--color-grid-2) 10%,
+            var(--color-grid-2) 12%,
+            transparent 13%,
+            transparent 29%,
+            var(--color-grid-1) 30%,
+            var(--color-grid-1) 31%,
+            transparent 32%,
+            transparent 49%,
+            var(--color-grid-1) 50%,
+            var(--color-grid-1) 51%,
+            transparent 52%,
+            transparent 69%,
+            var(--color-grid-1) 70%,
+            var(--color-grid-1) 71%,
+            transparent 72%,
+            transparent 89%,
+            var(--color-grid-1) 90%,
+            var(--color-grid-1) 91%,
+            transparent 92%,
+            transparent
+        );
     height: 100%;
     background-size: 50px 50px;
 }
-
-// size variables i reference later
-$lcd-width: max(35vw, 300px);
-$lcd-height: calc($lcd-width * 0.4825);
-$unit-width: calc($lcd-width / 114);
-$flop-size: calc($lcd-width * 0.3);
-
-$header-height: 50vh;
-
-#header {
-    top: 4vh;
-    transform: translate(-8px, -8px);
-    width: 100vw;
-    height: $header-height;
-    z-index: 0;
-    position: relative;
-    // animation: scanlines 1s steps($scan-fps) infinite    
-    
-    #flop {
-        position: relative;
-        width: $flop-size;
-        height: $flop-size;
-        top: calc($header-height - $flop-size + 10px - 4vh);
-        left: calc(50vw - $flop-size / 2);
-    }
-}
-
-// the lcd (self explanatory)
-#lcd {
-    top: 50px;
-    z-index: 0;
-    width: $lcd-width;
-    height: $lcd-height;
-}
-
-$text-size: calc($lcd-width * 0.0875);
-$animation-len: 5s;
-
-// the screen of the lcd
-#lcd-matrix {
-    overflow: hidden;
-    font-family: 'FixedSys';
-    text-align: center;
-    -webkit-text-fill-color: #c9e1ff;
-    -webkit-text-stroke-color: #c9e1ff;
-    width: calc(96%/114*100);
-    height: calc(35%/55*100);
-    margin: auto;
-
-    h1 {
-        font-size: calc($text-size * 1.8);
-    }
-
-    p {
-        position: absolute;
-        -webkit-text-fill-color: #c9e1ff40;
-        margin-top: 0;
-        margin-bottom: 0;
-        top: calc($text-size * -1);
-        font-size: $text-size;
-        animation-name: text-scroll-down;
-        animation-timing-function: linear;
-        animation-duration: $animation-len;
-        animation-iteration-count: infinite;
-        transform-origin: center center;
-    }
-}
-
-$elements: 5;
-
-// scroll the text down
-@for $i from 1 through $elements {
-    p:nth-child(#{$i}) {
-        $delay: calc(3s + $animation-len / $elements * $i);
-        animation-delay: $delay;
-        -moz-animation-delay: $delay;
-    }
-}
-
-@keyframes text-scroll-down {
-    0% {
-        transform: translate(0, 0);
-    }
-
-    100% {
-        transform: translate(0, calc($text-size * 5));
-    }
-}
-
-.center {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    &-horizontal {
-        margin: 0;
-        position: absolute;
-        left: 50%;
-        transform: translate(-50%, 0%);
-    }
-}
-
-$post-it-size: 20vw;
-
-
-// post it notes :D
-#post-it {
-    width: calc((100vw - $lcd-width) / 2);
-    position: relative;
-
-    // the second post it note group  should be aligned to the right
-    &:nth-child(2) {
-        right: -70vw;
-    }
-
-    // the post it notes themselves
-    #note {
-        position: absolute;
-        width: $post-it-size;
-        height: $post-it-size;
-    }
-
-    // the things drawn on the post its
-    img {
-        position: absolute;
-        width: 80%;
-        height: 80%;
-    }
-}
-
-$pane-width: 0.85;
-$border-radius: 10px;
 
 // the meat and bones of the websites, or, shockingly, the content
 #content {
@@ -212,7 +118,7 @@ $border-radius: 10px;
         border-top-right-radius: $border-radius;
 
         text-align: center;
-        font-family: 'FixedSys';
+        font-family: "FixedSys";
 
         #window-button {
             width: 60px;
@@ -221,86 +127,6 @@ $border-radius: 10px;
             right: 0;
             top: 0;
         }
-    }
-
-    $item-size: calc(25vw * $pane-width);
-    $desc-size: 2.8;
-
-    .flex {
-        justify-content: center;
-        display: flex;
-        flex-direction: column;
-
-        #h {
-            font-size: calc($text-size * 1);
-            margin-top: 0;
-            margin-left: 5px;
-            width: 100%;
-            position: relative;
-            // background-color: var(--gb-f-blue);
-        }
-    }
-
-    .desc,
-    .icon {
-        margin-top: 10px;
-        position: relative;
-        display: inline-block;
-        box-shadow: 10px 10px 10px #0000002c;
-        // left: 0;
-        // width: $item-size;
-        height: $item-size;
-        transition: transform 1.5s, filter 0.4s;
-    }
-
-    .desc {
-        text-align: left;
-        width: calc($item-size * $desc-size);
-        margin-left: 8px;
-
-        .markdown-body {
-            height: calc($item-size - 30px - 32px);
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
-    }
-
-    .icon {
-        // margin-right: 0px;
-        border-radius: 10px;
-        width: $item-size;
-    }
-
-    .proj-wrapper {
-        width: 100%;
-        margin-left: 5px;
-        margin-right: 5px;
-    }
-
-    .proj-wrapper {
-        .desc {
-            visibility: hidden;
-            border: none;
-            transform: scaleX(0);
-        }
-
-        .icon {
-            transform: translateX(calc(100% * $desc-size / 2));
-        }
-    }
-
-    .active {
-
-        .desc {
-            visibility: visible;
-            transform: scaleX(1);
-        }
-
-        .icon {
-
-            transform: translateX(0%);
-        }
-
     }
 }
 
@@ -344,9 +170,21 @@ $navbar-height: calc(1.2em);
 
 // info about each tab, width, color, etc
 $tab-info: (
-    "home": (8vw, var(--gb-blue), var(--gb-f-blue)),
-    "blog": (8vw, var(--gb-green), var(--gb-f-green)),
-    "source": ($navbar-height, transparent, var(--gb-fg0))
+    "home": (
+        8vw,
+        var(--gb-blue),
+        var(--gb-f-blue),
+    ),
+    "blog": (
+        8vw,
+        var(--gb-green),
+        var(--gb-f-green),
+    ),
+    "source": (
+        $navbar-height,
+        transparent,
+        var(--gb-fg0),
+    ),
 );
 
 @for $i from 1 through length($tab-info) {
@@ -382,7 +220,7 @@ $tab-info: (
         margin: 7.5px;
         width: calc(50% - 80px);
         height: 100%;
-        
+
         padding: 21px 16px 16px 16px;
 
         border-radius: 10px;
@@ -402,7 +240,7 @@ $tab-info: (
             width: calc(100%);
             padding-left: 5px;
             transform: translateY(-21px) translateX(-16px);
-            
+
             color: var(--gb-f-green);
             font-style: italic;
             font-size: small;

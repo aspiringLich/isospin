@@ -71,20 +71,20 @@ let big_header = main_subpage == "home" || main_subpage == "blog";
 
 
 // header scroll stuffs
-setAttr("#header", "transform: translateY(0px)");
-setAttr("#lcd", "margin-top: calc(0px)");
-setAttr("#flop", "transform: translateY(0px)");
+// setAttr("#header", "transform: translateY(0px)");
+// setAttr("#lcd", "margin-top: calc(0px)");
+// setAttr("#flop", "transform: translateY(0px)");
 
 function do_onscroll() {
     let scroll = getScrollTop();
     // header stuff, disable if scrolled too far down or we dont have the big header
-    if (big_header && scroll < viewportToPixels("80vw")) {
-        setAttr("#header", `transform: translateY(${scroll * 0.6}px)`);
-        setAttr("#lcd", `margin-top: calc(-${scroll * 0.1}px)`);
-        setAttr("#flop", `transform: translateY(-${scroll * 0.4}px)`);
-        setAttr("#grid", `background-position-y: -${scroll * 0.1}px`);
-        // TODO: randomly scroll each of the post it notes ?
-    }
+    // if (big_header && scroll < viewportToPixels("80vw")) {
+    //     setAttr("#header", `transform: translateY(${scroll * 0.6}px)`);
+    //     setAttr("#lcd", `margin-top: calc(-${scroll * 0.1}px)`);
+    //     setAttr("#flop", `transform: translateY(-${scroll * 0.4}px)`);
+    //     setAttr("#grid", `background-position-y: -${scroll * 0.1}px`);
+    //     // TODO: randomly scroll each of the post it notes ?
+    // }
     // subpage specific stuff
     switch (main_subpage) {
         case "home":

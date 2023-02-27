@@ -1,0 +1,57 @@
+.project .flex {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+.project .flex #h {
+  font-size: calc(clamp(300px, 35vw, 500px) * 0.0875 * 1);
+  margin-top: 0;
+  margin-left: 5px;
+  width: 100%;
+  position: relative;
+}
+.project .desc,
+.project .icon {
+  margin-top: 10px;
+  position: relative;
+  display: inline-block;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1725490196);
+  height: 21.25vw;
+  transition: transform 1.5s, filter 0.4s;
+}
+.project .desc {
+  text-align: left;
+  width: 59.5vw;
+  margin-left: 8px;
+}
+.project .desc .markdown-body {
+  height: calc(21.25vw - 30px - 32px);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.project .icon {
+  border-radius: 10px;
+  width: 21.25vw;
+}
+.project .proj-wrapper {
+  width: 100%;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.project .proj-wrapper .desc {
+  visibility: hidden;
+  border: none;
+  transform: scaleX(0);
+}
+.project .proj-wrapper .icon {
+  transform: translateX(140%);
+}
+.project .active .desc {
+  visibility: visible;
+  transform: scaleX(1);
+}
+.project .active .icon {
+  transform: translateX(0%);
+}
+
+/*# sourceMappingURL=project.css.map */

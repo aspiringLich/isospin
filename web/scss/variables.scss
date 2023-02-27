@@ -1,0 +1,12 @@
+
+
+$pane-width: 0.85;
+$border-radius: 10px;
+
+$lcd-width: clamp(300px, 35vw, 500px);
+$lcd-height: calc($lcd-width * 0.4825);
+$unit-width: calc($lcd-width / 114);
+$flop-size: calc($lcd-width * 0.3);
+$header-height: calc(4vh + $lcd-height * 1.5);
+
+$text-size: calc($lcd-width * 0.0875);
