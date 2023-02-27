@@ -3,7 +3,6 @@
 
 // size variables i reference later
 
-
 #header {
     top: 4vh;
     transform: translate(-8px, -8px);
@@ -11,7 +10,7 @@
     height: $header-height;
     z-index: 0;
     position: relative;
-    // animation: scanlines 1s steps($scan-fps) infinite    
+    // animation: scanlines 1s steps($scan-fps) infinite
 
     #flop {
         position: absolute;
@@ -35,12 +34,12 @@ $animation-len: 5s;
 // the screen of the lcd
 #lcd-matrix {
     overflow: hidden;
-    font-family: 'FixedSys';
+    font-family: "FixedSys";
     text-align: center;
     -webkit-text-fill-color: #c9e1ff;
     -webkit-text-stroke-color: #c9e1ff;
-    width: calc(96%/114*100);
-    height: calc(35%/55*100);
+    width: calc(96% / 114 * 100);
+    height: calc(35% / 55 * 100);
     margin: auto;
 
     h1 {
@@ -90,7 +89,7 @@ $post-it-grid: 8;
     // grid-template-columns: repeat($post-it-grid, minmax(0, 1fr));
     // grid-template-rows: repeat($post-it-grid, minmax(0, 1fr));
     // top: calc(-$post-it-size);
-    
+
     // the second post it note group  should be aligned to the right
     &:nth-child(1) {
         left: 0;
@@ -98,25 +97,26 @@ $post-it-grid: 8;
     &:nth-child(2) {
         right: 0;
     }
-    
+
     // the post it notes themselves
     #note {
         position: absolute;
         width: $post-it-size;
         height: $post-it-size;
     }
-    
+
     #note {
         margin: 0 auto;
     }
 
     // the things drawn on the post its
     img {
+        width: 80%;
         position: absolute;
         // transform: translate(calc(-$pos-it-size, -$post-it-size));
     }
 }
 
 .right > * {
-    right: 0
+    right: 0;
 }

@@ -1,5 +1,3 @@
-use std::fs;
-
 use afire::prelude::*;
 use afire::{ Content, Response };
 
@@ -11,9 +9,9 @@ use super::md::{ self, write_md_get_rebuild };
 
 fn build_home(template: String) -> String {
     let mut projects = "".to_string();
-    
+
     let project_template = read_template("/project.html");
-    
+
     for name in config::PROJECTS {
         let md = md::write_md_and_get_string(
             &format!("{}/{}.md", config::PROJ_DESC_DIR, name),

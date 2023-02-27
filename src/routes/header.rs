@@ -30,7 +30,7 @@ pub fn generate_header() -> String {
             let rot = rand::random::<f32>() * 45. - 22.5;
             let x = img_x[i] as f32 / GRID as f32;
             let y = img_y[i] as f32 / GRID as f32;
-            let post_it_col = ["blue", "green", "purple", "red", "yellow"][random::<usize>() % 5];
+            let hue = rng.gen_range(0.0..360.0);
             let post_it_img = img_order.next().unwrap();
             
             out += &read_template("/post_it.html")
@@ -39,6 +39,7 @@ pub fn generate_header() -> String {
                 .replace("{{X}}", &x.to_string())
                 .replace("{{TOP}}", &y.to_string())
                 .replace("{{IMG}}", &post_it_img.to_string())
+                .replace("{{HUE}}", &hue.to_string());
         }
         out
     };
