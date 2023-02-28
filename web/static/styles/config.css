@@ -3,8 +3,8 @@
   --color-frame-blue: hsl(192, 32%, 75%);
   --color-inner-blue: hsl(193, 56%, 84%);
   --color-bg: hsl(0, 0%, 100%);
-  --color-grid-1: rgba(255, 255, 255, 0.2);
-  --color-grid-2: rgba(255, 255, 255, 0.3);
+  --color-grid-1: rgba(0, 0, 0, 0.02);
+  --color-grid-2: rgba(0, 0, 0, 0.04);
 }
 
 /*# sourceMappingURL=config.css.map */

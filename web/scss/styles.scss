@@ -1,7 +1,9 @@
+@use "sass:math";
+
 @import "variables";
 @import "config";
+@import "text";
 // other css files
-@import "text.css";
 // font stuff (noway)
 @font-face {
     font-family: "FixedSys";
@@ -14,7 +16,6 @@ body {
     overflow-x: clip;
     background-color: white;
 }
-
 
 // stole from somewhere i forget
 #grid {
@@ -76,34 +77,24 @@ body {
 }
 
 // the meat and bones of the websites, or, shockingly, the content
-#content {
+.content {
     overflow: visible;
     left: 0px;
     // transform: TranslateY(100vh);
     position: relative;
-    left: calc(100vw * (1 - $pane-width) / 2);
-    width: calc(100vw * $pane-width);
+
+    left: calc(50vw - $content-width / 2);
+    width: $content-width;
     text-align: center;
     // background-color: gray;
 
     #frame {
-        &.blue {
-            border: 5px solid var(--color-frame-blue);
-            background-color: var(--color-inner-blue);
-        }
-
-        &.green {
-            border: 5px solid var(--color-frame-green);
-            background-color: var(--color-inner-green);
-        }
-
         border-radius: $border-radius;
+        border: $border-size solid;
         position: absolute;
         left: 0;
         width: 100%;
-        height: 100%;
-
-        height: 100%;
+        height: calc(100% - 5px);
     }
 
     #title-bar {
@@ -111,8 +102,7 @@ body {
         width: 100%;
         position: relative;
 
-        border: 5px solid var(--gb-bg0-h);
-        background-color: var(--gb-bg0);
+        border: $border-size solid;
 
         border-top-left-radius: $border-radius;
         border-top-right-radius: $border-radius;
@@ -126,6 +116,39 @@ body {
             position: absolute;
             right: 0;
             top: 0;
+        }
+    }
+}
+
+@for $i from 1 to 8 {
+    .content#home:nth-child(#{$i}) {
+        $hue: $i * 20 + 150;
+        #frame {
+            border-color: hsl($hue, 32%, 75%);
+            background-color: hsl($hue, 56%, 84%);
+        }
+        #title-bar {
+            border-color: hsl($hue, 32%, 75%);
+            background-color: hsl($hue, 72%, 91%);
+        }
+        .project {
+            .desc {
+                background-color: hsl($hue, 85%, 95%);
+            }
+        }
+    }
+    .content#blog {
+        $hue: $i * 20 + 20;
+        > #frame:nth-child(#{$i}) {
+            border-color: hsl($hue, 32%, 75%);
+            background-color: hsl($hue, 56%, 84%);
+            .markdown-body {
+                background-color: hsl($hue, 85%, 95%);
+            }
+        }
+        #title-bar:nth-child(#{$i}) {
+            border-color: hsl($hue, 32%, 75%);
+            background-color: hsl($hue, 72%, 91%);
         }
     }
 }
@@ -200,71 +223,6 @@ $tab-info: (
 
     #tab:nth-child(#{$i}):hover {
         background-color: $hover-color;
-    }
-}
-
-#preview-wrapper {
-    margin-left: 5px;
-    margin-right: 5px;
-    width: 100%;
-
-    align-items: center;
-    display: flex;
-
-    #preview {
-        flex: auto;
-        text-decoration: none;
-
-        display: inline-block;
-        position: relative;
-        margin: 7.5px;
-        width: calc(50% - 80px);
-        height: 100%;
-
-        padding: 21px 16px 16px 16px;
-
-        border-radius: 10px;
-        border: 5px solid var(--gb-f-green);
-
-        background-color: var(--gb-b-green);
-        text-align: left;
-
-        transition: 0.3s;
-
-        &:hover {
-            transform: scale(1.02) translateY(-5px);
-        }
-
-        #t {
-            position: absolute;
-            width: calc(100%);
-            padding-left: 5px;
-            transform: translateY(-21px) translateX(-16px);
-
-            color: var(--gb-f-green);
-            font-style: italic;
-            font-size: small;
-
-            border-bottom: 5px double var(--gb-f-green);
-
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-
-        #h {
-            color: var(--gb-bg1);
-            display: static;
-            font-size: x-large;
-            margin: 0;
-        }
-
-        #p {
-            margin-left: 16px;
-            color: var(--gb-bg1);
-            display: static;
-            font-size: medium;
-        }
     }
 }
 

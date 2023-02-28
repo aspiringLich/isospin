@@ -86,10 +86,7 @@ $post-it-grid: 8;
     height: calc($header-height - 6vh + $post-it-size);
     display: grid;
     position: absolute;
-    // grid-template-columns: repeat($post-it-grid, minmax(0, 1fr));
-    // grid-template-rows: repeat($post-it-grid, minmax(0, 1fr));
-    // top: calc(-$post-it-size);
-
+    
     // the second post it note group  should be aligned to the right
     &:nth-child(1) {
         left: 0;
@@ -97,18 +94,18 @@ $post-it-grid: 8;
     &:nth-child(2) {
         right: 0;
     }
-
+    
     // the post it notes themselves
     #note {
         position: absolute;
         width: $post-it-size;
         height: $post-it-size;
     }
-
+    
     #note {
         margin: 0 auto;
     }
-
+    
     // the things drawn on the post its
     img {
         width: 80%;
@@ -120,3 +117,5 @@ $post-it-grid: 8;
 .right > * {
     right: 0;
 }
+
+

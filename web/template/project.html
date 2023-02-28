@@ -1,23 +1,13 @@
-<div id="frame" class="blue"></div>
-<div class="flex">
-    <div id="title-bar">
-        <img id="window-button" src="assets/window.svg" />
-        <i><span style="color:var(--text-blue)">Viewing</span>
-            <span style="color:var(--text-green)"> - </span>
-            <span style="color:var(--text-yellow)">web</span>
-            <span style="color:var(--text-green)">/</span>
-            <span style="color:var(--text-yellow)">template</span>
-            <span style="color:var(--text-green)">/</span>
-            <span style="color:var(--text-yellow)">home</span>
-            <span style="color:var(--text-red)">.html</span>
-        </i>
-    </div>
-    <div class="project">
-        <div class="proj-wrapper">
-            <img class="icon" src="projects/{{NAME}}.png">
-            <div class="desc">
-                </i>
-            </div>
-        </div>
+<div id="frame"></div>
+<div id="title-bar">
+    <img id="window-button" src="assets/window.svg" />
+    <i>
+        Viewing media/article/{{NAME}}.md
+    </i>
+</div>
+<div class="project">
+    <img class="icon" src="projects/{{NAME}}.png">
+    <div class="desc">
+        {{CONTENT}}
     </div>
 </div>

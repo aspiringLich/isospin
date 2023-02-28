@@ -1,7 +1,8 @@
 
 
-$pane-width: 0.85;
+$content-width: min(calc(100vw * 0.85), 1000px);
 $border-radius: 10px;
+$border-size: 5px;
 
 $lcd-width: clamp(300px, 35vw, 500px);
 $lcd-height: calc($lcd-width * 0.4825);
