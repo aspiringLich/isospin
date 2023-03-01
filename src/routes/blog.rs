@@ -168,8 +168,7 @@ fn build_blog(template: String) -> String {
 /// route for `/blog`, goes to my archive of schizophrenic rambling
 pub fn attach(server: &mut Server) {
     // home screen
-    server.route(Method::GET, "/blog", |_req| {
-        let template = header::generate_header();
+    server.route(Method::GET, "blog", |_req| {
         // do any of the md files need rebuilding? (basically)
         let rebuild = {
             let mut ret = false;
@@ -199,13 +198,13 @@ pub fn attach(server: &mut Server) {
         };
 
         let html = if rebuild {
-            rebuild_html_template("/blog.html", build_blog)
+            rebuild_html_template("blog", build_blog)
         } else {
-            get_template("/blog.html", build_blog)
+            get_template("blog", build_blog)
         };
-
+        
         Response::new()
-            .text(template.replacen("{{CONTENT}}", &html, 1))
+            .text(header::generate_header(&html))
             .content(Content::HTML)
     });
 }

@@ -10,7 +10,7 @@ use super::md::{ self, write_md_get_rebuild };
 fn build_home(template: String) -> String {
     let mut projects = "".to_string();
 
-    let project_template = read_template("/project.html");
+    let project_template = read_template("project");
 
     for name in config::PROJECTS {
         let md = md::write_md_and_get_string(
@@ -40,12 +40,12 @@ pub fn attach(server: &mut Server) {
             });
 
         let html = if rebuild {
-            rebuild_html_template("/home.html", build_home)
+            rebuild_html_template("home", build_home)
         } else {
-            get_template("/home.html", build_home)
+            get_template("home", build_home)
         };
-        let template = header::generate_header();
-
-        Response::new().text(template.replacen("{{CONTENT}}", &html, 1)).content(Content::HTML)
+        let template = header::generate_header(&html);
+        
+        Response::new().text(template).content(Content::HTML)
     });
 }

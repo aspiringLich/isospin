@@ -2,13 +2,16 @@ use std::fs;
 
 use rand::prelude::*;
 
-use crate::{ config, routes::html::read_template };
+use crate::{ config, routes::html::read_template, template::TemplateBuilder };
 
 const GRID: i32 = 8;
 const POST_ITS: i32 = 8;
 
-pub fn generate_header() -> String {
-    let template = read_template("/header.html");
+pub fn generate_header<'a>(
+    content: &str
+) -> String {
+    let template = read_template("header");
+    let template = TemplateBuilder::from_template(&template).unwrap();
 
     let mut rng = thread_rng();
 
@@ -33,17 +36,19 @@ pub fn generate_header() -> String {
             let hue = rng.gen_range(0.0..360.0);
             let post_it_img = img_order.next().unwrap();
 
-            out += &read_template("/post_it.html")
-                .replace("{{ROT}}", &rot.to_string())
-                .replace("{{POS}}", pos)
-                .replace("{{X}}", &x.to_string())
-                .replace("{{TOP}}", &y.to_string())
-                .replace("{{IMG}}", &post_it_img.to_string())
-                .replace("{{HUE}}", &hue.to_string());
+            out += &TemplateBuilder::from_template(&read_template("post_it"))
+                .unwrap()
+                .replace("ROT", rot)
+                .replace("POS", pos)
+                .replace("X", x)
+                .replace("TOP", y)
+                .replace("IMG", post_it_img)
+                .replace("HUE", hue)
+                .build();
         }
         out
     };
-    
+
     let preconnect = (1..=POST_ITS)
         .into_iter()
         .map(|n|
@@ -52,7 +57,9 @@ pub fn generate_header() -> String {
         .collect::<String>();
 
     template
-        .replacen("{{POST-IT-L}}", &generate_html("left"), 1)
-        .replacen("{{POST-IT-R}}", &generate_html("right"), 1)
-        .replace("{{PRECONNECT}}", &preconnect)
+        .replace("POST-IT-L", generate_html("left"))
+        .replace("POST-IT-R", generate_html("right"))
+        .replace("PRECONNECT", preconnect)
+        .replace("CONTENT", content)
+        .build()
 }

@@ -15,6 +15,7 @@ mod config;
 mod file;
 mod routes;
 mod sql;
+
 mod template;
 
 #[macro_use]
