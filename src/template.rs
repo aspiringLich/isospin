@@ -1,21 +1,13 @@
-use std::default::default;
-use std::fs::read_to_string;
-use std::io;
-use std::fs;
 use std::str;
-
 use anyhow::Context;
-
-use crate::config::BAKED_TEMPLATE_DIR;
-use crate::routes::html::get_template;
-use crate::routes::html::read_template;
 
 /// A struct to facilitate turning a HTML template file
 /// into the renderred HTML file
 #[derive(Debug, Clone, Default)]
 pub struct TemplateBuilder<'a> {
     sections: Vec<&'a str>,
-    snippets: Vec<String>,
+    snippets: Vec<&'a str>,
+    changed: Vec<Option<String>>,
 }
 
 impl<'a> TemplateBuilder<'a> {
@@ -46,9 +38,11 @@ impl<'a> TemplateBuilder<'a> {
                 let section = section.get(i + 2..);
 
                 out.sections.push(section.context("error when getting section str")?);
-                out.snippets.push(snippet.context("error when getting snippet str")?.to_string());
+                out.snippets.push(snippet.context("error when getting snippet str")?);
             }
         }
+        
+        out.changed = vec![None; out.snippets.len()];
 
         Ok(out)
     }
@@ -57,11 +51,11 @@ impl<'a> TemplateBuilder<'a> {
         let with_string = to.to_string();
 
         let mut any = false;
-
-        for s in self.snippets.iter_mut() {
-            if s == from {
+        
+        for (i, s) in self.snippets.iter().enumerate() {
+            if *s == from {
                 any = true;
-                *s = with_string.clone();
+                self.changed[i] = Some(with_string.clone());
             }
         }
 
@@ -72,12 +66,16 @@ impl<'a> TemplateBuilder<'a> {
         self
     }
 
-    pub fn build(mut self) -> String {
+    pub fn build(self) -> String {
         let mut out = String::new();
         out.push_str(self.sections.first().unwrap());
 
         for i in 0..self.snippets.len() {
-            out.push_str(&self.snippets[i]);
+            if let Some(snippet) = &self.changed[i] {
+                out += snippet;
+            } else {
+                out += &format!("{{{{{}}}}}", self.snippets[i])
+            }
             out.push_str(self.sections[i + 1]);
         }
 
@@ -90,7 +88,7 @@ pub fn test_template_builder() -> anyhow::Result<()> {
     let builder = TemplateBuilder::from_template("blah blah {{REPLACE}} stuff")?;
 
     assert_eq!(builder.sections, vec!["blah blah ", " stuff"]);
-    assert_eq!(builder.snippets, vec!["REPLACE".to_string()]);
+    assert_eq!(builder.snippets, vec!["REPLACE"]);
 
     let out = builder.replace("REPLACE", "test").build();
 

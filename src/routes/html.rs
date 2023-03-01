@@ -59,13 +59,13 @@ where
         PrintStyledContent("Rebuilding html file: ".blue()),
         PrintStyledContent(format!("{}", path).yellow()),
     );
-    let path = format!("{}/{}.html", config::TEMPLATE_DIR, path);
+    let template_path = format!("{}/{}.html", config::TEMPLATE_DIR, path);
     let out = build_fn(
-        fs::read_to_string(&path)
+        fs::read_to_string(&template_path)
             .expect(&format!("expected {} to exist", path)),
     );
     
-    fs::write(&path, &out).expect("write successful");
+    fs::write(&path, format!("{}/{}.html", config::BAKED_TEMPLATE_DIR, path)).expect("write successful");
     out
     
 }
