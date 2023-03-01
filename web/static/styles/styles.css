@@ -1,14 +1,11 @@
 /* GRUVBOX but slightly modified */
 :root {
-  --color-frame-blue: hsl(192, 32%, 75%);
-  --color-inner-blue: hsl(193, 56%, 84%);
   --color-bg: hsl(0, 0%, 100%);
   --color-grid-1: rgba(0, 0, 0, 0.02);
   --color-grid-2: rgba(0, 0, 0, 0.04);
 }
 
 .desc {
-  /* padding: 16px 32px 16px 32px; */
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   margin: 0;

@@ -1,13 +1,14 @@
 @import "variables";
 
+$item-size: calc($content-width * 0.25);
+
 .project {
-    $item-size: calc($content-width * 0.25);
     $desc-size: 2.8;
-    
+
     // .flex {
     //     justify-content: left;
     //     display: flex;
-        
+
     //     #h {
     //         font-size: calc($text-size * 1);
     //         margin-top: 0;
@@ -17,37 +18,46 @@
     //         // background-color: var(--gb-f-blue);
     //     }
     // }
-    
+
     .project {
         display: flex;
         flex-direction: row;
     }
+}
+
+.desc,
+.icon {
+    position: relative;
+    display: inline-block;
+    // box-shadow: 10px 10px 10px #0000002c;
+    // left: 0;
+    // width: $item-size;
+    height: $item-size;
+    // transition: transform 1.5s, filter 0.4s;
+}
+
+
+.icon {
+    margin-left: 5px;
+    border-radius: 10px;
+    width: $item-size;
+}
+
+.desc {
+    padding-left: 15px;
+    margin-top: 5px;
+    text-align: left;
+    border-radius: $border-size;
+    width: calc(100% - $border-size * 2 - $item-size - 20px);
+    // flex: 1;
+    height: $item-size;
+    overflow: scroll;
     
-    .desc,
-    .icon {
-        position: relative;
-        display: inline-block;
-        // box-shadow: 10px 10px 10px #0000002c;
-        // left: 0;
-        // width: $item-size;
-        height: $item-size;
-        // transition: transform 1.5s, filter 0.4s;
+    h1 {
+        margin: 0.5em 0;
     }
     
-    .desc {
-        padding-left: 15px;
-        margin-top: 5px;
-        text-align: left;
-        border-radius: $border-size;
-        width: calc(100% - $border-size * 2 - $item-size - 20px);
-        // flex: 1;
-        height: $item-size;
-        overflow: scroll;
-    }
-    
-    .icon {
-        margin-left: 5px;
-        border-radius: 10px;
-        width: $item-size;
+    p {
+        margin: 0.5em 0;
     }
 }

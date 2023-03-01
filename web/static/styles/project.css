@@ -2,13 +2,21 @@
   display: flex;
   flex-direction: row;
 }
-.project .desc,
-.project .icon {
+
+.desc,
+.icon {
   position: relative;
   display: inline-block;
   height: calc(min(85vw, 1000px) * 0.25);
 }
-.project .desc {
+
+.icon {
+  margin-left: 5px;
+  border-radius: 10px;
+  width: calc(min(85vw, 1000px) * 0.25);
+}
+
+.desc {
   padding-left: 15px;
   margin-top: 5px;
   text-align: left;
@@ -17,10 +25,11 @@
   height: calc(min(85vw, 1000px) * 0.25);
   overflow: scroll;
 }
-.project .icon {
-  margin-left: 5px;
-  border-radius: 10px;
-  width: calc(min(85vw, 1000px) * 0.25);
+.desc h1 {
+  margin: 0.5em 0;
+}
+.desc p {
+  margin: 0.5em 0;
 }
 
 /*# sourceMappingURL=project.css.map */
