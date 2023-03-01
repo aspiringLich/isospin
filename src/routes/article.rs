@@ -15,7 +15,10 @@ fn build_article(article: &str) -> String {
     let article_out = &format!("{}/{}.html", config::ARTICLE_OUT_DIR, article);
 
     if need_rebuild(template_file, article_out) || need_rebuild(article_in, article_out) {
-        info!(Print(format!("Rebuilding article: {}", article)));
+        info!(
+            "Rebuilding article: ".blue(),
+            article.to_string().yellow()
+        );
 
         let mut template = fs::read_to_string(template_file)
             .expect("template/article.html or whatever should exist");

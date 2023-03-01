@@ -31,7 +31,8 @@ impl FrontMatter {
     /// ```
     pub fn new(path: &str) -> Self {
         info! {
-            Print(format!("Parsing frontmatter header for {}", path))
+            "Parsing frontmatter header for ".blue(),
+            path.yellow()
         };
 
         let buf = &fs::read_to_string(path).expect(&format!("can read path of file: {}", path));
@@ -100,8 +101,8 @@ impl FrontMatter {
                 *field = value;
             } else {
                 warn! {
-                    PrintStyledContent("While building /home.html: ".yellow()),
-                    Print(format!("possible misspelling in {} front matter header: {}", key, path)),
+                    "While building /home.html: ".yellow(),
+                    format!("possible misspelling in {} front matter header: {}", key, path)
                 };
             }
         }

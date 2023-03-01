@@ -4,7 +4,7 @@ use crate::{ config, file::*, info };
 use afire::Request;
 
 use anyhow::{ Result, Context };
-use crossterm::style::PrintStyledContent;
+use crossterm::style::{PrintStyledContent, Print};
 
 // use anyhow::Result;
 
@@ -52,8 +52,8 @@ pub fn read_template(path: &str) -> String {
 /// handles writing out to file
 pub fn rebuild_html_template<F>(path: &str, build_fn: F) -> String where F: Fn(String) -> String {
     info!(
-        PrintStyledContent("Rebuilding html file: ".blue()),
-        PrintStyledContent(format!("{}", path).yellow())
+        "Rebuilding html file: ".blue(),
+        path.yellow()
     );
     let template_path = format!("{}/{}.html", config::TEMPLATE_DIR, path);
     let out = build_fn(

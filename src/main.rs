@@ -67,9 +67,9 @@ fn main() -> Result<()> {
         })
         .not_found(|req, _dis| -> Response {
             warn!(
-                PrintStyledContent("failed to serve static to ".blue()),
-                PrintStyledContent(format!("{} ", req.real_ip()).green()),
-                PrintStyledContent(format!("{}", req.path).yellow()),
+                "failed to serve static to ".blue(),
+                req.real_ip().to_string().green(),
+                req.path.clone().yellow()
             );
             let cls = || -> Result<Response> {
                 let res = Response::new()
