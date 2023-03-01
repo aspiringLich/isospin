@@ -1,5 +1,6 @@
 #![feature(default_free_fn)]
 #![feature(iter_array_chunks)]
+#![feature(let_chains)]
 
 use std::{fs, net::IpAddr, thread};
 
@@ -14,6 +15,7 @@ mod config;
 mod file;
 mod routes;
 mod sql;
+mod template;
 
 #[macro_use]
 mod sh;
