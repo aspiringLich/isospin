@@ -16,8 +16,8 @@ pub fn get_req(req: Request) -> Result<Request> {
 
 fn template_needs_rebuild(path: &str) -> bool {
     need_rebuild(
-        &format!("{}{}", config::TEMPLATE_DIR, path),
-        &format!("{}{}", config::BAKED_TEMPLATE_DIR, path),
+        &format!("{}/{}.html", config::TEMPLATE_DIR, path),
+        &format!("{}/{}.html", config::BAKED_TEMPLATE_DIR, path),
     )
 }
 
@@ -38,13 +38,13 @@ where
 
 /// gets the baked html file
 pub fn read_baked_template(path: &str) -> String {
-    fs::read_to_string(&format!("{}{}", config::BAKED_TEMPLATE_DIR, path))
+    fs::read_to_string(&format!("{}/{}.html", config::BAKED_TEMPLATE_DIR, path))
         .expect("html file should exist")
 }
 
 /// gets the html file before baking / preprocessing
 pub fn read_template(path: &str) -> String {
-    fs::read_to_string(&format!("{}{}", config::TEMPLATE_DIR, path))
+    fs::read_to_string(&format!("{}/{}.html", config::TEMPLATE_DIR, path))
         .expect("html file should exist")
 }
 
@@ -59,11 +59,13 @@ where
         PrintStyledContent("Rebuilding html file: ".blue()),
         PrintStyledContent(format!("{}", path).yellow()),
     );
+    let path = format!("{}/{}.html", config::TEMPLATE_DIR, path);
     let out = build_fn(
-        fs::read_to_string(&format!("{}{}", config::TEMPLATE_DIR, path))
-            .expect("html file and ./web/template/baked/ should exist"),
+        fs::read_to_string(&path)
+            .expect(&format!("expected {} to exist", path)),
     );
-
-    fs::write(&format!("{}{}", config::BAKED_TEMPLATE_DIR, path), &out).expect("write successful");
+    
+    fs::write(&path, &out).expect("write successful");
     out
+    
 }

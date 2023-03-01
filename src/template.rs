@@ -1,9 +1,14 @@
 use std::default::default;
+use std::fs::read_to_string;
 use std::io;
 use std::fs;
 use std::str;
 
 use anyhow::Context;
+
+use crate::config::BAKED_TEMPLATE_DIR;
+use crate::routes::html::get_template;
+use crate::routes::html::read_template;
 
 /// A struct to facilitate turning a HTML template file
 /// into the renderred HTML file
@@ -45,38 +50,37 @@ impl<'a> TemplateBuilder<'a> {
             }
         }
 
-        Ok(out)                 
+        Ok(out)
     }
-    
-    
-    pub fn replace<T: ToString>(mut self, section: &str, with: T) -> Self {
-        let with_string = with.to_string();
-        
+
+    pub fn replace<T: ToString>(mut self, from: &str, to: T) -> Self {
+        let with_string = to.to_string();
+
         let mut any = false;
-        
+
         for s in self.snippets.iter_mut() {
-            if s == section {
+            if s == from {
                 any = true;
                 *s = with_string.clone();
             }
         }
-        
+
         if !any {
-            panic!("Did not find {{{}}} in the specified template!", section)
+            panic!("Did not find {{{}}} in the specified template!", from);
         }
-        
+
         self
     }
-    
+
     pub fn build(mut self) -> String {
         let mut out = String::new();
         out.push_str(self.sections.first().unwrap());
-        
+
         for i in 0..self.snippets.len() {
             out.push_str(&self.snippets[i]);
             out.push_str(self.sections[i + 1]);
         }
-        
+
         out
     }
 }
@@ -84,13 +88,13 @@ impl<'a> TemplateBuilder<'a> {
 #[test]
 pub fn test_template_builder() -> anyhow::Result<()> {
     let builder = TemplateBuilder::from_template("blah blah {{REPLACE}} stuff")?;
-    
+
     assert_eq!(builder.sections, vec!["blah blah ", " stuff"]);
     assert_eq!(builder.snippets, vec!["REPLACE".to_string()]);
-    
+
     let out = builder.replace("REPLACE", "test").build();
-    
+
     assert_eq!(out, "blah blah test stuff");
-    
+
     Ok(())
 }

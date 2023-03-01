@@ -1,13 +1,13 @@
 use crate::Server;
 use afire::prelude::*;
 
-mod article;
-mod blog;
-mod home;
-mod html;
-mod md;
-mod root;
-mod header;
+pub mod article;
+pub mod blog;
+pub mod home;
+pub mod html;
+pub mod md;
+pub mod root;
+pub mod header;
 
 pub fn attach(server: &mut Server) {
     home::attach(server);
