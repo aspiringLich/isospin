@@ -2,7 +2,6 @@ use afire::prelude::*;
 use afire::{Content, Response};
 
 use chrono::{DateTime, Local};
-use crossterm::style::{Print, PrintStyledContent};
 use std::default::default;
 use std::fs;
 

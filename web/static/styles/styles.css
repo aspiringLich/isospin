@@ -272,7 +272,7 @@ body {
 
 #tabs {
   z-index: 9001;
-  position: fixed;
+  position: absolute;
   font-size: 4vh;
   height: 1.2em;
   width: 100vw;

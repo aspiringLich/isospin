@@ -158,7 +158,7 @@ $navbar-height: calc(1.2em);
 #tabs {
     z-index: 9001;
 
-    position: fixed;
+    position: absolute;
     font-size: 4vh;
 
     height: $navbar-height;

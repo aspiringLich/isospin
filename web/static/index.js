@@ -101,12 +101,16 @@ function do_onscroll() {
         case "blog":
             break;
     }
+    document.body.style.setProperty(
+        '--scroll', 
+        window.pageYOffset / (document.body.offsetHeight - window.innerHeight)
+    );
 }
 // run it once so these effects activate before the user has to scroll (if applicable)
 
 do_onscroll();
-window.onscroll = do_onscroll;
 
+window.addEventListener("scroll", do_onscroll, false);
 
 // * SIZE BASED EFFECTS
 
