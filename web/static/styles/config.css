@@ -5,4 +5,15 @@
   --color-grid-2: rgba(0, 0, 0, 0.04);
 }
 
+@keyframes parallax {
+  to {
+    transform: translateY(10vw);
+  }
+}
+@keyframes parallax-rev {
+  to {
+    transform: translateY(-10vw);
+  }
+}
+
 /*# sourceMappingURL=config.css.map */

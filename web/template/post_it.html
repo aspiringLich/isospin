@@ -1,11 +1,11 @@
 <div id="note" style="
-    rotate: {{ROT}}deg; 
     top: calc({{TOP}}vh * 20);
-    {{POS}}: calc({{X}}vw * 30 - 10vw);
+    {{POS}}: calc({{X}} * var(--post-it-space));
     ">
-    <!-- <object type="image/svg+xml" data="assets/post-its/{{POST}}.svg"></object> -->
-    <img src="assets/post-it-imgs/{{IMG}}.png" class="center"></img>
-    <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-        <polygon style="fill: hsl({{HUE}}, 35%, 81%); stroke: hsl({{HUE}}, 39%, 74%);" points="5 5 5 45 45 45 45 5" />
-    </svg>
+    <div style="rotate: {{ROT}}deg">
+        <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+            <polygon style="fill: hsl({{HUE}}, 35%, 81%); stroke: hsl({{HUE}}, 39%, 74%);" points="5 5 5 45 45 45 45 5" />
+        </svg>
+        <img src="assets/post-it-imgs/{{IMG}}.png" class="center"></img>
+    </div>
 </div>

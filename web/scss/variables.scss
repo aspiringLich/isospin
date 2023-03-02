@@ -11,3 +11,7 @@ $flop-size: calc($lcd-width * 0.3);
 $header-height: calc(4vh + $lcd-height * 1.5);
 
 $text-size: calc($lcd-width * 0.0875);
+
+:root {
+    --post-it-space: calc(50vw - #{$lcd-width} / 2);
+}

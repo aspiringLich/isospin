@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @import "config";
 @import "variables";
 
@@ -10,15 +12,18 @@
     height: $header-height;
     z-index: 0;
     position: relative;
-    // animation: scanlines 1s steps($scan-fps) infinite
+    
+    animation: parallax 3s linear;
+    animation-play-state: paused;
+    animation-delay: calc(var(--scroll) * -1s);
+}
 
-    #flop {
-        position: absolute;
-        width: $flop-size;
-        height: $flop-size;
-        top: calc($header-height - $flop-size + 10px - 4vh);
-        left: calc(50vw - $flop-size / 2);
-    }
+#flop {
+    position: absolute;
+    width: $flop-size;
+    height: $flop-size;
+    top: calc($header-height - $flop-size + 10px);
+    left: calc(50vw - $flop-size / 2);
 }
 
 // the lcd (self explanatory)
@@ -61,7 +66,7 @@ $animation-len: 5s;
     }
 }
 
-$post-it-size: min(20vw, 300px);
+$post-it-size: calc($lcd-width * 0.55);
 
 .center {
     margin: 0;
@@ -82,7 +87,7 @@ $post-it-grid: 8;
 
 // post it notes :D
 #post-it {
-    width: calc(50vw - $lcd-width / 2);
+    width: var(--post-it-space);
     height: calc($header-height - 6vh + $post-it-size);
     display: grid;
     position: absolute;
@@ -94,18 +99,24 @@ $post-it-grid: 8;
     &:nth-child(2) {
         right: 0;
     }
-    
+
     // the post it notes themselves
     #note {
         position: absolute;
         width: $post-it-size;
         height: $post-it-size;
-    }
-    
-    #note {
+        
         margin: 0 auto;
+        
+        @for $i from 1 through 8 {
+            &:nth-child(#{$i}) {
+                animation: parallax #{math.div($i + 1, 2) + 0.5}s linear infinite;
+                animation-play-state: paused;
+                animation-delay: calc(var(--scroll) * -1s);
+            }
+        }
     }
-    
+
     // the things drawn on the post its
     img {
         width: 80%;
@@ -117,5 +128,3 @@ $post-it-grid: 8;
 .right > * {
     right: 0;
 }
-
-

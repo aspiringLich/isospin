@@ -43,8 +43,32 @@ let main_subpage = url.split("//", 2)[1].split("/", 2)[1];
 
 // type title
 let title = document.querySelector("#lcd-matrix h1");
-let transitions = `&lt &ltI &ltIS &ltISO &ltISOS &ltISOSO &ltISOSOP &ltISOSOPN &ltISOSOPN &ltISOSOPN &ltISOSOPN &ltISOSOP &ltISOSO &ltISOS &ltISOS &ltISOSP &ltISOSPI &ltISOSPIN &ltISOSPIN&gt &ltISOSPIN&gt &ltISOSPIN&gt
-`.split(" ");
+let transitions = `
+&lt
+&lt
+&ltI
+&ltIS
+&ltISO
+&ltISOS
+&ltISOSO
+&ltISOSOP
+&ltISOSOPN
+&ltISOSOPN
+&ltISOSOPN
+&ltISOSOPN
+&ltISOSOP
+&ltISOSO
+&ltISOS
+&ltISOS
+&ltISOSP
+&ltISOSPI
+&ltISOSPIN
+&ltISOSPIN
+&ltISOSPIN&gt
+&ltISOSPIN&gt
+&ltISOSPIN&gt
+`.split("\n");
+
 let delay = 150;
 let variance = 0.3;
 function type_title(count) {
@@ -54,16 +78,7 @@ function type_title(count) {
 }
 
 type_title(0);
-// // scrolling text
-// let scrolling = document.querySelectorAll("#lcd-matrix p");
-// let cnt = 0;
-// function change_text(element) {
-//     element.innerHTML = [cnt += 1, "Fizz", "Buzz", "FizzBuzz"][(cnt % 3 == 0 ? 1 : 0) + ((cnt % 5 == 0 ? 1 : 0) * 2)];
-// }
-// scrolling.forEach((x) => {
-//     x.addEventListener("animationstart", () => { change_text(x) });
-//     x.addEventListener("animationiteration", () => { change_text(x) });
-// })
+
 let big_header = main_subpage == "home" || main_subpage == "blog";
 
 
@@ -76,33 +91,8 @@ let big_header = main_subpage == "home" || main_subpage == "blog";
 // setAttr("#flop", "transform: translateY(0px)");
 
 function do_onscroll() {
-    let scroll = getScrollTop();
-    // header stuff, disable if scrolled too far down or we dont have the big header
-    // if (big_header && scroll < viewportToPixels("80vw")) {
-    //     setAttr("#header", `transform: translateY(${scroll * 0.6}px)`);
-    //     setAttr("#lcd", `margin-top: calc(-${scroll * 0.1}px)`);
-    //     setAttr("#flop", `transform: translateY(-${scroll * 0.4}px)`);
-    //     setAttr("#grid", `background-position-y: -${scroll * 0.1}px`);
-    //     // TODO: randomly scroll each of the post it notes ?
-    // }
-    // subpage specific stuff
-    switch (main_subpage) {
-        case "home":
-            // if were still not scrolled past the final element
-            let elem = document.querySelectorAll(".proj-wrapper");
-            if (scrolln < elem.length) {
-                // open it up if scrolled into view
-                if (isScrolledIntoView(elem[scrolln])) {
-                    elem[scrolln].classList.add("active");
-                    scrolln++;
-                }
-            }
-            break;
-        case "blog":
-            break;
-    }
     document.body.style.setProperty(
-        '--scroll', 
+        '--scroll',
         window.pageYOffset / (document.body.offsetHeight - window.innerHeight)
     );
 }

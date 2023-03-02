@@ -20,7 +20,7 @@ pub fn generate_header<'a>(
     let mut img_order: Vec<u32> = (1..=paths.unwrap().collect::<Vec<_>>().len() as u32).collect();
     img_order.shuffle(&mut rng);
     let mut img_order = img_order.iter();
-
+    
     let mut generate_html = |pos| {
         let mut out: String = Default::default();
 
@@ -44,6 +44,7 @@ pub fn generate_header<'a>(
                 .replace("TOP", y)
                 .replace("IMG", post_it_img)
                 .replace("HUE", hue)
+                // .replace("DELAY", rand::random::<f32>())
                 .build();
         }
         out

@@ -5,6 +5,20 @@
   --color-grid-2: rgba(0, 0, 0, 0.04);
 }
 
+@keyframes parallax {
+  to {
+    transform: translateY(10vw);
+  }
+}
+@keyframes parallax-rev {
+  to {
+    transform: translateY(-10vw);
+  }
+}
+:root {
+  --post-it-space: calc(50vw - clamp(300px, 35vw, 500px) / 2);
+}
+
 #header {
   top: 4vh;
   transform: translate(-8px, -8px);
@@ -12,12 +26,16 @@
   height: calc(4vh + clamp(300px, 35vw, 500px) * 0.4825 * 1.5);
   z-index: 0;
   position: relative;
+  animation: parallax 3s linear;
+  animation-play-state: paused;
+  animation-delay: calc(var(--scroll) * -1s);
 }
-#header #flop {
+
+#flop {
   position: absolute;
   width: calc(clamp(300px, 35vw, 500px) * 0.3);
   height: calc(clamp(300px, 35vw, 500px) * 0.3);
-  top: calc(4vh + clamp(300px, 35vw, 500px) * 0.4825 * 1.5 - clamp(300px, 35vw, 500px) * 0.3 + 10px - 4vh);
+  top: calc(4vh + clamp(300px, 35vw, 500px) * 0.4825 * 1.5 - clamp(300px, 35vw, 500px) * 0.3 + 10px);
   left: calc(50vw - clamp(300px, 35vw, 500px) * 0.3 / 2);
 }
 
@@ -70,8 +88,8 @@
 }
 
 #post-it {
-  width: calc(50vw - clamp(300px, 35vw, 500px) / 2);
-  height: calc(4vh + clamp(300px, 35vw, 500px) * 0.4825 * 1.5 - 6vh + min(20vw, 300px));
+  width: var(--post-it-space);
+  height: calc(4vh + clamp(300px, 35vw, 500px) * 0.4825 * 1.5 - 6vh + clamp(300px, 35vw, 500px) * 0.55);
   display: grid;
   position: absolute;
 }
@@ -83,11 +101,49 @@
 }
 #post-it #note {
   position: absolute;
-  width: min(20vw, 300px);
-  height: min(20vw, 300px);
-}
-#post-it #note {
+  width: calc(clamp(300px, 35vw, 500px) * 0.55);
+  height: calc(clamp(300px, 35vw, 500px) * 0.55);
   margin: 0 auto;
+}
+#post-it #note:nth-child(1) {
+  animation: parallax 1.5s linear infinite;
+  animation-play-state: paused;
+  animation-delay: calc(var(--scroll) * -1s);
+}
+#post-it #note:nth-child(2) {
+  animation: parallax 2s linear infinite;
+  animation-play-state: paused;
+  animation-delay: calc(var(--scroll) * -1s);
+}
+#post-it #note:nth-child(3) {
+  animation: parallax 2.5s linear infinite;
+  animation-play-state: paused;
+  animation-delay: calc(var(--scroll) * -1s);
+}
+#post-it #note:nth-child(4) {
+  animation: parallax 3s linear infinite;
+  animation-play-state: paused;
+  animation-delay: calc(var(--scroll) * -1s);
+}
+#post-it #note:nth-child(5) {
+  animation: parallax 3.5s linear infinite;
+  animation-play-state: paused;
+  animation-delay: calc(var(--scroll) * -1s);
+}
+#post-it #note:nth-child(6) {
+  animation: parallax 4s linear infinite;
+  animation-play-state: paused;
+  animation-delay: calc(var(--scroll) * -1s);
+}
+#post-it #note:nth-child(7) {
+  animation: parallax 4.5s linear infinite;
+  animation-play-state: paused;
+  animation-delay: calc(var(--scroll) * -1s);
+}
+#post-it #note:nth-child(8) {
+  animation: parallax 5s linear infinite;
+  animation-play-state: paused;
+  animation-delay: calc(var(--scroll) * -1s);
 }
 #post-it img {
   width: 80%;

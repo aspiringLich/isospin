@@ -1,3 +1,7 @@
+:root {
+  --post-it-space: calc(50vw - clamp(300px, 35vw, 500px) / 2);
+}
+
 .project .project {
   display: flex;
   flex-direction: row;

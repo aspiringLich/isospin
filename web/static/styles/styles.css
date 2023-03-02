@@ -1,3 +1,7 @@
+:root {
+  --post-it-space: calc(50vw - clamp(300px, 35vw, 500px) / 2);
+}
+
 /* GRUVBOX but slightly modified */
 :root {
   --color-bg: hsl(0, 0%, 100%);
@@ -5,6 +9,16 @@
   --color-grid-2: rgba(0, 0, 0, 0.04);
 }
 
+@keyframes parallax {
+  to {
+    transform: translateY(10vw);
+  }
+}
+@keyframes parallax-rev {
+  to {
+    transform: translateY(-10vw);
+  }
+}
 .desc {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -61,10 +75,9 @@ body {
   position: fixed;
   left: 0;
   width: 100%;
-  height: 200%;
+  height: 100%;
   background-color: var(--color-bg);
   background-image: linear-gradient(0deg, transparent 9%, var(--color-grid-2) 10%, var(--color-grid-2) 12%, transparent 13%, transparent 29%, var(--color-grid-1) 30%, var(--color-grid-1) 31%, transparent 32%, transparent 49%, var(--color-grid-1) 50%, var(--color-grid-1) 51%, transparent 52%, transparent 69%, var(--color-grid-1) 70%, var(--color-grid-1) 71%, transparent 72%, transparent 89%, var(--color-grid-1) 90%, var(--color-grid-1) 91%, transparent 92%, transparent), linear-gradient(90deg, transparent 9%, var(--color-grid-2) 10%, var(--color-grid-2) 12%, transparent 13%, transparent 29%, var(--color-grid-1) 30%, var(--color-grid-1) 31%, transparent 32%, transparent 49%, var(--color-grid-1) 50%, var(--color-grid-1) 51%, transparent 52%, transparent 69%, var(--color-grid-1) 70%, var(--color-grid-1) 71%, transparent 72%, transparent 89%, var(--color-grid-1) 90%, var(--color-grid-1) 91%, transparent 92%, transparent);
-  height: 100%;
   background-size: 50px 50px;
 }
 
