@@ -1,7 +1,6 @@
 #! /usr/bin/env python3
 
-from PIL import Image
-import numpy as np
+from PIL import Image, ImageOps
 import os
 
 GRID_SIZE = 59
@@ -34,14 +33,18 @@ for (i, img) in enumerate(images):
     def save(x, y, j):
         (tlx, tly) = TOP_LEFT
         (bx, by) = (x * BLOCK_SIZE, y * BLOCK_SIZE)
-        section = img.crop((
+        im = img.crop((
             tlx + bx + PADDING,
             tly + by + PADDING,
             tlx + bx + BLOCK_SIZE - PADDING * 2,
             tly + by + BLOCK_SIZE - PADDING * 2,
         ))
-        section.save(f"./{i * 4 + j}.png")
-    save(0, 0, 0)
-    save(1, 0, 1)
-    save(0, 1, 2)
-    save(1, 1, 3)
+        im = im.convert("RGBA")
+        mask = ImageOps.invert(im.convert('L'))
+        im.putalpha(mask)
+
+        im.save(f"./{i * 4 + j}.png")
+    save(0, 0, 1)
+    save(1, 0, 2)
+    save(0, 1, 3)
+    save(1, 1, 4)
