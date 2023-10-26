@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:root {
+		--color-bg: 17 17 17;
+		--color-grid-1: 255 255 255 / .1;
+		--color-grid-2: 255 255 255 / .12;
+	}
+}
+
+body {
+	@apply m-0 overflow-clip;
+}
