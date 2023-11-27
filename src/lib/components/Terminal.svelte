@@ -39,11 +39,3 @@
 <svelte:window on:resize={resize} />
 
 <div id="terminal" class="h-full w-full bg-black" bind:this={term_div} />
-
-<style lang="postcss">
-	@font-face {
-		font-family: "VeraMono";
-		src: url("$assets/fonts/VeraMono-Bold.woff2") format("woff2")
-			url("$assets/fonts/VeraMono-Bold.ttf") format("ttf");
-	}
-</style>
