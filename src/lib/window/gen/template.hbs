@@ -1,0 +1,15 @@
+import type { SvelteComponent } from "svelte";
+let registry: { [key: string]: [SvelteComponent, { [key: string]: any }?] } = {};
+
+{{#each templates}}
+import {{id}} from "./{{file}}.svelte";
+{{/each}}
+
+{{#each registry}}
+{{~#if file~}}
+import {{id}} from "./{{file}}.svelte";
+registry["{{id}}"] = [{{id}}];
+{{~else~}}
+
+{{~/if~}}
+{{/each}}
