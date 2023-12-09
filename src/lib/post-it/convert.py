@@ -1,21 +1,22 @@
-#! /usr/bin/env python3
-
 from PIL import Image, ImageOps
 import os
+import sys
 
+# constants
 GRID_SIZE = 59
 TOP_LEFT = (53, 167)
 BLOCK_SIZE = 10 * GRID_SIZE
 PADDING = 25
 
+# check python version
+MIN_PYTHON = (3, 10)
+if sys.version_info < MIN_PYTHON:
+    sys.exit("Python %s.%s or later is required.\n" % MIN_PYTHON)
+
 # set current working dir
-path = "src/lib/post-it".split("/")
-current = os.getcwd().split("/")[-1]
-try:
-    idx = path.index(current) + 1
-except ValueError:
-    idx = 0
-os.chdir("/".join(path[idx:]))
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
 
 # delete every png file in current dir
 files = os.listdir(".")
