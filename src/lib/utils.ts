@@ -37,14 +37,27 @@ export function throttle<T extends Function>(func: T, wait = 20) {
 	return <T>(<any>callable);
 }
 
+/** Returns a promise that will resolve in `ms` ms */
 export function sleep(ms: number) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+/** Converts rem to px  */
 export function rem_to_px(rem: number) {
 	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 }
 
+/** Clamps `val` between `min` and `max` */
 export function clamp(val: number, min: number, max: number) {
 	return Math.min(Math.max(val, min), max);
+}
+
+/** Returns the number greatest in magnitude */
+export function largest(a: number, b: number) {
+	return Math.abs(a) > Math.abs(b) ? a : b;
+}
+
+/** Returns the number smallest in magnitude */
+export function smallest(a: number, b: number) {
+	return Math.abs(a) < Math.abs(b) ? a : b;
 }

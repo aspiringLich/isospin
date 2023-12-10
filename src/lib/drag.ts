@@ -18,8 +18,8 @@ export const drag = (node: HTMLElement, options: DragOptions) => {
 	let bounding_rect: DOMRect;
 	let bounding_observer = new ResizeObserver(() => {
 		// console.log("bounding resize");
-		setTranslate(final_x, final_y, false);
 		bounding_rect = bounding_element.getBoundingClientRect();
+		setTranslate(final_x, final_y, true);
 	});
 
 	let node_rect: DOMRect = node.getBoundingClientRect();
@@ -31,25 +31,59 @@ export const drag = (node: HTMLElement, options: DragOptions) => {
 
 	let handle: HTMLElement;
 
-	let initial = true;
 	let original_user_select_val: string;
+
+	let initial = true;
 	let offset_x = 0;
 	let offset_y = 0;
 	let final_x: number = 0;
 	let final_y: number = 0;
+	let acc_dx = 0;
+	let acc_dy = 0;
+	let p_width = node_rect.width;
+	let p_height = node_rect.height;
 
-	const setTranslate = (x: number, y: number, save: boolean = true) => {
+	const setTranslate = (x: number, y: number, readjust: boolean = false) => {
 		// get x and y clamped to the bounding element
-		x = x - bounding_rect.left;
-		y = y - bounding_rect.top;
+		const x1 = x - bounding_rect.left;
+		const y1 = y - bounding_rect.top;
 
-		x = clamp(x, 0, bounding_rect.width - node_rect.width);
-		y = clamp(y, 0, bounding_rect.height - node_rect.height);
+		const xmax = bounding_rect.width - node_rect.width;
+		const ymax = bounding_rect.height - node_rect.height;
 
-		if (save) {
-			final_x = x;
-			final_y = y;
+		x = clamp(x1, 0, xmax);
+		y = clamp(y1, 0, ymax);
+
+		if (readjust) {
+			// adjust the position to account for the change in size
+			let dwidth = bounding_rect.width - p_width;
+			let dheight = bounding_rect.height - p_height;
+			x += dwidth * (x / xmax);
+			y += dheight * (y / ymax);
+			p_width = bounding_rect.width;
+			p_height = bounding_rect.height;
+
+			// accumulate the difference between the clamped and unclamped values
+			const ax = x - x1;
+			const ay = y - y1;
+			acc_dx += ax;
+			acc_dy += ay;
+
+			// adjust the final position by the accumulated difference
+			if (acc_dx < 0 && ax == 0) {
+				let dx = x - xmax;
+				x -= Math.max(dx, acc_dx);
+				acc_dx -= Math.max(dx, acc_dx);
+			}
+			if (acc_dy < 0 && ay == 0) {
+				let dy = y - ymax;
+				y -= Math.max(dy, acc_dy);
+				acc_dy -= Math.max(dy, acc_dy);
+			}
 		}
+
+		final_x = x;
+		final_y = y;
 
 		node.style.transform = `translate3d(${x}px, ${y}px, 0)`;
 	};
@@ -60,6 +94,9 @@ export const drag = (node: HTMLElement, options: DragOptions) => {
 		let { clientX, clientY } = e;
 		offset_x = clientX - final_x;
 		offset_y = clientY - final_y;
+
+		acc_dx = 0;
+		acc_dy = 0;
 
 		// console.log("mousedown");
 		e.preventDefault();
@@ -106,8 +143,8 @@ export const drag = (node: HTMLElement, options: DragOptions) => {
 		// center the node
 		if (initial)
 			setTranslate(
-				bounding_rect.width / 2 - node_rect.width / 2,
-				bounding_rect.height / 2 - node_rect.height / 2
+				bounding_rect.width / 4 - node_rect.width / 4,
+				bounding_rect.height / 4 - node_rect.height / 4
 			);
 		initial = false;
 	};
