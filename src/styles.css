@@ -4,16 +4,11 @@
 
 @layer base {
 	:root {
-		--color-bg: 17 17 17;
+		--color-bg: theme(colors.neutral.500);
 		--color-grid-1: 255 255 255 / 0.1;
 		--color-grid-2: 255 255 255 / 0.12;
 	}
 }
-
-body {
-	@apply m-0 overflow-clip;
-}
-
 @font-face {
 	font-family: "VeraMono";
 	src: url("/static/fonts/VeraMono-Bold.woff2") format("woff2")

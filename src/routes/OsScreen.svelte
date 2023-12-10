@@ -11,7 +11,7 @@
 </script>
 
 <div
-	class="h-full w-full bg-black flex flex-col items-center justify-center"
+	class="fixed h-full w-full bg-black flex flex-col items-center justify-center z-50"
 	transition:fade={fade_opt}
 >
 	<img class="w-64 md:w-96 lg:w-[30em]" src={floppaOS} alt="floppaOS logo" />

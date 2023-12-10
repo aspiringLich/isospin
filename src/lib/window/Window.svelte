@@ -18,7 +18,7 @@
 </script>
 
 <div
-	use:drag={{ bounding_element: "parent", handle_selector: ".titlebar" }}
+	use:drag={{ bounds: "parent", handle_selector: ".titlebar" }}
 	class="window bg-slate-100 border-2 border-slate-400
 		w-[var(--width-small)] md:w-[var(--width)]
 		h-[var(--height-small)] md:h-[var(--height)]

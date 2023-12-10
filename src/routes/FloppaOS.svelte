@@ -5,6 +5,7 @@
 </script>
 
 <script lang="ts">
+	import Wallpaper from "./Wallpaper.svelte";
 	import { onMount } from "svelte";
 	import Window from "$lib/window/Window.svelte";
 	import { window_registry } from "$lib/window/registry";
@@ -16,9 +17,11 @@
 	});
 </script>
 
-<div
-	class="w-full h-full"
-	bind:clientHeight={$size.height}
-	bind:clientWidth={$size.width}
-	bind:this={element}
-/>
+<Wallpaper>
+	<div
+		class="w-full h-full"
+		bind:clientHeight={$size.height}
+		bind:clientWidth={$size.width}
+		bind:this={element}
+	/>
+</Wallpaper>

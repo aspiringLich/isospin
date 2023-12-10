@@ -2,29 +2,29 @@ import { clamp } from "$lib/utils";
 import type { Action, RequestEvent } from "@sveltejs/kit";
 
 export type DragOptions = {
-	/** The bounding element */
-	bounding_element: HTMLElement | "parent";
+	/** The bounds */
+	bounds: HTMLElement | "parent";
 
 	/** A selector to get the drag handle */
 	handle_selector: string;
 };
 
 export const drag = (node: HTMLElement, options: DragOptions) => {
-	console.log("drag");
+	// console.log("drag");
 	const body_style = document.body.style;
 
 	let bounding_element: HTMLElement;
 
 	let bounding_rect: DOMRect;
 	let bounding_observer = new ResizeObserver(() => {
-		console.log("bounding resize");
+		// console.log("bounding resize");
 		setTranslate(final_x, final_y, false);
 		bounding_rect = bounding_element.getBoundingClientRect();
 	});
 
 	let node_rect: DOMRect = node.getBoundingClientRect();
 	let node_observer = new ResizeObserver(() => {
-		console.log("node resize");
+		// console.log("node resize");
 		node_rect = node.getBoundingClientRect();
 	});
 	node_observer.observe(node);
@@ -61,7 +61,7 @@ export const drag = (node: HTMLElement, options: DragOptions) => {
 		offset_x = clientX - final_x;
 		offset_y = clientY - final_y;
 
-		console.log("mousedown");
+		// console.log("mousedown");
 		e.preventDefault();
 
 		original_user_select_val = body_style.userSelect;
@@ -78,7 +78,7 @@ export const drag = (node: HTMLElement, options: DragOptions) => {
 	};
 
 	const onmouseup = (e: MouseEvent) => {
-		console.log("mouseup");
+		// console.log("mouseup");
 		body_style.userSelect = original_user_select_val;
 
 		document.removeEventListener("pointermove", onmousemove, false);
@@ -86,13 +86,12 @@ export const drag = (node: HTMLElement, options: DragOptions) => {
 	};
 
 	const update = (options: DragOptions) => {
-		console.log("update");
+		// console.log("update");
 		const { handle_selector } = options;
 
 		// get the bounding element
-		if (options.bounding_element === "parent")
-			bounding_element = node.parentElement as HTMLElement;
-		else bounding_element = options.bounding_element;
+		if (options.bounds === "parent") bounding_element = node.parentElement as HTMLElement;
+		else bounding_element = options.bounds;
 
 		// update bounding_rect
 		bounding_observer.disconnect();
