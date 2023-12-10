@@ -2,7 +2,7 @@
 	import { onMount, createEventDispatcher, type EventDispatcher } from "svelte";
 	import type { Terminal } from "xterm";
 	import type { FitAddon } from "xterm-addon-fit";
-	import { debounce } from "$lib/utils";
+	import { throttle } from "$lib/utils";
 
 	let term: Terminal;
 	let fit_addon: FitAddon;
@@ -31,7 +31,7 @@
 		dispatch("ready", { term });
 	});
 
-	let resize = debounce(() => {
+	let resize = throttle(() => {
 		if (term) fit_addon?.fit();
 	}, 20);
 </script>

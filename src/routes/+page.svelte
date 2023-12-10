@@ -4,7 +4,7 @@
 	import Timeout from "./Timeout.svelte";
 	import FloppaOS from "./FloppaOS.svelte";
 
-	let n = 1;
+	let n = 3;
 	const inc = () => n++;
 </script>
 
