@@ -5,4 +5,4 @@ export let registry: { [key: string]: Item } = {};
 import dialog from "./Dialog.svelte";
 import window from "./Window.svelte";
 
-registry["welcome"] = { component: dialog, props: {} };
+registry["welcome"] = { component: dialog, props: {"width": [120, 90], "height": [90, 100]} };
