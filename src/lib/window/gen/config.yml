@@ -11,6 +11,7 @@ templates:
 registry:
   - id: welcome
     base: dialog
+    title: Welcome!
     content: |
       # Welcome to Floppa OS!
 
@@ -24,4 +25,4 @@ registry:
       cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
       est laborum.
     width: [120, 90]
-    height: [90, 100]
+    height: [120, 150]

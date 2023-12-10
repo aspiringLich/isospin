@@ -6,7 +6,7 @@
 </script>
 
 <Window {title} {...$$restProps}>
-	<div class="p-2 prose">
+	<div class="p-2 prose overflow-scroll">
 		{@html content}
 	</div>
 </Window>

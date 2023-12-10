@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, field_validator, model_validator
-from typing import List, Optional, Callable, Any
+from typing import Dict, List, Optional, Callable, Any
 from colorama import Fore as fg, Style as st
 
 import yaml
@@ -10,6 +10,7 @@ import sys
 import json
 
 ID_SET = set()
+MANDATORY_PROPS = ["title"]
 
 # check python version
 MIN_PYTHON = (3, 10)
@@ -36,9 +37,8 @@ class DuplicatedIdError(Exception):
 class Item(BaseModel):
     id: str
     base: str
-    content: Optional[str] = None
-    file: Optional[str] = None
-    props: str = "{}"
+    title: str
+    props: Dict[str, Any] = Field(default_factory=dict)
 
     class Config:
         extra = "allow"
@@ -59,7 +59,9 @@ class Item(BaseModel):
             after = "no props"
         else:
             after = f"props: {b}{', '.join(list(props.keys()))}{r}"
-            self.props = json.dumps(props)
+            self.props = props
+        for prop in MANDATORY_PROPS:
+            self.props[prop] = self.__dict__[prop]
         print(f"{g}Registered{r} {self.id} {b}({self.base}){r} w/ {after}")
 
         return self
@@ -105,6 +107,8 @@ class Config(BaseModel):
         for i, item in enumerate(self.registry):
             template = templates[item.base]
             self.registry[i] = template.mode(item)
+
+            item.props = json.dumps(item.props)  # type: ignore
 
         return self
 

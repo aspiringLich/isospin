@@ -27,6 +27,8 @@
 		};
 		loaded = true;
 	});
+
+	$: console.log(y);
 </script>
 
 {#if loaded}
@@ -34,7 +36,8 @@
 		use:draggable={window_opts}
 		class="window bg-slate-100 border-2 border-slate-400
 		w-[var(--width-small)] md:w-[var(--width)]
-		h-[var(--height-small)] md:h-[var(--height)]"
+		h-[var(--height-small)] md:h-[var(--height)]
+		flex flex-col"
 		style:--width="{width[0] / 4}rem"
 		style:--width-small="{width[1] / 4}rem"
 		style:--height="{height[0] / 4}rem"
