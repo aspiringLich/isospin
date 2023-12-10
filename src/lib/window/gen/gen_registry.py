@@ -1,14 +1,15 @@
-#!/usr/bin/python
-
-from email.policy import default
 from pydantic import BaseModel, Field, field_validator, model_validator
-from typing import Dict, List, Optional, Callable, Any
+from typing import List, Optional, Callable, Any
+from colorama import Fore as fg, Style as st
 
 import yaml
 import pybars
 import markdown
 import os
 import sys
+import json
+
+ID_SET = set()
 
 # check python version
 MIN_PYTHON = (3, 10)
@@ -21,27 +22,58 @@ dname = os.path.dirname(abspath)
 os.chdir(dname)
 
 
+def check_uniqueness(id):
+    if id in ID_SET:
+        raise DuplicatedIdError(f"Duplicate id `{id}`")
+    else:
+        ID_SET.add(id)
+
+
+class DuplicatedIdError(Exception):
+    pass
+
+
 class Item(BaseModel):
     id: str
     base: str
     content: Optional[str] = None
     file: Optional[str] = None
+    props: str = "{}"
 
     class Config:
         extra = "allow"
 
-    @model_validator(mode="before")
-    def log_extra_fields(cls, values):
-        extra_fields = set(values.keys()) - Item.__annotations__.keys()
-        for field in extra_fields:
-            print(f"Extra field detected: {field} with value {values[field]}")
-        return values
+    @model_validator(mode="after")
+    def validate_id(self):
+        check_uniqueness(self.id)
+        return self
+
+    @model_validator(mode="after")
+    def log(self):
+        g = fg.GREEN
+        r = st.RESET_ALL
+        b = fg.BLACK
+        props = self.__pydantic_extra__
+
+        if not props:
+            after = "no props"
+        else:
+            after = f"props: {b}{', '.join(list(props.keys()))}{r}"
+            self.props = json.dumps(props)
+        print(f"{g}Registered{r} {self.id} {b}({self.base}){r} w/ {after}")
+
+        return self
 
 
 class Template(BaseModel):
     id: str
     file: str
     mode: Callable[[Item], Item] = Field(...)
+
+    @model_validator(mode="after")
+    def validate_id(self):
+        check_uniqueness(self.id)
+        return self
 
     @field_validator("mode", mode="before")
     def convert_mode(cls, v: str):
@@ -63,8 +95,18 @@ class Template(BaseModel):
 
 
 class Config(BaseModel):
-    templates: Dict[str, Template]
+    templates: List[Template]
     registry: List[Item]
+
+    @model_validator(mode="after")
+    def transform_items(self) -> 'Config':
+        templates = {t.id: t for t in self.templates}
+
+        for i, item in enumerate(self.registry):
+            template = templates[item.base]
+            self.registry[i] = template.mode(item)
+
+        return self
 
 
 # parse config
@@ -72,13 +114,14 @@ with open("./config.yml", "r") as f:
     config = Config.model_validate(
         yaml.load(f, Loader=yaml.FullLoader), strict=True
     )
-    for item in config.registry:
-        template = config.templates[item.base]
-        item = template.mode(item)
+
 
 # parse template
 with open("./template.hbs", "r") as f:
     template = pybars.Compiler().compile(f.read())
-    output = template(config)
+    output = template(config, helpers={
+        "log": print
+    })
 
-    print(output)
+with open("../registry.ts", "w") as f:
+    f.write(output)
