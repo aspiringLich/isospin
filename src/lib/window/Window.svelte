@@ -1,26 +1,39 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { draggable, type DragOptions } from "@neodrag/svelte";
+	import { window_height, window_width } from "../../routes/FloppaOS.svelte";
 
 	export let title: string;
+	export let width: number = 400;
 
 	const window_opts: DragOptions = {
 		bounds: "parent",
+		handle: ".titlebar",
+		gpuAcceleration: true,
 	};
 </script>
 
-<div use:draggable={window_opts} class="window prose bg-slate-200 border-2 border-slate-400">
-	<div class="titlebar bg-slate-300 grid grid-cols-[0px_1fr_0px] text-[90%] font-semibold">
+<div
+	use:draggable={window_opts}
+	class="window prose
+	bg-slate-100 border-2 border-slate-400"
+	style:width="{width / 4}rem"
+>
+	<div
+		class="titlebar cursor-grab active:cursor-grabbing
+		bg-slate-300 grid grid-cols-[0px_1fr_0px] text-[90%] font-semibold"
+	>
 		<span class="titlebar-icon">icon</span>
 		<span class="titlebar-title text-center">{title}</span>
 		<div class="titlebar-buttons">
 			<svg
-				class="titlebar-close"
+				class="titlebar-close cursor-pointer w-4 h-4 m-1"
 				viewBox="0 0 15 15"
 				fill="none"
 				xmlns="http://www.w3.org/2000/svg"
 			>
 				<circle
+					class="fill-rose-300 opacity-0 transition-opacity duration-200"
 					cx="7.5"
 					cy="7.5"
 					r="7.5"
@@ -51,18 +64,7 @@
 		direction: rtl;
 	}
 
-	.titlebar-close:hover {
-		circle {
-			@apply opacity-100;
-		}
-	}
-
-	.titlebar-close {
-		@apply cursor-pointer w-4 h-4 m-1;
-
-		circle {
-			@apply fill-rose-200 opacity-0;
-			transition: opacity 0.2s;
-		}
+	.titlebar-close:hover circle {
+		@apply opacity-50;
 	}
 </style>
