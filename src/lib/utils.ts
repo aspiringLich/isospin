@@ -44,3 +44,7 @@ export function sleep(ms: number) {
 export function rem_to_px(rem: number) {
 	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 }
+
+export function clamp(val: number, min: number, max: number) {
+	return Math.min(Math.max(val, min), max);
+}

@@ -2,7 +2,7 @@
 	import { onMount, createEventDispatcher, type EventDispatcher } from "svelte";
 	import type { Terminal } from "xterm";
 	import type { FitAddon } from "xterm-addon-fit";
-	import { debounce } from "$lib/util";
+	import { debounce } from "$lib/utils";
 
 	let term: Terminal;
 	let fit_addon: FitAddon;

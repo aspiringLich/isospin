@@ -2,7 +2,7 @@
 	import Terminal from "$lib/components/Terminal.svelte";
 	import type { Terminal as xtermTerminal } from "xterm";
 	import { LINES } from "./lines";
-	import { sleep } from "$lib/util";
+	import { sleep } from "$lib/utils";
 	import { createEventDispatcher } from "svelte";
 
 	const dispatch = createEventDispatcher();

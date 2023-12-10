@@ -1,6 +1,6 @@
 import { watch } from "fs";
 import { exec } from "child_process";
-import { throttle } from "./lib/util";
+import { throttle } from "./lib/utils";
 import type { ResolvedConfig } from "vite";
 
 export function watch_config() {
