@@ -9,7 +9,6 @@ export default defineConfig({
 		alias: {
 			$src: path.resolve("./src"),
 			$lib: path.resolve("./src/lib"),
-			$assets: path.resolve(`./`),
 		},
 	},
 });

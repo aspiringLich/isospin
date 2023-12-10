@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { draggable, type DragOptions } from "@neodrag/svelte";
-	import { window_height, window_width } from "../../routes/FloppaOS.svelte";
+	import { size } from "../../routes/FloppaOS.svelte";
 	import { rem_to_px } from "$lib/util";
 
 	export let title: string;
@@ -11,24 +11,25 @@
 	export let height: [number, number] = [120, 90];
 
 	let window_opts: DragOptions;
+	let clientWidth: number;
+	let clientHeight: number;
 
 	let loaded = false;
-	let x = 0;
-	let y = 0;
+	let position = { x: 0, y: 0 };
 
 	onMount(() => {
-		x = Math.round(window_width / 2 - rem_to_px(width[0] / 8));
-		y = Math.round(window_height / 2) - rem_to_px(height[0] / 8);
+		let md = $size.width > 768 ? 0 : 1;
+		position = {
+			x: Math.round($size.width / 2 - rem_to_px(width[md] / 8)),
+			y: Math.round($size.height / 2 - rem_to_px(height[md] / 8)),
+		};
 		window_opts = {
 			handle: ".titlebar",
 			bounds: "parent",
-			position: { x, y },
-			gpuAcceleration: true,
+			position,
 		};
 		loaded = true;
 	});
-
-	$: console.log(y);
 </script>
 
 {#if loaded}
@@ -42,6 +43,8 @@
 		style:--width-small="{width[1] / 4}rem"
 		style:--height="{height[0] / 4}rem"
 		style:--height-small="{height[1] / 4}rem"
+		bind:clientWidth
+		bind:clientHeight
 	>
 		<div
 			class="titlebar cursor-grab active:cursor-grabbing select-none

@@ -1,6 +1,7 @@
 <script lang="ts" context="module">
-	export let window_width: number;
-	export let window_height: number;
+	import { writable } from "svelte/store";
+
+	export let size = writable({ width: 0, height: 0 });
 </script>
 
 <script lang="ts">
@@ -17,7 +18,7 @@
 
 <div
 	class="w-full h-full"
-	bind:clientHeight={window_height}
-	bind:clientWidth={window_width}
+	bind:clientHeight={$size.height}
+	bind:clientWidth={$size.width}
 	bind:this={element}
 />
