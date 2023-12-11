@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Terminal from "$lib/components/Terminal.svelte";
+	import Terminal from "$cpt/Terminal.svelte";
 	import type { Terminal as xtermTerminal } from "xterm";
 	import { LINES } from "./lines";
 	import { sleep } from "$lib/utils";

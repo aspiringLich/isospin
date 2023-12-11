@@ -2,18 +2,16 @@
 	import { writable } from "svelte/store";
 
 	export let size = writable({ width: 0, height: 0 });
+	export let desktop: HTMLElement;
 </script>
 
 <script lang="ts">
 	import Wallpaper from "./Wallpaper.svelte";
 	import { onMount } from "svelte";
-	import Window from "$lib/window/Window.svelte";
-	import { window_registry } from "$lib/window/registry";
-
-	let element: HTMLElement;
+	import { window_registry } from "$cpt/window/registry";
 
 	onMount(() => {
-		window_registry.spawn("welcome", element);
+		window_registry.spawn("welcome");
 	});
 </script>
 
@@ -22,6 +20,6 @@
 		class="w-full h-full"
 		bind:clientHeight={$size.height}
 		bind:clientWidth={$size.width}
-		bind:this={element}
+		bind:this={desktop}
 	/>
 </Wallpaper>

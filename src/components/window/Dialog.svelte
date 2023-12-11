@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Window from "$lib/window/Window.svelte";
+	import Window from "$src/components/window/Window.svelte";
 
 	export let title: string;
 	export let content: string;
