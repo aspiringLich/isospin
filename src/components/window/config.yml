@@ -8,6 +8,7 @@ templates:
     file: Window
     mode: child_component
 
+# the actual list of windows
 registry:
   - id: welcome
     base: dialog
@@ -24,4 +25,3 @@ registry:
       velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
       occaecat.
     width: [120, 90]
-    height: [120, 150]

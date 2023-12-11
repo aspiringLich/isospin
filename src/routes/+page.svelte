@@ -4,8 +4,16 @@
 	import Timeout from "./Timeout.svelte";
 	import FloppaOS from "./FloppaOS.svelte";
 
+	import floppaOS from "$img/floppaOS.svg";
+	import { onMount } from "svelte";
+	import { preload_images } from "$src/lib/utils";
+
 	let n = 3;
 	const inc = () => n++;
+
+	onMount(() => {
+		preload_images(floppaOS);
+	});
 </script>
 
 {#if n == 0}

@@ -19,10 +19,10 @@ export function watch_config() {
 
 function watch_windowgen(config: ResolvedConfig) {
 	watch(
-		"src/lib/window/config.yml",
+		"src/components/window/config.yml",
 		throttle(() => {
 			config.logger.info("Regenerating window registry...");
-			exec("python src/lib/window/gen_registry.py", (error, stdout, stderr) => {
+			exec("python src/components/window/gen_registry.py", (error, stdout, stderr) => {
 				if (error) {
 					config.logger.error(`gen_registry.py: ${error.message}`);
 					return;

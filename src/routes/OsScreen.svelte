@@ -1,10 +1,10 @@
 <script lang="ts">
-	import floppaOS from "$lib/images/floppaOS.svg";
+	import floppaOS from "$img/floppaOS.svg";
 	import { fade } from "svelte/transition";
 	import { cubicOut } from "svelte/easing";
 
 	const fade_opt = {
-		delay: 0,
+		delay: 200,
 		duration: 500,
 		easing: cubicOut,
 	};

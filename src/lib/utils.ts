@@ -61,3 +61,11 @@ export function largest(a: number, b: number) {
 export function smallest(a: number, b: number) {
 	return Math.abs(a) < Math.abs(b) ? a : b;
 }
+
+/** Preloads a list of image urls */
+export function preload_images(...urls: string[]) {
+	for (const url of urls) {
+		const img = new Image();
+		img.src = url;
+	}
+}

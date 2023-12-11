@@ -1,11 +1,24 @@
-<div class="w-full h-full bg-[var(--color-bg)] relative">
-	<div class="grid fixed w-full h-full" />
+<script lang="ts">
+	import { focused_window } from "$src/components/window/Window.svelte";
+
+	const defocus = () => {
+		focused_window.set(null);
+	};
+</script>
+
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div class="grid-bg fixed w-full h-full" on:click={defocus}>
 	<slot />
 </div>
 
 <style lang="postcss">
-	.grid {
-		background-image: linear-gradient(
+	.grid-bg::before {
+		@apply w-full h-full fixed bg-cover bg-center bg-[var(--color-bg)];
+	}
+
+	.grid-bg {
+		background: linear-gradient(
 				0deg,
 				transparent 9%,
 				rgb(var(--color-grid-2)) 10%,
@@ -52,7 +65,8 @@
 				rgb(var(--color-grid-1)) 91%,
 				transparent 92%,
 				transparent
-			);
+			),
+			var(--color-bg);
 		background-size: 50px 50px;
 	}
 </style>
