@@ -1,17 +1,32 @@
 import adapter from "@sveltejs/adapter-auto";
-import preprocess from "svelte-preprocess";
+import { vitePreprocess } from "@sveltejs/kit/vite";
 import nesting from "postcss-nesting";
 import tailwind from "tailwindcss";
+import aliases from "./alias.json" assert { type: "json" };
 import autoprefixer from "autoprefixer";
+import path from "path";
+
+let alias = {};
+for (const [key, value] of Object.entries(aliases)) {
+	alias[key] = path.resolve(value);
+}
+function importer(url) {
+	for ([a, path] of Object.entries(alias)) {
+		if (url.startsWith(alias)) {
+			return { file: url.replace(alias, path) };
+		}
+	}
+}
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
 	// for more information about preprocessors
-	preprocess: preprocess({
+	preprocess: vitePreprocess({
 		postcss: {
 			plugins: [nesting(), tailwind(), autoprefixer()],
 		},
+		importer,
 	}),
 
 	kit: {
@@ -19,6 +34,7 @@ const config = {
 		// If your environment is not supported or you settled on a specific environment, switch out the adapter.
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter(),
+		alias,
 	},
 };
 

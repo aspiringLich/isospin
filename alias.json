@@ -1,0 +1,7 @@
+{
+	"$src": "./src",
+	"$lib": "./src/lib",
+	"$cpt": "./src/components",
+	"$icn": "./src/icons",
+	"$img": "./src/images"
+}
