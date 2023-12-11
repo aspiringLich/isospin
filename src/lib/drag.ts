@@ -1,5 +1,4 @@
 import { clamp } from "$lib/utils";
-import type { Action, RequestEvent } from "@sveltejs/kit";
 
 export type DragOptions = {
 	/** The bounds */
@@ -17,12 +16,28 @@ export const drag = (node: HTMLElement, options: DragOptions) => {
 	let bounding_rect: DOMRect;
 	let bounding_observer = new ResizeObserver(() => {
 		bounding_rect = bounding_element.getBoundingClientRect();
+		set_measurements();
 		readjust();
 	});
 
 	let node_rect: DOMRect = node.getBoundingClientRect();
+
+	// these are here to make the garbage collector happy
+	let cxmin: number;
+	let cymin: number;
+	let cxmax: number;
+	let cymax: number;
+	let cx: number;
+	let cy: number;
+	const set_measurements = () => {
+		cxmin = node_rect.width / 2;
+		cymin = node_rect.height / 2;
+		cxmax = bounding_rect.width - cxmin;
+		cymax = bounding_rect.height - cymin;
+	};
 	let node_observer = new ResizeObserver(() => {
 		node_rect = node.getBoundingClientRect();
+		set_measurements();
 	});
 	node_observer.observe(node);
 
@@ -40,36 +55,26 @@ export const drag = (node: HTMLElement, options: DragOptions) => {
 	let percent_y: number = 0;
 
 	const setTranslate = (cx0: number, cy0: number) => {
-		const xmin = node_rect.width / 2;
-		const ymin = node_rect.height / 2;
-		const cxmax = bounding_rect.width - xmin;
-		const cymax = bounding_rect.height - ymin;
+		cx = cx0 - bounding_rect.left;
+		cy = cy0 - bounding_rect.top;
 
-		const cx = cx0 - bounding_rect.left;
-		const cy = cy0 - bounding_rect.top;
+		percent_x = (cx - cxmin) / (cxmax - cxmin);
+		percent_y = (cy - cymin) / (cymax - cymin);
 
-		percent_x = (cx - xmin) / (cxmax - xmin);
-		percent_y = (cy - ymin) / (cymax - ymin);
+		final_cx = clamp(cx, cxmin, cxmax);
+		final_cy = clamp(cy, cymin, cymax);
 
-		final_cx = clamp(cx, xmin, cxmax);
-		final_cy = clamp(cy, ymin, cymax);
-
-		node.style.transform = `translate3d(${final_cx - xmin}px, ${final_cy - ymin}px, 0)`;
+		node.style.transform = `translate3d(${final_cx - cxmin}px, ${final_cy - cymin}px, 0)`;
 	};
 
 	const readjust = () => {
-		const xmin = node_rect.width / 2;
-		const ymin = node_rect.height / 2;
-		const cxmax = bounding_rect.width - xmin;
-		const cymax = bounding_rect.height - ymin;
+		cx = cxmin + percent_x * (cxmax - cxmin) - bounding_rect.left;
+		cy = cymin + percent_y * (cymax - cymin) - bounding_rect.top;
 
-		const cx = xmin + percent_x * (cxmax - xmin) - bounding_rect.left;
-		const cy = ymin + percent_y * (cymax - ymin) - bounding_rect.top;
+		final_cx = clamp(cx, cxmin, cxmax);
+		final_cy = clamp(cy, cymin, cymax);
 
-		final_cx = clamp(cx, xmin, cxmax);
-		final_cy = clamp(cy, ymin, cymax);
-
-		node.style.transform = `translate3d(${final_cx - xmin}px, ${final_cy - ymin}px, 0)`;
+		node.style.transform = `translate3d(${final_cx - cxmin}px, ${final_cy - cymin}px, 0)`;
 	};
 
 	const onmousedown = (e: MouseEvent) => {
@@ -81,6 +86,8 @@ export const drag = (node: HTMLElement, options: DragOptions) => {
 
 		e.preventDefault();
 
+		node.classList.add("dragging");
+
 		original_user_select_val = body_style.userSelect;
 		body_style.userSelect = "none";
 
@@ -89,13 +96,14 @@ export const drag = (node: HTMLElement, options: DragOptions) => {
 	};
 
 	const onmousemove = (e: MouseEvent) => {
-		const { clientX, clientY } = e;
-
-		setTranslate(clientX - offset_x, clientY - offset_y);
+		e.preventDefault();
+		setTranslate(e.clientX - offset_x, e.clientY - offset_y);
 	};
 
 	const onmouseup = (e: MouseEvent) => {
 		body_style.userSelect = original_user_select_val;
+
+		node.classList.remove("dragging");
 
 		document.removeEventListener("pointermove", onmousemove, false);
 		document.removeEventListener("pointerup", onmouseup, false);
@@ -112,6 +120,8 @@ export const drag = (node: HTMLElement, options: DragOptions) => {
 		bounding_observer.disconnect();
 		bounding_rect = bounding_element.getBoundingClientRect();
 		bounding_observer.observe(bounding_element);
+
+		set_measurements();
 
 		// update handle
 		handle?.removeEventListener("pointerdown", onmousedown, false);
