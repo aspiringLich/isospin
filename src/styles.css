@@ -4,9 +4,9 @@
 
 @layer base {
 	:root {
-		--color-bg: theme(colors.neutral.500);
-		--color-grid-1: 255 255 255 / 0.1;
-		--color-grid-2: 255 255 255 / 0.12;
+		--color-bg: theme(colors.neutral.200);
+		--color-grid-1: rgb(0 0 0 / 0.1);
+		--color-grid-2: rgb(0 0 0 / 0.12);
 	}
 }
 @font-face {

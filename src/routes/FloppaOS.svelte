@@ -6,7 +6,7 @@
 </script>
 
 <script lang="ts">
-	import Wallpaper from "./Wallpaper.svelte";
+	import Desktop from "./Desktop.svelte";
 	import { onMount } from "svelte";
 	import { window_registry } from "$cpt/window/registry";
 
@@ -15,11 +15,11 @@
 	});
 </script>
 
-<Wallpaper>
+<Desktop>
 	<div
 		class="w-full h-full"
 		bind:clientHeight={$size.height}
 		bind:clientWidth={$size.width}
 		bind:this={desktop}
 	/>
-</Wallpaper>
+</Desktop>

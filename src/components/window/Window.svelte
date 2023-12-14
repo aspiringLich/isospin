@@ -8,43 +8,42 @@
 	import { drag } from "$lib/drag";
 	import Cross from "$icn/Cross.svelte";
 	import { desktop } from "$src/routes/FloppaOS.svelte";
-	import { fly } from "svelte/transition";
+	import { scale } from "svelte/transition";
 	import { onMount } from "svelte";
-	import { PROCESSES } from "$src/components/window/window";
+	import { PROCESSES } from "$src/components/window";
 
 	export let id: string;
 	export let title: string;
 	export let width: [number, number] = [160, 120];
 
 	let pid = PROCESSES.add_process(id);
+	focused_window.set(pid);
 	let close_hovered = false;
 	let element: HTMLElement;
 
 	let open = false;
 	onMount(() => {
 		open = true;
-		PROCESSES.remove_process(pid);
 	});
 
 	const close = () => {
 		open = false;
+		PROCESSES.remove_process(pid);
 		if (pid === $focused_window) $focused_window = null;
 	};
 	const focus = (e: MouseEvent) => {
-		e.stopPropagation();
+		e.stopImmediatePropagation();
 		$focused_window = pid;
 	};
 </script>
 
 {#if open}
-	<div transition:fly={{ y: 20, duration: 400 }}>
-		<!-- svelte-ignore a11y-no-static-element-interactions -->
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<div transition:scale={{ duration: 400, start: 0.4 }}>
 		<div
 			use:drag={{ bounds: desktop, handle_selector: ".titlebar" }}
-			on:click={focus}
+			on:pointerdown={focus}
 			bind:this={element}
-			class="window bg-slate-100 border-2 border-slate-500
+			class="window bg-slate-100 border-2 border-slate-400 shadow-xl
 			flex flex-col group"
 			class:!border-rose-500={close_hovered}
 			class:focus={$focused_window === pid}
@@ -53,14 +52,14 @@
 		>
 			<div
 				class="titlebar cursor-grab group-[&.dragging]:cursor-grabbing select-none
-			bg-slate-400 grid grid-cols-[1fr] text-[90%] font-semibold"
+				bg-slate-400 grid grid-cols-[1fr] text-[90%] font-semibold"
 			>
 				<span class="titlebar-icon">icon</span>
 				<span class="titlebar-title text-center">{title}</span>
 				<button
 					class="titlebar-button-close transition-colors duration-200
 					bg-slate-400 hover:bg-rose-400 hover:text-rose-800
-					justify-self-end self-center mr-[0.2rem]"
+					justify-self-end self-center mr-[0.2rem] rounded-full"
 					on:mouseenter={() => (close_hovered = true)}
 					on:mouseleave={() => (close_hovered = false)}
 					on:click={close}
@@ -68,9 +67,8 @@
 					<Cross />
 				</button>
 			</div>
-			<div class="overflow-auto">
-				<slot />
-			</div>
+
+			<slot />
 		</div>
 	</div>
 {/if}
@@ -84,6 +82,10 @@
 
 	.window.focus {
 		@apply shadow-2xl;
+	}
+
+	.window:not(.focus) {
+		@apply select-none;
 	}
 
 	.titlebar-button-close,

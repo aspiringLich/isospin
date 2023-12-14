@@ -20,8 +20,6 @@ export const drag = (node: HTMLElement, options: DragOptions) => {
 		readjust();
 	});
 
-	let node_rect: DOMRect = node.getBoundingClientRect();
-
 	// these are here to make the garbage collector happy
 	let cxmin: number;
 	let cymin: number;
@@ -30,13 +28,13 @@ export const drag = (node: HTMLElement, options: DragOptions) => {
 	let cx: number;
 	let cy: number;
 	const set_measurements = () => {
-		cxmin = node_rect.width / 2;
-		cymin = node_rect.height / 2;
+		cxmin = node.offsetWidth / 2;
+		cymin = node.offsetHeight / 2;
 		cxmax = bounding_rect.width - cxmin;
 		cymax = bounding_rect.height - cymin;
 	};
 	let node_observer = new ResizeObserver(() => {
-		node_rect = node.getBoundingClientRect();
+		node.clientWidth;
 		set_measurements();
 	});
 	node_observer.observe(node);
