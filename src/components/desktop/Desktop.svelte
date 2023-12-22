@@ -54,6 +54,7 @@
 			bind:this={selection_element}
 		/>
 	{/if}
+	<div class="desktop-icons fixed w-full h-full" />
 	<slot />
 </div>
 

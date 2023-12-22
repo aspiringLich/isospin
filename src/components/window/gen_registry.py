@@ -1,7 +1,8 @@
-from pydantic import BaseModel, Field, field_validator, model_validator
-from typing import Dict, List, Optional, Callable, Any
+from pydantic import BaseModel, Field, field_validator, model_validator, computed_field
+from typing import Dict, List, Callable, Any, Optional
 from colorama import Fore as fg, Style as st
 
+import re
 import yaml
 import pybars
 import markdown
@@ -9,8 +10,10 @@ import os
 import sys
 import json
 
-ID_SET = set()
+
+# global constants
 MANDATORY_PROPS = ["title"]
+
 
 # check python version
 MIN_PYTHON = (3, 10)
@@ -23,6 +26,27 @@ dname = os.path.dirname(abspath)
 os.chdir(dname)
 
 
+# globals
+ID_SET = set()
+APPLICATIONS = []
+
+
+class DuplicatedIdError(Exception):
+    pass
+
+
+def pretty_log(kw: str, *args):
+    s = f"{fg.GREEN}{kw}{st.RESET_ALL} "
+    joined = " ".join(args)
+    l = joined.split("|")
+
+    for i in range(1, len(l), 2):
+        s += f"{l[i - 1]}{fg.BLACK}{l[i]}{st.RESET_ALL}"
+    if len(l) % 2 == 1:
+        s += f"{l[-1]}"
+    print(s)
+
+
 def check_uniqueness(id):
     if id in ID_SET:
         raise DuplicatedIdError(f"Duplicate id `{id}`")
@@ -30,8 +54,9 @@ def check_uniqueness(id):
         ID_SET.add(id)
 
 
-class DuplicatedIdError(Exception):
-    pass
+class App(BaseModel):
+    name: str
+    icon: str
 
 
 class Item(BaseModel):
@@ -39,6 +64,8 @@ class Item(BaseModel):
     base: str
     title: str
     props: Dict[str, Any] = Field(default_factory=dict)
+    app: Optional[App] = None
+    file: Optional[str] = None
 
     class Config:
         extra = "allow"
@@ -49,20 +76,19 @@ class Item(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def log(self):
-        g = fg.GREEN
-        r = st.RESET_ALL
-        b = fg.BLACK
+    def log_and_set_props(self):
         props = self.__pydantic_extra__
 
         if not props:
             after = "no props"
         else:
-            after = f"props: {b}{', '.join(list(props.keys()))}{r}"
+            after = f"props: |{', '.join(list(props.keys()))}"
             self.props = props
+
         for prop in MANDATORY_PROPS:
             self.props[prop] = self.__dict__[prop]
-        print(f"{g}Registered{r} {self.id} {b}({self.base}){r} w/ {after}")
+
+        pretty_log("Registered", self.id, f"|({self.base})| w/", after)
 
         return self
 
@@ -70,35 +96,79 @@ class Item(BaseModel):
 class Template(BaseModel):
     id: str
     file: str
-    mode: Callable[[Item], Item] = Field(...)
+    mode: str
 
     @model_validator(mode="after")
     def validate_id(self):
         check_uniqueness(self.id)
         return self
 
-    @field_validator("mode", mode="before")
-    def convert_mode(cls, v: str):
+    @computed_field
+    @property
+    def mode_fn(self) -> Callable[[Item], Item]:
         def transform_field(field: str, transform: Callable[[Any], Any]):
             def f(item: Item):
                 if getattr(item, field) is not None:
                     setattr(item, field, transform(getattr(item, field)))
                     return item
                 else:
-                    raise Exception(f"Missing {field} on item {item.id}")
+                    raise Exception(
+                        f"Missing prop `{field}` on item `{item.id}`")
             return f
-        match v:
-            case "content(markdown)":
-                return transform_field("content", markdown.markdown)
-            case "child_component": return lambda i: i
-            case _:
-                raise Exception(
-                    f"Invalid mode {v} on template {cls.file}")
+
+        def assert_field_exists(field: str):
+            def f(item: Item):
+                if getattr(item, field) is not None:
+                    return item
+                else:
+                    raise Exception(
+                        f"Missing field `{field}` on item `{item.id}`")
+            return f
+
+        def prop_transformer(name: str | None):
+            match name:
+                case "markdown": return markdown.markdown
+                case "json": return json.loads
+                case None: return lambda i: i
+                case _: raise Exception(f"Invalid prop transformer `{name}` on template `{self.id}`")
+
+        def compose(*fns):
+            def f(x):
+                for fn in fns:
+                    x = fn(x)
+                return x
+            return f
+
+        match self.mode:
+            case "component": return assert_field_exists("file")
+
+        # matching: `mode arg1 arg2(v) etc...`
+        match_result = re.match(
+            r"^([\w_]+) ((?:[\w_]+(?:\([\w_]+\))? *)+)$", self.mode)
+        if match_result:
+            mode = match_result.group(1)
+            args = {
+                k: next(iter(v), None)
+                for k, *v in [
+                    map(str.strip, a.removesuffix(")").split("("))
+                    for a in
+                    match_result.group(2).split()
+                ]
+            }
+
+            match mode:
+                case "props":
+                    return compose(*[transform_field(k, prop_transformer(v))
+                                     for k, v in args.items()])
+
+        raise Exception(
+            f"Invalid mode `{self.mode}` on template `{self.id}`")
 
 
 class Config(BaseModel):
     templates: List[Template]
     registry: List[Item]
+    applications: List[App] = APPLICATIONS
 
     @model_validator(mode="after")
     def transform_items(self) -> 'Config':
@@ -106,7 +176,7 @@ class Config(BaseModel):
 
         for i, item in enumerate(self.registry):
             template = templates[item.base]
-            self.registry[i] = template.mode(item)
+            self.registry[i] = template.mode_fn(item)
 
             item.props = json.dumps(item.props)  # type: ignore
 
@@ -118,7 +188,6 @@ with open("./config.yml", "r") as f:
     config = Config.model_validate(
         yaml.load(f, Loader=yaml.FullLoader), strict=True
     )
-
 
 # parse template
 with open("./template.hbs", "r") as f:

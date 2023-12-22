@@ -1,12 +1,12 @@
-# Templates used as bases for windows
+# Templates used as, well, templates, for windows
 templates:
   - id: dialog
     file: Dialog
-    mode: content(markdown)
+    mode: props content(markdown)
 
   - id: window
     file: Window
-    mode: child_component
+    mode: component
 
 # the actual list of windows
 registry:
@@ -25,3 +25,11 @@ registry:
       velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
       occaecat.
     width: [120, 90]
+
+  - id: settings
+    base: window
+    title: System Settings
+    file: Settings
+    app:
+      name: System Settings
+      icon: settings

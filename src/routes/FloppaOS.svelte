@@ -6,12 +6,12 @@
 </script>
 
 <script lang="ts">
-	import Desktop from "./Desktop.svelte";
+	import Desktop from "$cpt/desktop/Desktop.svelte";
 	import { onMount } from "svelte";
-	import { window_registry } from "$cpt/window/registry";
+	import { registry } from "$cpt/window/registry";
 
 	onMount(() => {
-		window_registry.spawn("welcome");
+		registry.spawn("welcome");
 	});
 </script>
 
