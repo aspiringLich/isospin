@@ -6,11 +6,12 @@
 
 <script lang="ts">
 	import { drag } from "$lib/drag";
-	import Cross from "$icn/Cross.svelte";
+	import Cross from "$src/icon/Cross.svelte";
 	import { desktop } from "$src/routes/FloppaOS.svelte";
 	import { scale } from "svelte/transition";
 	import { onMount } from "svelte";
 	import { PROCESSES } from "$src/components/window";
+	import Icon from "$src/icon/Icon.svelte";
 
 	export let id: string;
 	export let title: string;
@@ -54,7 +55,7 @@
 				class="titlebar cursor-grab group-[&.dragging]:cursor-grabbing select-none
 				bg-slate-400 grid grid-cols-[1fr] text-[90%] font-semibold"
 			>
-				<span class="titlebar-icon">icon</span>
+				<Icon class="titlebar-icon" icon={0} size={21.6} />
 				<span class="titlebar-title text-center">{title}</span>
 				<button
 					class="titlebar-button-close transition-colors duration-200
@@ -67,7 +68,6 @@
 					<Cross />
 				</button>
 			</div>
-
 			<slot />
 		</div>
 	</div>
@@ -88,8 +88,8 @@
 		@apply select-none;
 	}
 
+	.window :global(.titlebar-icon),
 	.titlebar-button-close,
-	.titlebar-icon,
 	.titlebar-title {
 		grid-row: 1;
 		grid-column: 1;

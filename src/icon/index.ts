@@ -1,7 +1,9 @@
 export namespace Icon {
 	export enum file {
-		blank,
+		blank = 0,
 		text,
+		script,
+		image,
 	}
 
 	export enum folder {

@@ -2,6 +2,6 @@
 	"$src": "./src",
 	"$lib": "./src/lib",
 	"$cpt": "./src/components",
-	"$icn": "./src/icons",
+	"$icn": "./src/icon",
 	"$img": "./src/images"
 }
