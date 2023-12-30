@@ -1,7 +1,13 @@
+<script lang="ts" context="module">
+	import { writable } from "svelte/store";
+
+	export let desktop: HTMLElement;
+	export let size = writable({ width: 0, height: 0 });
+</script>
+
 <script lang="ts">
 	import { focused_window } from "$src/components/window/Window.svelte";
 
-	let grid_element: HTMLElement;
 	let selection_element: HTMLElement;
 	let bounds: DOMRect;
 	let select = false;
@@ -13,7 +19,7 @@
 	const dragstart = (e: MouseEvent) => {
 		focused_window.set(null);
 
-		bounds = grid_element.getBoundingClientRect();
+		bounds = desktop.getBoundingClientRect();
 		x = e.clientX - bounds.left;
 		y = e.clientY - bounds.top;
 		select = true;
@@ -22,7 +28,7 @@
 	const drag = (e: MouseEvent) => {
 		if (!select) return;
 
-		bounds = grid_element.getBoundingClientRect();
+		bounds = desktop.getBoundingClientRect();
 		dx = e.clientX - bounds.left - x;
 		dy = e.clientY - bounds.top - y;
 
@@ -38,6 +44,17 @@
 	const dragend = () => {
 		select = false;
 	};
+
+	import { registry } from "$src/components/window/registry";
+	import Icon from "$icn/Icon.svelte";
+	import { AppIcon } from "$icn";
+
+	let applications = registry.applications;
+	let rows = [...applications.keys()].sort();
+
+	const make_stupid_error_shut_up = (icon: string): number => {
+		return AppIcon[icon as keyof typeof AppIcon];
+	};
 </script>
 
 <div
@@ -46,19 +63,64 @@
 	on:pointermove={drag}
 	on:pointerup={dragend}
 	on:pointerleave={dragend}
-	bind:this={grid_element}
+	bind:this={desktop}
+	bind:clientWidth={$size.width}
+	bind:clientHeight={$size.height}
 >
+	<div class="desktop-icons fixed w-full h-full">
+		{#each rows as row}
+			{@const apps = applications.get(row) || []}
+			{#each apps as app}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y-no-static-element-interactions -->
+				<div
+					class="icon flex items-center justify-center m-1"
+					style:--row={row < 0 ? row - 2 : row}
+					on:pointerdown={(e) => e.stopImmediatePropagation()}
+					on:dblclick={() => registry.spawn(app.id)}
+				>
+					<div class="relative w-min">
+						<Icon
+							class="inline-block m-auto"
+							icon={make_stupid_error_shut_up(app.icon)}
+							size={64}
+						/>
+						<span class="icon-text absolute bottom-[-10px] right-0 w-full">
+							{app.name}
+						</span>
+					</div>
+				</div>
+			{/each}
+		{/each}
+	</div>
 	{#if select}
 		<div
 			class="select fixed bg-sky-500/20 border border-sky-600"
 			bind:this={selection_element}
 		/>
 	{/if}
-	<div class="desktop-icons fixed w-full h-full" />
 	<slot />
 </div>
 
 <style lang="postcss">
+	.icon-text {
+		font-family: VeraMono, monospace;
+		@apply text-xs font-semibold text-center;
+		line-height: 0.75rem;
+	}
+
+	.icon {
+		@apply select-none cursor-pointer;
+		place-self: stretch;
+		grid-row: var(--row);
+	}
+
+	.desktop-icons {
+		@apply grid;
+		grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+		grid-template-rows: repeat(auto-fill, minmax(5rem, 1fr));
+	}
+
 	.grid-bg::before {
 		@apply w-full h-full fixed bg-cover bg-center bg-[var(--color-bg)];
 	}

@@ -6,8 +6,6 @@
 	export let content: string;
 </script>
 
-<Window {title} {id} {...$$restProps}>
-	<div class="p-2 prose overflow-scroll">
-		{@html content}
-	</div>
+<Window {title} {id} {...$$restProps} content={true}>
+	{@html content}
 </Window>

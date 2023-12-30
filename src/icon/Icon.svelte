@@ -8,7 +8,7 @@
 
 <span
 	style:--x="-{(icon * 16) % 128}px"
-	style:--y="-{Math.floor(icon / 128)}px"
+	style:--y="-{Math.floor(icon / 8) * 16}px"
 	style:--scale={size / 16}
 	class="icon {classes}"
 />

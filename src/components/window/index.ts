@@ -1,24 +1,26 @@
 import type { ComponentType } from "svelte";
-import { desktop } from "../../routes/FloppaOS.svelte";
+import { desktop } from "$cpt/desktop/Desktop.svelte";
 
 export type Item = { component: ComponentType; props: { [key: string]: any } };
 export type App = {
 	id: string;
 	name: string;
 	icon: string;
-	row: number;
 };
 
 export class Registry {
 	items: Map<string, Item> = new Map();
-	applications: App[] = [];
+	applications: Map<number, App[]> = new Map();
 
 	register_window(id: string, component: any, props: { [key: string]: any }) {
 		this.items.set(id, { component, props });
 	}
 
 	register_app(id: string, name: string, icon: string, row: number) {
-		this.applications.push({ id, name, icon, row });
+		if (!this.applications.has(row)) {
+			this.applications.set(row, []);
+		}
+		this.applications.get(row)?.push({ id, name, icon });
 	}
 
 	spawn(id: string) {

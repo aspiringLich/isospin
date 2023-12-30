@@ -7,15 +7,19 @@
 <script lang="ts">
 	import { drag } from "$lib/drag";
 	import Cross from "$src/icon/Cross.svelte";
-	import { desktop } from "$src/routes/FloppaOS.svelte";
+	import { desktop } from "$cpt/desktop/Desktop.svelte";
 	import { fly } from "svelte/transition";
 	import { onMount } from "svelte";
 	import { PROCESSES } from "$src/components/window";
 	import Icon from "$src/icon/Icon.svelte";
+	import { AppIcon } from "$src/icon";
 
 	export let id: string;
 	export let title: string;
 	export let width: [number, number] = [160, 120];
+	export let content: boolean = false;
+
+	let icon = AppIcon[id as keyof typeof AppIcon] || 0;
 
 	let pid = PROCESSES.add_process(id);
 	focused_window.set(pid);
@@ -35,16 +39,20 @@
 	const focus = (e: MouseEvent) => {
 		e.stopImmediatePropagation();
 		$focused_window = pid;
+
+		let self = element.parentElement;
+		if (desktop.lastChild === self || !self) return;
+		desktop.appendChild(self);
 	};
 </script>
 
 {#if open}
-	<div transition:fly={{ duration: 400, y: 40 }}>
+	<div class="absolute" transition:fly={{ duration: 400, y: 40 }}>
 		<div
 			use:drag={{ bounds: desktop, handle_selector: ".titlebar" }}
 			on:pointerdown={focus}
 			bind:this={element}
-			class="window bg-slate-100 border-2 border-slate-400 shadow-xl
+			class="window bg-slate-100 border-2 border-slate-300 shadow-xl
 			flex flex-col group"
 			class:!border-rose-500={close_hovered}
 			class:focus={$focused_window === pid}
@@ -55,25 +63,35 @@
 				class="titlebar cursor-grab group-[&.dragging]:cursor-grabbing select-none
 				bg-slate-400 grid grid-cols-[1fr] text-[90%] font-semibold"
 			>
-				<Icon class="titlebar-icon" icon={0} size={21.6} />
+				<Icon class="titlebar-icon" {icon} size={21.6} />
 				<span class="titlebar-title text-center">{title}</span>
 				<button
 					class="titlebar-button-close transition-colors duration-200
-					bg-slate-400 hover:bg-rose-400 hover:text-rose-800
+					bg-slate-400
+					hover:bg-rose-400 hover:text-rose-800
+					active:bg-rose-400 active:text-rose-900
 					justify-self-end self-center mr-[0.2rem] rounded-full"
-					on:mouseenter={() => (close_hovered = true)}
-					on:mouseleave={() => (close_hovered = false)}
-					on:click={close}
+					on:pointerenter={() => (close_hovered = true)}
+					on:pointerleave={() => (close_hovered = false)}
+					on:pointerdown={(e) => e.stopImmediatePropagation()}
+					on:pointerup={close}
 				>
 					<Cross />
 				</button>
 			</div>
-			<slot />
+
+			<div class="window-content" class:content class:prose={content}>
+				<slot />
+			</div>
 		</div>
 	</div>
 {/if}
 
 <style lang="postcss">
+	.window-content.content {
+		@apply p-2;
+	}
+
 	.window {
 		font-family: VeraMono, monospace;
 		@apply duration-200 transition-[background-color,border-color,box-shadow];
