@@ -10,3 +10,6 @@ registry.register_window("welcome", dialog, {"content": "<h1>Welcome to Floppa O
 import settings from "./Settings.svelte";
 registry.register_window("settings", settings, {"title": "System Settings"});
 registry.register_app("settings", "System Settings", "settings", -1);
+import terminal from "./Terminal.svelte";
+registry.register_window("terminal", terminal, {"title": "Terminal"});
+registry.register_app("terminal", "Terminal", "terminal", -1);

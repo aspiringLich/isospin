@@ -62,7 +62,6 @@
 	on:pointerdown={dragstart}
 	on:pointermove={drag}
 	on:pointerup={dragend}
-	on:pointerleave={dragend}
 	bind:this={desktop}
 	bind:clientWidth={$size.width}
 	bind:clientHeight={$size.height}

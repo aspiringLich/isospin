@@ -47,12 +47,12 @@
 </script>
 
 {#if open}
-	<div class="absolute" transition:fly={{ duration: 400, y: 40 }}>
+	<div class="absolute w-0 h-0" transition:fly={{ duration: 400, y: 40 }}>
 		<div
 			use:drag={{ bounds: desktop, handle_selector: ".titlebar" }}
 			on:pointerdown={focus}
 			bind:this={element}
-			class="window bg-slate-100 border-2 border-slate-300 shadow-xl
+			class="window bg-slate-100 border-2 border-slate-400 shadow-xl
 			flex flex-col group"
 			class:!border-rose-500={close_hovered}
 			class:focus={$focused_window === pid}

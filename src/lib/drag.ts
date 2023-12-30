@@ -34,8 +34,8 @@ export const drag = (node: HTMLElement, options: DragOptions) => {
 		cymax = bounding_rect.height - cymin;
 	};
 	let node_observer = new ResizeObserver(() => {
-		node.clientWidth;
 		set_measurements();
+		readjust();
 	});
 	node_observer.observe(node);
 

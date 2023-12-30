@@ -33,3 +33,11 @@ registry:
     app:
       icon: settings
       row: -1
+
+  - id: terminal
+    base: window
+    title: Terminal
+    file: Terminal
+    app:
+      icon: terminal
+      row: -1
