@@ -75,7 +75,7 @@
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
 					class="icon flex items-center justify-center m-1"
-					style:--row={row < 0 ? row - 2 : row}
+					style:--row={row < 0 ? row - 1 : row}
 					on:pointerdown={(e) => e.stopImmediatePropagation()}
 					on:dblclick={() => registry.spawn(app.id)}
 				>
@@ -115,8 +115,12 @@
 		grid-row: var(--row);
 	}
 
+	.icon:hover {
+		@apply bg-sky-500/20;
+	}
+
 	.desktop-icons {
-		@apply grid;
+		@apply grid p-6;
 		grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
 		grid-template-rows: repeat(auto-fill, minmax(5rem, 1fr));
 	}

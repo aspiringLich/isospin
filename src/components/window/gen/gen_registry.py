@@ -192,5 +192,5 @@ with open("./template.hbs", "r") as f:
     template = pybars.Compiler().compile(f.read())
     output = template(config)
 
-with open("./registry.ts", "w") as f:
+with open("../registry.ts", "w") as f:
     f.write(output)
