@@ -9,4 +9,4 @@ import window from "./Window.svelte";
 registry.register_window("welcome", dialog, {"content": "<h1>Welcome to Floppa OS!</h1>\n<p>This is my website. Welcome!</p>\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim\nveniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea\ncommodo consequat. Duis aute irure dolor in reprehenderit in voluptate\nvelit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint\noccaecat.</p>", "width": [120, 90], "title": "Welcome!"});
 import settings from "./Settings.svelte";
 registry.register_window("settings", settings, {"title": "System Settings"});
-registry.register_app("settings", "System Settings", "settings");
+registry.register_app("settings", "System Settings", "settings", -1);

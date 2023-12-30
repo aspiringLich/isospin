@@ -28,7 +28,6 @@ os.chdir(dname)
 
 # globals
 ID_SET = set()
-APPLICATIONS = []
 
 
 class DuplicatedIdError(Exception):
@@ -55,8 +54,8 @@ def check_uniqueness(id):
 
 
 class App(BaseModel):
-    name: str
     icon: str
+    row: int
 
 
 class Item(BaseModel):
@@ -168,7 +167,6 @@ class Template(BaseModel):
 class Config(BaseModel):
     templates: List[Template]
     registry: List[Item]
-    applications: List[App] = APPLICATIONS
 
     @model_validator(mode="after")
     def transform_items(self) -> 'Config':

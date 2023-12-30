@@ -8,7 +8,7 @@
 	import { drag } from "$lib/drag";
 	import Cross from "$src/icon/Cross.svelte";
 	import { desktop } from "$src/routes/FloppaOS.svelte";
-	import { scale } from "svelte/transition";
+	import { fly } from "svelte/transition";
 	import { onMount } from "svelte";
 	import { PROCESSES } from "$src/components/window";
 	import Icon from "$src/icon/Icon.svelte";
@@ -39,7 +39,7 @@
 </script>
 
 {#if open}
-	<div transition:scale={{ duration: 400, start: 0.4 }}>
+	<div transition:fly={{ duration: 400, y: 40 }}>
 		<div
 			use:drag={{ bounds: desktop, handle_selector: ".titlebar" }}
 			on:pointerdown={focus}

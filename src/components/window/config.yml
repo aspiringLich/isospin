@@ -31,5 +31,5 @@ registry:
     title: System Settings
     file: Settings
     app:
-      name: System Settings
       icon: settings
+      row: -1

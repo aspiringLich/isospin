@@ -6,6 +6,7 @@ export type App = {
 	id: string;
 	name: string;
 	icon: string;
+	row: number;
 };
 
 export class Registry {
@@ -16,8 +17,8 @@ export class Registry {
 		this.items.set(id, { component, props });
 	}
 
-	register_app(id: string, name: string, icon: string) {
-		this.applications.push({ id, name, icon });
+	register_app(id: string, name: string, icon: string, row: number) {
+		this.applications.push({ id, name, icon, row });
 	}
 
 	spawn(id: string) {

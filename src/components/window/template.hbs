@@ -15,6 +15,6 @@ registry.register_window("{{id}}", {{id}}, {{{props}}});
 registry.register_window("{{id}}", {{base}}, {{{props}}});
 {{/if}}
 {{#if app}}
-registry.register_app("{{id}}", "{{app.name}}", "{{app.icon}}");
+registry.register_app("{{id}}", "{{title}}", "{{app.icon}}", {{app.row}});
 {{/if}}
 {{/each}}
