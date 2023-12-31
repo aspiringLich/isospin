@@ -1,5 +1,10 @@
-import assert from "assert";
 import type { Terminal as xtermTerminal } from "xterm";
+
+function assert(condition: any, message?: string): asserts condition {
+	if (!condition) {
+		throw new Error(message);
+	}
+}
 
 const abs_path = (path: string, cwd: string) => {
 	let _path;
@@ -23,6 +28,30 @@ const abs_path = (path: string, cwd: string) => {
 	return out;
 };
 
+class FileTree {
+	[filename: string]: Item;
+}
+
+enum ItemType {
+	Directory,
+	File,
+	Script,
+}
+
+type Item =
+	| {
+			type: ItemType.Directory;
+			content: FileTree;
+	  }
+	| {
+			type: ItemType.File;
+			content: string;
+	  }
+	| {
+			type: ItemType.Script;
+			fn: Function;
+	  };
+
 class Fs {
 	fs: FileSys = filesystem;
 	cwd: string;
@@ -40,11 +69,16 @@ class Console {
 	}
 
 	print(...args: any[]) {
-		this.term.write(args.map(String.toString).join(" "));
+		let out = "";
+		for (let i = 0; i < args.length; i++) {
+			if (typeof args[i] === "string") out += args[i];
+			else out += JSON.stringify(args[i]);
+		}
+		this.term.write(out);
 	}
 
 	println(...args: any[]) {
-		this.term.writeln(args.map(String.toString).join(" "));
+		this.print(...args, "\r\n");
 	}
 }
 
@@ -107,27 +141,3 @@ class FileSys {
 }
 
 export const filesystem = new FileSys();
-
-class FileTree {
-	[filename: string]: Item;
-}
-
-enum ItemType {
-	Directory,
-	File,
-	Script,
-}
-
-type Item =
-	| {
-			type: ItemType.Directory;
-			content: FileTree;
-	  }
-	| {
-			type: ItemType.File;
-			content: string;
-	  }
-	| {
-			type: ItemType.Script;
-			fn: Function;
-	  };

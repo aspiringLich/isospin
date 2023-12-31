@@ -9,6 +9,7 @@
 <script lang="ts">
 	import Terminal, { ansi } from "$src/components/Terminal.svelte";
 	import Window from "$src/components/window/Window.svelte";
+	import { filesystem } from "$src/filesystem";
 	import type { Terminal as xtermTerminal } from "xterm";
 
 	export let title: string;
@@ -24,7 +25,12 @@
 		let first = true;
 		let autocomplete = null;
 
-		for (let i = 0; i < command.length; ) {
+		// skip leading whitespace
+		let i = 0;
+		for (; i < command.length && /\s/.test(command[i]); i++);
+		prompt += " ".repeat(i);
+
+		while (i < command.length) {
 			// get run of non whitespace and whitespace characters
 			let j;
 			for (j = i; j < command.length && !/\s/.test(command[j]); j++);
@@ -85,10 +91,35 @@
 		update_prompt();
 
 		term.onData((e) => {
+			if (process) return;
 			switch (e) {
 				case "\r": // enter
-					term.writeln("");
-					// run_command();
+					term.writeln(ansi.reset);
+					let cmd = command.trim().split(/\s+/);
+					if (cmd.length == 0) break;
+
+					let argv = cmd.slice(1);
+					let f = filesystem.bin.get(cmd[0] + ".js");
+
+					if (f) {
+						process = f("", argv, term);
+						command = "";
+						process.then(() => {
+							process = null;
+							term.writeln("");
+							update_prompt();
+						});
+						process.catch((e) => {
+							process = null;
+							term.writeln(e);
+							term.writeln("");
+							update_prompt();
+						});
+						return;
+					} else {
+						term.writeln("flop: command not found: " + cmd[0]);
+					}
+
 					command = "";
 					update_prompt();
 					break;

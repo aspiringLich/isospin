@@ -22,7 +22,7 @@ for filename in os.listdir("../bin"):
 
 
 def sanitize(this, *args):
-    return pybars.strlist([args[0].replace("\\", "\\\\").replace("`", "\\`")])
+    return pybars.strlist([args[0].replace("\\", "\\\\").replace("`", "\\`").replace("$", "\\$")])
 
 
 with open("./template.hbs", "r") as f:

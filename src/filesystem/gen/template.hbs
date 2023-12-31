@@ -4,5 +4,6 @@ import { filesystem } from "./filesys";
 
 {{#each bin}}
 filesystem._init_add_file("/bin/{{@key}}", `{{sanitize this}}`);
-
 {{/each}}
+
+export { filesystem }

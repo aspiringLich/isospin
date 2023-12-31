@@ -2,7 +2,11 @@
 
 import { filesystem } from "./filesys";
 
-filesystem._init_add_file("/bin/help.js", `function args(argv, expected_args) {
+filesystem._init_add_file("/bin/help.js", `function process_name(argv0) {
+	return argv0.split("/").reverse()[0].split(".")[0];
+}
+
+function args(argv, expected_args) {
 	let args = {};
 
 	let prev_arg = null;
@@ -13,21 +17,21 @@ filesystem._init_add_file("/bin/help.js", `function args(argv, expected_args) {
 		} else if (prev_arg) {
 			args[prev_arg] = arg;
 			prev_arg = null;
-		}
+		} else prev_arg = null;
 	});
 
-	for (const arg in Object.keys(args)) {
+	for (const arg of Object.keys(args)) {
 		if (!expected_args.includes(arg)) {
-			throw arg + ": Unknown option";
+			throw \`\${process_name(argv[0])}: \${arg}: Unknown option\`;
 		}
 	}
 
 	return args;
 }
 
-args(process.argv, ["--help", "-h"]);
+args = args(process.argv, ["--help", "-h"]);
 
-const help = args.get("--help") || args.get("-h");
+const help = args["--help"] || args["-h"];
 
 if (help) {
 	console.println("yeehaw");
@@ -35,3 +39,5 @@ if (help) {
 `);
 filesystem._init_add_file("/bin/cd.js", ``);
 filesystem._init_add_file("/bin/ls.js", ``);
+
+export { filesystem }
