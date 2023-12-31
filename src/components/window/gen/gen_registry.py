@@ -1,19 +1,15 @@
-from pydantic import BaseModel, Field, field_validator, model_validator, computed_field
-from typing import Dict, List, Callable, Any, Optional
-from colorama import Fore as fg, Style as st
-
-import re
-import yaml
-import pybars
+import json
 import markdown
+import pybars
+import yaml
+import re
+
+from colorama import Fore as fg, Style as st
+from typing import Dict, List, Callable, Any, Optional
+from pydantic import BaseModel, Field, field_validator, model_validator, computed_field
+
 import os
 import sys
-import json
-
-
-# global constants
-MANDATORY_PROPS = ["title"]
-
 
 # check python version
 MIN_PYTHON = (3, 10)
@@ -25,6 +21,9 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
+
+# global constants
+MANDATORY_PROPS = ["title"]
 
 # globals
 ID_SET = set()
