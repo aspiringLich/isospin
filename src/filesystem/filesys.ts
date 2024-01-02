@@ -62,9 +62,10 @@ class Fs {
 }
 
 class Console {
-	term: xtermTerminal;
+	term: xtermTerminal | null;
+	buffer: string = "";
 
-	constructor(term: xtermTerminal) {
+	constructor(term: xtermTerminal | null) {
 		this.term = term;
 	}
 
@@ -74,11 +75,22 @@ class Console {
 			if (typeof args[i] === "string") out += args[i];
 			else out += JSON.stringify(args[i]);
 		}
-		this.term.write(out);
+		this.buffer += out;
+		this.term?.write(out);
 	}
 
 	println(...args: any[]) {
-		this.print(...args, "\r\n");
+		if (!args.length) {
+			this.print("\r\n");
+		} else {
+			const last = args.length - 1;
+			args[last] = args[last] + "\r\n";
+			this.print(...args);
+		}
+	}
+
+	log(...args: any[]) {
+		console.log(...args);
 	}
 }
 
@@ -94,33 +106,38 @@ class Process {
 	}
 }
 
-const make_script_fn = (path: string, content: string): Command => {
-	const f = new Function("console", "lib", "fs", "process", content);
-	return (cwd, args, term) => {
+const make_script_fn = (path: string, content: string): CommandFn => {
+	const f = new Function("console", "lib", "fs", "process", "module", content);
+	return (cwd, args, term, exports?) => {
 		return new Promise((resolve, reject) => {
 			try {
 				const console = new Console(term);
 				const fs = new Fs(cwd);
 				const process = new Process(fs, args, path);
 
-				f.call(null, console, filesystem.lib, fs, process);
+				var out = f.call(null, console, filesystem.lib, fs, process, { exports: exports });
 			} catch (e) {
 				reject(e);
 			}
-			resolve();
+			resolve(out);
 		});
 	};
 };
 
-type Command = (cwd: string, args: string[], terminal: xtermTerminal) => Promise<void>;
+type CommandFn = (
+	cwd: string,
+	args: string[],
+	terminal: xtermTerminal | null,
+	exports?: Object
+) => Promise<unknown>;
 
 class FileSys {
-	bin: Map<string, Command> = new Map();
+	bin: Map<string, CommandFn> = new Map();
 	lib: { [key: string]: unknown } = {};
 	etc: FileTree = new FileTree();
 	home: FileTree = new FileTree();
 
-	_init_add_file(path: string, content: string) {
+	async _init_add_file(path: string, content: string) {
 		let components = path.trim().split("/");
 		assert(components[0] === "");
 		const base = components[1];
@@ -133,8 +150,10 @@ class FileSys {
 				break;
 			case "lib":
 				assert(components.length === 3, "no subfolders in lib");
-				let lib = components[2];
-				this.lib[lib] = make_script_fn(path, content);
+				let lib = components[2].split(".")[0];
+				let f = make_script_fn(path, content);
+
+				this.lib[lib] = await f("", [], null);
 				break;
 		}
 	}

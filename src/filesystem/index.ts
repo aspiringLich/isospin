@@ -2,8 +2,20 @@
 
 import { filesystem } from "./filesys";
 
-filesystem._init_add_file("/bin/help.js", `function process_name(argv0) {
-	return argv0.split("/").reverse()[0].split(".")[0];
+filesystem._init_add_file("/bin/help.js", `console.log(lib);
+args = lib.args(process.argv, ["--help", "-h"]);
+const help = args["--help"] || args["-h"];
+
+if (help) {
+	console.println("yeehaw");
+	return;
+}
+`);
+filesystem._init_add_file("/bin/cd.js", ``);
+filesystem._init_add_file("/bin/ls.js", ``);
+
+filesystem._init_add_file("/lib/args.js", `function process_name(argv0) {
+	return /\\/([^/]+)\$/.exec(argv0)[1];
 }
 
 function args(argv, expected_args) {
@@ -29,15 +41,8 @@ function args(argv, expected_args) {
 	return args;
 }
 
-args = args(process.argv, ["--help", "-h"]);
-
-const help = args["--help"] || args["-h"];
-
-if (help) {
-	console.println("yeehaw");
-}
+return args;
 `);
-filesystem._init_add_file("/bin/cd.js", ``);
-filesystem._init_add_file("/bin/ls.js", ``);
+filesystem._init_add_file("/lib/man.js", ``);
 
 export { filesystem }
