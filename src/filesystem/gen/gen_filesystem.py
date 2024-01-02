@@ -14,11 +14,17 @@ dname = os.path.dirname(abspath)
 os.chdir(dname)
 
 
-# read files in ../bin
+# read files in /bin
 bin = {}
-for filename in os.listdir("../bin"):
-    with open(f"../bin/{filename}", "r") as f:
+for filename in os.listdir("../root/bin"):
+    with open(f"../root/bin/{filename}", "r") as f:
         bin[filename] = f.read()
+
+# read files in /lib
+lib = {}
+for filename in os.listdir("../root/lib"):
+    with open(f"../root/lib/{filename}", "r") as f:
+        lib[filename] = f.read()
 
 
 def sanitize(this, *args):
@@ -29,6 +35,7 @@ with open("./template.hbs", "r") as f:
     template = pybars.Compiler().compile(f.read(), )
     output = template({
         "bin": bin,
+        "lib": lib
     }, helpers={
         "sanitize": sanitize
     })
