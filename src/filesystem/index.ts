@@ -2,35 +2,124 @@
 
 import { filesystem } from "./filesys";
 
-filesystem._init_add_file("/bin/help.js", `console.log(lib);
-args = lib.args(process.argv, ["--help", "-h"]);
-const help = args["--help"] || args["-h"];
+filesystem.tree = {"lib": {"args.js": `class Args {
+	args = {};
+	params = [];
+	expected_args = new Set();
+	arg_defs = {};
 
-if (help) {
-	console.println("yeehaw");
-	return;
+	constructor(argv) {
+		let prev_arg = false;
+		argv.slice(1).forEach((arg) => {
+			if (arg.startsWith("-")) {
+				this.args[arg] = true;
+				prev_arg = arg;
+			} else if (prev_arg) {
+				this.args[prev_arg] = arg;
+				this.params.push([prev_arg, arg]);
+				prev_arg = null;
+			} else {
+				this.params.push([null, arg]);
+			}
+		});
+	}
+
+	/**
+	 * Retrieve the value of an argument provided to the program.
+	 *
+	 * @param {string} arg
+	 * @param {{ short?: boolean, required?: boolean, default_value?: boolean, boolean?: boolean }} options
+	 * * \`short\` (\`true\`) - Whether to allow the short form of the argument (e.g. \`-h\` for \`--help\`)
+	 * * \`required\` (\`false\`) - Whether the argument is mandatory. If \`true\`, this function will throw an error if it is not provided
+	 * * \`default_value\` (\`undefined\`) - The default value to return if the argument is not provided
+	 * * \`bool\` (\`false\`) - Whether the argument is a boolean flag (e.g. \`--help\` or \`--no-help\`)
+	 *   * \`true\`: \`--help\` / \`-h\`,
+	 *   * \`false\`: \`--no-help\`
+	 *   * \`bool\` and \`required\` are mutually exclusive
+	 * @returns The value of the argument, or \`default_value\` if the argument is not provided
+	 */
+	arg(arg, options) {
+		const long_arg = \`--\${arg}\`;
+		const negative_arg = \`--no-\${arg}\`;
+		const short_arg = \`-\${arg[0]}\`;
+
+		this.arg_defs[arg] = options;
+
+		let { short, required, default_value, bool } = {
+			short: true,
+			required: false,
+			default_value: undefined,
+			bool: false,
+			...options,
+		};
+
+		if (short && this.args[short_arg] && this.args[long_arg]) {
+			throw \`\${process_name(
+				this.argv[0]
+			)}: \${short_arg} and \${long_arg} cannot be used together\`;
+		}
+		if (bool && required) {
+			throw \`\${process_name(
+				this.argv[0]
+			)}: argument \\\`\${long_arg}\\\` cannot be both required and a boolean flag\`;
+		}
+		if (bool && default_value === undefined) {
+			default_value = false;
+		}
+
+		this.expected_args.add(long_arg);
+		if (short) this.expected_args.add(short_arg);
+
+		if (bool) {
+			this.expected_args.add(negative_arg);
+			if (this.args[negative_arg]) return false;
+			let val;
+			if (short && this.args[short_arg]) {
+				val = this.args[short_arg];
+			} else {
+				val = this.args[long_arg];
+			}
+
+			if (val === undefined) return default_value;
+			if (val === false) return false;
+			return true;
+		}
+
+		if (short && this.args[short_arg]) return this.args[short_arg];
+		if (this.args[long_arg]) return this.args[long_arg];
+
+		if (required) {
+			if (short)
+				throw \`\${process_name(
+					this.argv[0]
+				)}: argument \${long_arg} (\${short_arg}) is required\`;
+			else throw \`\${process_name(this.argv[0])}: argument \${long_arg} is required\`;
+		}
+
+		return default_value;
+	}
+
+	/**
+	 *
+	 * @param {string} name
+	 */
+	param(name) {}
+
+	finish() {
+		for (const arg of Object.keys(this.args)) {
+			if (arg.startsWith("-")) {
+				throw \`\${process_name(this.argv[0])}: \${arg}: Unknown option\`;
+			}
+		}
+	}
 }
-`);
-filesystem._init_add_file("/bin/cd.js", ``);
-filesystem._init_add_file("/bin/ls.js", ``);
 
-filesystem._init_add_file("/lib/args.js", `function process_name(argv0) {
-	return /\\/([^/]+)\$/.exec(argv0)[1];
+function process_name(argv0) {
+	return /\\/([^/]+).js\$/.exec(argv0)[1];
 }
 
 function args(argv, expected_args) {
 	let args = {};
-
-	let prev_arg = null;
-	argv.slice(1).forEach((arg) => {
-		if (arg.startsWith("-")) {
-			args[arg] = true;
-			prev_arg = arg;
-		} else if (prev_arg) {
-			args[prev_arg] = arg;
-			prev_arg = null;
-		} else prev_arg = null;
-	});
 
 	for (const arg of Object.keys(args)) {
 		if (!expected_args.includes(arg)) {
@@ -38,11 +127,655 @@ function args(argv, expected_args) {
 		}
 	}
 
-	return args;
+	return new Args(args);
 }
 
-return args;
-`);
-filesystem._init_add_file("/lib/man.js", ``);
+module.exports = { Args };
+`
+,"man.js": ``
+,},
+"home": {"user": {"Documents": {"writing_scripts.txt": `===============================================================================
+=  W r i t i n g   S c r i p t s   i n   F l o p p a   O S                    =
+===============================================================================
+
+    Although Floppa OS applications are Svelte components, and thus, cannot
+    be viewed and edited like regular files, scripts make up all of the
+
+
+1. Console Manipulation -------------------------------------------------------
+
+    console.print(s)
+
+        Prints out a string, \`s\`, to the console. ANSI Escape sequences and 
+        unicode characters are supported.
+
+
+    console.println(s)
+
+        Prints out a string, \`s\`, to the console, with an appended newline. 
+        ANSI Escape sequences and unicode characters are supported.
+    
+    
+    console.debug(obj, vb = 0)
+
+        Inspects an object and prints out it's properties. 
+        
+        If \`vb\` is set to 1, the object will be formatted with indentation. 
+        If \`vb\` is set to 2, the object's prototype chain will also be 
+        printed.
+
+
+2. Command-Line Arguments -----------------------------------------------------
+
+    process.argv
+
+        Returns an array of command-line arguments passed to the script. 
+        The first argument is always the script's path.
+        
+    
+    process.argv0
+    
+        Returns the path of the script.
+
+
+3. Filesystem Manipulation ----------------------------------------------------
+
+    fs.read(path)
+    
+        Reads the contents of a file at \`path\` and returns it as a string.
+        
+    
+    fs.write(path, data)
+    
+        Writes a string, \`data\`, to a file at \`path\`.
+        
+    
+    fs.rename(path, newPath)
+    
+        Renames a file at \`path\` to \`newPath\`.`
+,},
+"writing_scripts.txt": `===============================================================================
+=  W r i t i n g   S c r i p t s   i n   F l o p p a   O S                    =
+===============================================================================
+
+    Although Floppa OS applications are Svelte components, and thus, cannot
+    be viewed and edited like regular files, scripts make up all of the
+
+
+1. Console Manipulation -------------------------------------------------------
+
+    console.print(s)
+
+        Prints out a string, \`s\`, to the console. ANSI Escape sequences and 
+        unicode characters are supported.
+
+
+    console.println(s)
+
+        Prints out a string, \`s\`, to the console, with an appended newline. 
+        ANSI Escape sequences and unicode characters are supported.
+    
+    
+    console.debug(obj, vb = 0)
+
+        Inspects an object and prints out it's properties. 
+        
+        If \`vb\` is set to 1, the object will be formatted with indentation. 
+        If \`vb\` is set to 2, the object's prototype chain will also be 
+        printed.
+
+
+2. Command-Line Arguments -----------------------------------------------------
+
+    process.argv
+
+        Returns an array of command-line arguments passed to the script. 
+        The first argument is always the script's path.
+        
+    
+    process.argv0
+    
+        Returns the path of the script.
+
+
+3. Filesystem Manipulation ----------------------------------------------------
+
+    fs.read(path)
+    
+        Reads the contents of a file at \`path\` and returns it as a string.
+        
+    
+    fs.write(path, data)
+    
+        Writes a string, \`data\`, to a file at \`path\`.
+        
+    
+    fs.rename(path, newPath)
+    
+        Renames a file at \`path\` to \`newPath\`.`
+,},
+"Documents": {"writing_scripts.txt": `===============================================================================
+=  W r i t i n g   S c r i p t s   i n   F l o p p a   O S                    =
+===============================================================================
+
+    Although Floppa OS applications are Svelte components, and thus, cannot
+    be viewed and edited like regular files, scripts make up all of the
+
+
+1. Console Manipulation -------------------------------------------------------
+
+    console.print(s)
+
+        Prints out a string, \`s\`, to the console. ANSI Escape sequences and 
+        unicode characters are supported.
+
+
+    console.println(s)
+
+        Prints out a string, \`s\`, to the console, with an appended newline. 
+        ANSI Escape sequences and unicode characters are supported.
+    
+    
+    console.debug(obj, vb = 0)
+
+        Inspects an object and prints out it's properties. 
+        
+        If \`vb\` is set to 1, the object will be formatted with indentation. 
+        If \`vb\` is set to 2, the object's prototype chain will also be 
+        printed.
+
+
+2. Command-Line Arguments -----------------------------------------------------
+
+    process.argv
+
+        Returns an array of command-line arguments passed to the script. 
+        The first argument is always the script's path.
+        
+    
+    process.argv0
+    
+        Returns the path of the script.
+
+
+3. Filesystem Manipulation ----------------------------------------------------
+
+    fs.read(path)
+    
+        Reads the contents of a file at \`path\` and returns it as a string.
+        
+    
+    fs.write(path, data)
+    
+        Writes a string, \`data\`, to a file at \`path\`.
+        
+    
+    fs.rename(path, newPath)
+    
+        Renames a file at \`path\` to \`newPath\`.`
+,},
+"writing_scripts.txt": `===============================================================================
+=  W r i t i n g   S c r i p t s   i n   F l o p p a   O S                    =
+===============================================================================
+
+    Although Floppa OS applications are Svelte components, and thus, cannot
+    be viewed and edited like regular files, scripts make up all of the
+
+
+1. Console Manipulation -------------------------------------------------------
+
+    console.print(s)
+
+        Prints out a string, \`s\`, to the console. ANSI Escape sequences and 
+        unicode characters are supported.
+
+
+    console.println(s)
+
+        Prints out a string, \`s\`, to the console, with an appended newline. 
+        ANSI Escape sequences and unicode characters are supported.
+    
+    
+    console.debug(obj, vb = 0)
+
+        Inspects an object and prints out it's properties. 
+        
+        If \`vb\` is set to 1, the object will be formatted with indentation. 
+        If \`vb\` is set to 2, the object's prototype chain will also be 
+        printed.
+
+
+2. Command-Line Arguments -----------------------------------------------------
+
+    process.argv
+
+        Returns an array of command-line arguments passed to the script. 
+        The first argument is always the script's path.
+        
+    
+    process.argv0
+    
+        Returns the path of the script.
+
+
+3. Filesystem Manipulation ----------------------------------------------------
+
+    fs.read(path)
+    
+        Reads the contents of a file at \`path\` and returns it as a string.
+        
+    
+    fs.write(path, data)
+    
+        Writes a string, \`data\`, to a file at \`path\`.
+        
+    
+    fs.rename(path, newPath)
+    
+        Renames a file at \`path\` to \`newPath\`.`
+,},
+"etc": {"sys.cfg": `
+[Appearance]
+theme = light`
+,},
+"bin": {"help.js": `const { Args } = include("/lib/args");
+
+args = new Args(process.argv);
+const help = args.arg("help", { bool: true });
+
+if (help) {
+	console.println("yeehaw");
+	return;
+}
+`
+,"cd.js": ``
+,"ls.js": ``
+,},
+"args.js": `class Args {
+	args = {};
+	params = [];
+	expected_args = new Set();
+	arg_defs = {};
+
+	constructor(argv) {
+		let prev_arg = false;
+		argv.slice(1).forEach((arg) => {
+			if (arg.startsWith("-")) {
+				this.args[arg] = true;
+				prev_arg = arg;
+			} else if (prev_arg) {
+				this.args[prev_arg] = arg;
+				this.params.push([prev_arg, arg]);
+				prev_arg = null;
+			} else {
+				this.params.push([null, arg]);
+			}
+		});
+	}
+
+	/**
+	 * Retrieve the value of an argument provided to the program.
+	 *
+	 * @param {string} arg
+	 * @param {{ short?: boolean, required?: boolean, default_value?: boolean, boolean?: boolean }} options
+	 * * \`short\` (\`true\`) - Whether to allow the short form of the argument (e.g. \`-h\` for \`--help\`)
+	 * * \`required\` (\`false\`) - Whether the argument is mandatory. If \`true\`, this function will throw an error if it is not provided
+	 * * \`default_value\` (\`undefined\`) - The default value to return if the argument is not provided
+	 * * \`bool\` (\`false\`) - Whether the argument is a boolean flag (e.g. \`--help\` or \`--no-help\`)
+	 *   * \`true\`: \`--help\` / \`-h\`,
+	 *   * \`false\`: \`--no-help\`
+	 *   * \`bool\` and \`required\` are mutually exclusive
+	 * @returns The value of the argument, or \`default_value\` if the argument is not provided
+	 */
+	arg(arg, options) {
+		const long_arg = \`--\${arg}\`;
+		const negative_arg = \`--no-\${arg}\`;
+		const short_arg = \`-\${arg[0]}\`;
+
+		this.arg_defs[arg] = options;
+
+		let { short, required, default_value, bool } = {
+			short: true,
+			required: false,
+			default_value: undefined,
+			bool: false,
+			...options,
+		};
+
+		if (short && this.args[short_arg] && this.args[long_arg]) {
+			throw \`\${process_name(
+				this.argv[0]
+			)}: \${short_arg} and \${long_arg} cannot be used together\`;
+		}
+		if (bool && required) {
+			throw \`\${process_name(
+				this.argv[0]
+			)}: argument \\\`\${long_arg}\\\` cannot be both required and a boolean flag\`;
+		}
+		if (bool && default_value === undefined) {
+			default_value = false;
+		}
+
+		this.expected_args.add(long_arg);
+		if (short) this.expected_args.add(short_arg);
+
+		if (bool) {
+			this.expected_args.add(negative_arg);
+			if (this.args[negative_arg]) return false;
+			let val;
+			if (short && this.args[short_arg]) {
+				val = this.args[short_arg];
+			} else {
+				val = this.args[long_arg];
+			}
+
+			if (val === undefined) return default_value;
+			if (val === false) return false;
+			return true;
+		}
+
+		if (short && this.args[short_arg]) return this.args[short_arg];
+		if (this.args[long_arg]) return this.args[long_arg];
+
+		if (required) {
+			if (short)
+				throw \`\${process_name(
+					this.argv[0]
+				)}: argument \${long_arg} (\${short_arg}) is required\`;
+			else throw \`\${process_name(this.argv[0])}: argument \${long_arg} is required\`;
+		}
+
+		return default_value;
+	}
+
+	/**
+	 *
+	 * @param {string} name
+	 */
+	param(name) {}
+
+	finish() {
+		for (const arg of Object.keys(this.args)) {
+			if (arg.startsWith("-")) {
+				throw \`\${process_name(this.argv[0])}: \${arg}: Unknown option\`;
+			}
+		}
+	}
+}
+
+function process_name(argv0) {
+	return /\\/([^/]+).js\$/.exec(argv0)[1];
+}
+
+function args(argv, expected_args) {
+	let args = {};
+
+	for (const arg of Object.keys(args)) {
+		if (!expected_args.includes(arg)) {
+			throw \`\${process_name(argv[0])}: \${arg}: Unknown option\`;
+		}
+	}
+
+	return new Args(args);
+}
+
+module.exports = { Args };
+`
+,"man.js": ``
+,"user": {"Documents": {"writing_scripts.txt": `===============================================================================
+=  W r i t i n g   S c r i p t s   i n   F l o p p a   O S                    =
+===============================================================================
+
+    Although Floppa OS applications are Svelte components, and thus, cannot
+    be viewed and edited like regular files, scripts make up all of the
+
+
+1. Console Manipulation -------------------------------------------------------
+
+    console.print(s)
+
+        Prints out a string, \`s\`, to the console. ANSI Escape sequences and 
+        unicode characters are supported.
+
+
+    console.println(s)
+
+        Prints out a string, \`s\`, to the console, with an appended newline. 
+        ANSI Escape sequences and unicode characters are supported.
+    
+    
+    console.debug(obj, vb = 0)
+
+        Inspects an object and prints out it's properties. 
+        
+        If \`vb\` is set to 1, the object will be formatted with indentation. 
+        If \`vb\` is set to 2, the object's prototype chain will also be 
+        printed.
+
+
+2. Command-Line Arguments -----------------------------------------------------
+
+    process.argv
+
+        Returns an array of command-line arguments passed to the script. 
+        The first argument is always the script's path.
+        
+    
+    process.argv0
+    
+        Returns the path of the script.
+
+
+3. Filesystem Manipulation ----------------------------------------------------
+
+    fs.read(path)
+    
+        Reads the contents of a file at \`path\` and returns it as a string.
+        
+    
+    fs.write(path, data)
+    
+        Writes a string, \`data\`, to a file at \`path\`.
+        
+    
+    fs.rename(path, newPath)
+    
+        Renames a file at \`path\` to \`newPath\`.`
+,},
+"writing_scripts.txt": `===============================================================================
+=  W r i t i n g   S c r i p t s   i n   F l o p p a   O S                    =
+===============================================================================
+
+    Although Floppa OS applications are Svelte components, and thus, cannot
+    be viewed and edited like regular files, scripts make up all of the
+
+
+1. Console Manipulation -------------------------------------------------------
+
+    console.print(s)
+
+        Prints out a string, \`s\`, to the console. ANSI Escape sequences and 
+        unicode characters are supported.
+
+
+    console.println(s)
+
+        Prints out a string, \`s\`, to the console, with an appended newline. 
+        ANSI Escape sequences and unicode characters are supported.
+    
+    
+    console.debug(obj, vb = 0)
+
+        Inspects an object and prints out it's properties. 
+        
+        If \`vb\` is set to 1, the object will be formatted with indentation. 
+        If \`vb\` is set to 2, the object's prototype chain will also be 
+        printed.
+
+
+2. Command-Line Arguments -----------------------------------------------------
+
+    process.argv
+
+        Returns an array of command-line arguments passed to the script. 
+        The first argument is always the script's path.
+        
+    
+    process.argv0
+    
+        Returns the path of the script.
+
+
+3. Filesystem Manipulation ----------------------------------------------------
+
+    fs.read(path)
+    
+        Reads the contents of a file at \`path\` and returns it as a string.
+        
+    
+    fs.write(path, data)
+    
+        Writes a string, \`data\`, to a file at \`path\`.
+        
+    
+    fs.rename(path, newPath)
+    
+        Renames a file at \`path\` to \`newPath\`.`
+,},
+"Documents": {"writing_scripts.txt": `===============================================================================
+=  W r i t i n g   S c r i p t s   i n   F l o p p a   O S                    =
+===============================================================================
+
+    Although Floppa OS applications are Svelte components, and thus, cannot
+    be viewed and edited like regular files, scripts make up all of the
+
+
+1. Console Manipulation -------------------------------------------------------
+
+    console.print(s)
+
+        Prints out a string, \`s\`, to the console. ANSI Escape sequences and 
+        unicode characters are supported.
+
+
+    console.println(s)
+
+        Prints out a string, \`s\`, to the console, with an appended newline. 
+        ANSI Escape sequences and unicode characters are supported.
+    
+    
+    console.debug(obj, vb = 0)
+
+        Inspects an object and prints out it's properties. 
+        
+        If \`vb\` is set to 1, the object will be formatted with indentation. 
+        If \`vb\` is set to 2, the object's prototype chain will also be 
+        printed.
+
+
+2. Command-Line Arguments -----------------------------------------------------
+
+    process.argv
+
+        Returns an array of command-line arguments passed to the script. 
+        The first argument is always the script's path.
+        
+    
+    process.argv0
+    
+        Returns the path of the script.
+
+
+3. Filesystem Manipulation ----------------------------------------------------
+
+    fs.read(path)
+    
+        Reads the contents of a file at \`path\` and returns it as a string.
+        
+    
+    fs.write(path, data)
+    
+        Writes a string, \`data\`, to a file at \`path\`.
+        
+    
+    fs.rename(path, newPath)
+    
+        Renames a file at \`path\` to \`newPath\`.`
+,},
+"writing_scripts.txt": `===============================================================================
+=  W r i t i n g   S c r i p t s   i n   F l o p p a   O S                    =
+===============================================================================
+
+    Although Floppa OS applications are Svelte components, and thus, cannot
+    be viewed and edited like regular files, scripts make up all of the
+
+
+1. Console Manipulation -------------------------------------------------------
+
+    console.print(s)
+
+        Prints out a string, \`s\`, to the console. ANSI Escape sequences and 
+        unicode characters are supported.
+
+
+    console.println(s)
+
+        Prints out a string, \`s\`, to the console, with an appended newline. 
+        ANSI Escape sequences and unicode characters are supported.
+    
+    
+    console.debug(obj, vb = 0)
+
+        Inspects an object and prints out it's properties. 
+        
+        If \`vb\` is set to 1, the object will be formatted with indentation. 
+        If \`vb\` is set to 2, the object's prototype chain will also be 
+        printed.
+
+
+2. Command-Line Arguments -----------------------------------------------------
+
+    process.argv
+
+        Returns an array of command-line arguments passed to the script. 
+        The first argument is always the script's path.
+        
+    
+    process.argv0
+    
+        Returns the path of the script.
+
+
+3. Filesystem Manipulation ----------------------------------------------------
+
+    fs.read(path)
+    
+        Reads the contents of a file at \`path\` and returns it as a string.
+        
+    
+    fs.write(path, data)
+    
+        Writes a string, \`data\`, to a file at \`path\`.
+        
+    
+    fs.rename(path, newPath)
+    
+        Renames a file at \`path\` to \`newPath\`.`
+,"sys.cfg": `
+[Appearance]
+theme = light`
+,"help.js": `const { Args } = include("/lib/args");
+
+args = new Args(process.argv);
+const help = args.arg("help", { bool: true });
+
+if (help) {
+	console.println("yeehaw");
+	return;
+}
+`
+,"cd.js": ``
+,"ls.js": ``
+,};
 
 export { filesystem }

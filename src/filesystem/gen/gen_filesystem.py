@@ -1,3 +1,4 @@
+from pybars import strlist
 import pybars
 
 import os
@@ -14,30 +15,38 @@ dname = os.path.dirname(abspath)
 os.chdir(dname)
 
 
-# read files in /bin
-bin = {}
-for filename in os.listdir("../root/bin"):
-    with open(f"../root/bin/{filename}", "r") as f:
-        bin[filename] = f.read()
+def sanitize(s: str):
+    return s.replace("\\", "\\\\").replace("`", "\\`").replace("$", "\\$")
 
-# read files in /lib
-lib = {}
-for filename in os.listdir("../root/lib"):
-    with open(f"../root/lib/{filename}", "r") as f:
-        lib[filename] = f.read()
+# recursively add files in ../root to a file tree
 
 
-def sanitize(this, *args):
-    return pybars.strlist([args[0].replace("\\", "\\\\").replace("`", "\\`").replace("$", "\\$")])
+output = strlist()
+
+
+def read_file_tree(path: str):
+    output.append("{")
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            file_path = os.path.join(root, file)
+            with open(file_path, "r") as f:
+                output.append(f'"{file}": `{sanitize(f.read())}`\n,')
+        for dir in dirs:
+            dir_path = os.path.join(root, dir)
+            output.append(f'"{dir}": ')
+            read_file_tree(dir_path)
+    output.append("},\r\n")
+
+
+read_file_tree("../root")
+
+output[-1] = "};"
 
 
 with open("./template.hbs", "r") as f:
     template = pybars.Compiler().compile(f.read(), )
     output = template({
-        "bin": bin,
-        "lib": lib
-    }, helpers={
-        "sanitize": sanitize
+        "tree": "".join(output)
     })
 
 with open("../index.ts", "w") as f:

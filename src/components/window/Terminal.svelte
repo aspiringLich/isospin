@@ -2,14 +2,13 @@
 	function is_control_code(s: string) {
 		return s.charCodeAt(0) < 0x20;
 	}
-
-	const command_set: Set<string> = new Set(["help", "clear", "cd", "ls"]);
 </script>
 
 <script lang="ts">
 	import Terminal, { ansi } from "$src/components/Terminal.svelte";
 	import Window from "$src/components/window/Window.svelte";
 	import { filesystem } from "$src/filesystem";
+	import { ScriptCache } from "$src/filesystem/filesys";
 	import type { Terminal as xtermTerminal } from "xterm";
 
 	export let title: string;
@@ -18,6 +17,11 @@
 	let process: Promise<unknown> | null = null;
 	let command = "";
 	let term: xtermTerminal;
+
+	const commands = new Map<string, string>();
+	for (const file of filesystem.listdir("/bin")) {
+		commands.set(file.slice(0, -3), `/bin/${file}`);
+	}
 
 	const update_prompt = () => {
 		let prompt = ansi.reset + "$ ";
@@ -53,7 +57,7 @@
 			if (new_chunk.length == 0) continue;
 
 			if (first) {
-				for (const cmd of command_set) {
+				for (const cmd of commands.keys()) {
 					if (cmd.startsWith(chunk)) {
 						autocomplete = cmd;
 						break;
@@ -88,6 +92,7 @@
 		term.writeln("");
 
 		update_prompt();
+		term.focus();
 
 		term.onData((e) => {
 			if (process) return;
@@ -98,10 +103,12 @@
 					if (cmd.length == 0) break;
 
 					let argv = cmd.slice(1);
-					let f = filesystem.bin.get(cmd[0] + ".js");
+					let cmd_path = commands.get(cmd[0]);
 
-					if (f) {
+					if (cmd_path) {
+						let f = ScriptCache.get(cmd_path);
 						process = f("", argv, term);
+
 						command = "";
 						process.then(() => {
 							process = null;
@@ -110,8 +117,7 @@
 						});
 						process.catch((e) => {
 							process = null;
-							term.writeln(e);
-							term.writeln("");
+							term.writeln(ansi.fg.bright_red + e.toString() + ansi.reset + "\r\n");
 							update_prompt();
 						});
 						return;
@@ -143,6 +149,6 @@
 	};
 </script>
 
-<Window {title} {id}>
+<Window {title} {id} on:focus={() => term?.focus()}>
 	<Terminal on:ready={init} />
 </Window>

@@ -9,7 +9,7 @@
 	import Cross from "$src/icon/Cross.svelte";
 	import { desktop } from "$cpt/desktop/Desktop.svelte";
 	import { fly } from "svelte/transition";
-	import { onMount } from "svelte";
+	import { createEventDispatcher, onMount } from "svelte";
 	import { PROCESSES } from "$src/components/window";
 	import Icon from "$src/icon/Icon.svelte";
 	import { AppIcon } from "$src/icon";
@@ -29,7 +29,10 @@
 	let open = false;
 	onMount(() => {
 		open = true;
+		dispatch("open");
 	});
+
+	const dispatch = createEventDispatcher();
 
 	const close = () => {
 		open = false;
@@ -43,6 +46,7 @@
 		let self = element.parentElement;
 		if (desktop.lastChild === self || !self) return;
 		desktop.appendChild(self);
+		dispatch("focus");
 	};
 </script>
 

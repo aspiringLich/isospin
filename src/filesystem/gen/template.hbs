@@ -2,12 +2,6 @@
 
 import { filesystem } from "./filesys";
 
-{{#each bin}}
-filesystem._init_add_file("/bin/{{@key}}", `{{sanitize this}}`);
-{{/each}}
-
-{{#each lib}}
-filesystem._init_add_file("/lib/{{@key}}", `{{sanitize this}}`);
-{{/each}}
+filesystem.tree = {{{tree}}}
 
 export { filesystem }

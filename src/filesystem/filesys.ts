@@ -1,19 +1,27 @@
+import { cyrb53 } from "$lib/utils";
 import type { Terminal as xtermTerminal } from "xterm";
 
-function assert(condition: any, message?: string): asserts condition {
-	if (!condition) {
-		throw new Error(message);
+class AssertionError extends Error {
+	constructor(message: string = "Assertion failed") {
+		super(message);
+		this.name = "AssertionError";
 	}
 }
 
-const abs_path = (path: string, cwd: string) => {
+function assert(condition: any, message?: string): asserts condition {
+	if (!condition) {
+		throw new AssertionError(message);
+	}
+}
+
+const abs_path = (path: string, cwd: string = "/home/user") => {
 	let _path;
-	if (path.startsWith("/")) _path = path;
+	if (path.startsWith("/")) _path = path.slice(1);
 	else if (path.startsWith("~/")) _path = "/home/user";
-	else _path = cwd + "/" + path;
+	else _path = cwd.slice(1) + "/" + path;
 	_path = _path.trim();
 
-	let out: string[] = _path.split("/").slice(1);
+	let out: string[] = [];
 	for (const component of _path.split("/")) {
 		switch (component) {
 			case ".":
@@ -27,30 +35,6 @@ const abs_path = (path: string, cwd: string) => {
 	}
 	return out;
 };
-
-class FileTree {
-	[filename: string]: Item;
-}
-
-enum ItemType {
-	Directory,
-	File,
-	Script,
-}
-
-type Item =
-	| {
-			type: ItemType.Directory;
-			content: FileTree;
-	  }
-	| {
-			type: ItemType.File;
-			content: string;
-	  }
-	| {
-			type: ItemType.Script;
-			fn: Function;
-	  };
 
 class Fs {
 	fs: FileSys = filesystem;
@@ -106,16 +90,41 @@ class Process {
 	}
 }
 
-const make_script_fn = (path: string, content: string): CommandFn => {
-	const f = new Function("console", "lib", "fs", "process", "module", content);
-	return (cwd, args, term, exports?) => {
+class IncludeError extends Error {
+	constructor(msg: string) {
+		super(msg);
+		this.name = "IncludeError";
+	}
+}
+
+const make_script_fn = (path: string, content: string): ScriptFn => {
+	const f = new Function("console", "fs", "process", "module", "include", content);
+	return (cwd, args, term, module = { exports: {} }) => {
 		return new Promise((resolve, reject) => {
 			try {
 				const console = new Console(term);
 				const fs = new Fs(cwd);
 				const process = new Process(fs, args, path);
+				const include = (path: string) => {
+					let _module = { exports: {} };
 
-				var out = f.call(null, console, filesystem.lib, fs, process, { exports: exports });
+					if (!path.endsWith(".js")) {
+						path += ".js";
+					}
+
+					try {
+						var imported_fn = ScriptCache.get(path);
+					} catch (e) {
+						let _e = new IncludeError(`Failed to include '${path}'`);
+						_e.cause = e;
+						throw _e;
+					}
+
+					imported_fn(cwd, args, term, _module);
+					return _module.exports;
+				};
+
+				var out = f.call(null, console, fs, process, module, include);
 			} catch (e) {
 				reject(e);
 			}
@@ -124,37 +133,86 @@ const make_script_fn = (path: string, content: string): CommandFn => {
 	};
 };
 
-type CommandFn = (
+type ScriptFn = (
 	cwd: string,
 	args: string[],
 	terminal: xtermTerminal | null,
-	exports?: Object
+	module?: { exports: unknown }
 ) => Promise<unknown>;
 
+export class ScriptCache {
+	static cache: { [path: string]: { hash: number; fn: ScriptFn } } = {};
+
+	static get(path: string) {
+		const file = filesystem.get_file(path);
+		const hash = cyrb53(file);
+
+		const prev_hash = this.cache[path]?.hash;
+		if (prev_hash === hash) {
+			return this.cache[path].fn;
+		} else {
+			const fn = make_script_fn(path, file);
+			this.cache[path] = { hash, fn };
+			return fn;
+		}
+	}
+}
+
+type FileTree = { [filename: string]: FileTree | string };
+
+class FileNotFoundError extends Error {
+	constructor(path: string) {
+		super(`File not found: ${path}`);
+		this.name = "FileNotFoundError";
+	}
+}
+
 class FileSys {
-	bin: Map<string, CommandFn> = new Map();
-	lib: { [key: string]: unknown } = {};
-	etc: FileTree = new FileTree();
-	home: FileTree = new FileTree();
+	tree: FileTree = {};
 
-	async _init_add_file(path: string, content: string) {
-		let components = path.trim().split("/");
-		assert(components[0] === "");
-		const base = components[1];
+	_init_add_file(path: string, content: string) {
+		let components = abs_path(path.trim());
+		console.log(this.tree);
+	}
 
-		switch (base) {
-			case "bin":
-				assert(components.length === 3, "no subfolders in bin");
-				let file = components[2];
-				this.bin.set(file, make_script_fn(path, content));
-				break;
-			case "lib":
-				assert(components.length === 3, "no subfolders in lib");
-				let lib = components[2].split(".")[0];
-				let f = make_script_fn(path, content);
+	/**
+	 *
+	 * @param path The path of the file
+	 * @returns The file object
+	 * @throws FileNotFoundError
+	 */
+	get_file(path: string) {
+		let tree = this.tree;
+		const components = abs_path(path);
 
-				this.lib[lib] = await f("", [], null);
-				break;
+		for (let i = 0; i < components.length; i++) {
+			const component = components[i];
+			tree = tree[component] as FileTree;
+			if (!tree) {
+				throw new FileNotFoundError(path);
+			}
+		}
+
+		return tree as unknown as string;
+	}
+
+	/**
+	 * Returns an interator over the contents of a directory
+	 */
+	*listdir(path: string) {
+		let tree = this.tree;
+		const components = abs_path(path);
+
+		for (let i = 0; i < components.length; i++) {
+			const component = components[i];
+			tree = tree[component] as FileTree;
+			if (!tree) {
+				throw new FileNotFoundError(path);
+			}
+		}
+
+		for (const key of Object.keys(tree)) {
+			yield key;
 		}
 	}
 }
