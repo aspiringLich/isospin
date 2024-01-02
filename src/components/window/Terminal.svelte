@@ -15,9 +15,8 @@
 	export let title: string;
 	export let id: string;
 
-	let process: Promise<void> | null = null;
+	let process: Promise<unknown> | null = null;
 	let command = "";
-
 	let term: xtermTerminal;
 
 	const update_prompt = () => {
@@ -117,7 +116,8 @@
 						});
 						return;
 					} else {
-						term.writeln("flop: command not found: " + cmd[0]);
+						term.writeln(`flop: command not found: ${cmd[0]}`);
+						term.writeln("");
 					}
 
 					command = "";

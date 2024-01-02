@@ -1,5 +1,5 @@
 function process_name(argv0) {
-	return argv0.split("/").reverse()[0].split(".")[0];
+	return /\/([^/]+)$/.exec(argv0)[1];
 }
 
 function args(argv, expected_args) {
@@ -25,10 +25,4 @@ function args(argv, expected_args) {
 	return args;
 }
 
-args = args(process.argv, ["--help", "-h"]);
-
-const help = args["--help"] || args["-h"];
-
-if (help) {
-	console.println("yeehaw");
-}
+return args;
