@@ -122,7 +122,9 @@
 						});
 						return;
 					} else {
-						term.writeln(`flop: command not found: ${cmd[0]}`);
+						term.writeln(
+							ansi.fg.bright_red + `flop: command not found: ${cmd[0]}` + ansi.reset
+						);
 						term.writeln("");
 					}
 

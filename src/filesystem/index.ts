@@ -6,11 +6,32 @@ filesystem.tree = {"lib": {"args.js": `class Args {
 	args = {};
 	params = [];
 	expected_args = new Set();
+	/**
+	 * Stored information about each argument
+	 * @type {{ [arg: string]: { desc: string, short?: boolean, required?: boolean, default_value?: boolean, boolean?: boolean } }}
+	 */
 	arg_defs = {};
+	mode = "args";
+	param_names = [];
+	/**
+	 * @type {{ auto_help: boolean }}
+	 */
+	opts;
+	summary;
 
-	constructor(argv) {
+	/**
+	 *
+	 * @param {string} summary A brief summary of the program
+	 * @param {{ auto_help: boolean }} opts
+	 * * \`auto_help\` (\`true\`) - Whether to automatically print the help message if the \`--help\` or \`-h\` flag are provided
+	 */
+	constructor(summary, opts = {}) {
+		this.opts = { auto_help: true, ...opts };
+		const { auto_help } = this.opts;
+		this.summary = summary;
+
 		let prev_arg = false;
-		argv.slice(1).forEach((arg) => {
+		process.argv.slice(1).forEach((arg) => {
 			if (arg.startsWith("-")) {
 				this.args[arg] = true;
 				prev_arg = arg;
@@ -22,12 +43,19 @@ filesystem.tree = {"lib": {"args.js": `class Args {
 				this.params.push([null, arg]);
 			}
 		});
+
+		if (auto_help) {
+			this.arg("help", "Display help about using this command", {
+				bool: true,
+			});
+		}
 	}
 
 	/**
 	 * Retrieve the value of an argument provided to the program.
 	 *
 	 * @param {string} arg
+	 * @param {string} desc A description of the argument
 	 * @param {{ short?: boolean, required?: boolean, default_value?: boolean, boolean?: boolean }} options
 	 * * \`short\` (\`true\`) - Whether to allow the short form of the argument (e.g. \`-h\` for \`--help\`)
 	 * * \`required\` (\`false\`) - Whether the argument is mandatory. If \`true\`, this function will throw an error if it is not provided
@@ -38,30 +66,28 @@ filesystem.tree = {"lib": {"args.js": `class Args {
 	 *   * \`bool\` and \`required\` are mutually exclusive
 	 * @returns The value of the argument, or \`default_value\` if the argument is not provided
 	 */
-	arg(arg, options) {
+	arg(arg, desc, options = {}) {
+		if (this.mode === "params") throw "Cannot add arguments after params";
+
 		const long_arg = \`--\${arg}\`;
 		const negative_arg = \`--no-\${arg}\`;
 		const short_arg = \`-\${arg[0]}\`;
 
-		this.arg_defs[arg] = options;
-
-		let { short, required, default_value, bool } = {
+		options = {
 			short: true,
 			required: false,
 			default_value: undefined,
 			bool: false,
 			...options,
 		};
+		this.arg_defs[arg] = { desc, ...options };
+		let { short, required, default_value, bool } = options;
 
 		if (short && this.args[short_arg] && this.args[long_arg]) {
-			throw \`\${process_name(
-				this.argv[0]
-			)}: \${short_arg} and \${long_arg} cannot be used together\`;
+			throw \`\${process_name()}: \${short_arg} and \${long_arg} cannot be used together\`;
 		}
 		if (bool && required) {
-			throw \`\${process_name(
-				this.argv[0]
-			)}: argument \\\`\${long_arg}\\\` cannot be both required and a boolean flag\`;
+			throw \`\${process_name()}: argument \\\`\${long_arg}\\\` cannot be both required and a boolean flag\`;
 		}
 		if (bool && default_value === undefined) {
 			default_value = false;
@@ -89,50 +115,139 @@ filesystem.tree = {"lib": {"args.js": `class Args {
 		if (this.args[long_arg]) return this.args[long_arg];
 
 		if (required) {
-			if (short)
-				throw \`\${process_name(
-					this.argv[0]
-				)}: argument \${long_arg} (\${short_arg}) is required\`;
-			else throw \`\${process_name(this.argv[0])}: argument \${long_arg} is required\`;
+			if (short) throw \`\${process_name()}: argument \${long_arg} (\${short_arg}) is required\`;
+			else throw \`\${process_name()}: argument \${long_arg} is required\`;
 		}
 
 		return default_value;
 	}
 
+	// /**
+	//  *
+	//  * @param {string} name The name of the parameter
+	//  */
+	// param(name) {
+	// 	if (this.args === "args") {
+	// 		this.mode = "params";
+
+	// 		new_params = [];
+	// 		for (const [flag, value] of this.params) {
+	// 			if (flag && this.arg_defs[flag].boolean) {
+	// 				continue;
+	// 			}
+	// 			new_params.push(value);
+	// 		}
+	// 		this.params = new_params;
+	// 	}
+
+	// 	this.param_names.push(name);
+	// 	return this.params.shift();
+	// }
+
+	description(desc) {
+		this.long_desc = desc.trim();
+	}
+
 	/**
 	 *
-	 * @param {string} name
+	 * @param {{ ignore_params: boolean, print_help_on_error: boolean }} opts \\
+	 * * \`ignore_params\` (\`true\`) - Whether to throw an error if there are any remaining unused parameters
+	 * * \`print_help_on_error\` (\`true\`) - Whether to print the help message if there is an error.
 	 */
-	param(name) {}
+	finish(opts = {}) {
+		const { ignore_params, print_help_on_error } = {
+			ignore_params: true,
+			print_help_on_error: true,
+			...opts,
+		};
 
-	finish() {
-		for (const arg of Object.keys(this.args)) {
-			if (arg.startsWith("-")) {
-				throw \`\${process_name(this.argv[0])}: \${arg}: Unknown option\`;
+		try {
+			let unexpected_args = Object.keys(this.args)
+				.filter((arg) => !this.expected_args.has(arg))
+				.map((arg) => \`'\${arg}'\`);
+
+			if (unexpected_args.length === 1) {
+				throw \`\${process_name()}: Unexpected argument \${unexpected_args[0]}\`;
+			} else if (unexpected_args.length > 1) {
+				throw \`\${process_name()}: Unexpected arguments \${unexpected_args.join(", ")}\`;
+			}
+
+			if (this.args["--help"] || this.args["-h"]) {
+				this.print_help();
+				process.exit(0);
+			}
+		} catch (e) {
+			if (print_help_on_error) {
+				this.print_help();
+			}
+			throw e;
+		}
+	}
+
+	print_help() {
+		let buffer = "";
+		let sections = [
+			["NAME", \`\${process_name()} - \${this.summary}\`],
+			["USAGE", \`\\x1b[0;1m\${process_name()}\\x1b[0;37m [\\x1b[4mOPTIONS\\x1b[0m]\`],
+		];
+
+		const cols = console.cols();
+		const wrap = (s, indent, width) => {
+			let out = "";
+			let line = " ".repeat(indent);
+
+			for (const word of s.split(" ")) {
+				if (line.length + word.length + 1 > width) {
+					out += line + "\\r\\n";
+					line = " ".repeat(indent);
+				}
+				line += word + " ";
+			}
+			out += line;
+			return out;
+		};
+
+		if (this.long_desc) {
+			sections.push(["DESCRIPTION", this.long_desc]);
+		}
+		sections.push(["OPTIONS", ""]);
+
+		let first = true;
+		for (const [name, section] of sections) {
+			if (!first) buffer += "\\r\\n\\r\\n";
+			first = false;
+			buffer += \`\\x1b[0;4m\${name}\\x1b[0;37m\\r\\n\`;
+			buffer += wrap(section, 6, cols);
+		}
+
+		let argdefs = Object.entries(this.arg_defs).sort((a, b) => a[0] - b[0]);
+		if (argdefs.length > 0) {
+			first = true;
+			for (const [arg, { desc, short, required, default_value, bool }] of argdefs) {
+				if (!first) buffer += "      ";
+				buffer += "\\x1b[1m";
+				first = false;
+				if (short) buffer += \`-\${arg[0]}, \`;
+
+				buffer += \`--\${arg}\\x1b[22;37m\`;
+				if (short && required) buffer += \`, --no-\${arg}\`;
+
+				if (required) buffer += " REQUIRED";
+				if (default_value !== undefined) buffer += \` (default: \${default_value})\`;
+
+				console.log(desc);
+				buffer += \`\\r\\n\${wrap(desc, 6, cols)}\\r\\n\`;
 			}
 		}
+
+		console.print(buffer);
 	}
 }
 
-function process_name(argv0) {
-	return /\\/([^/]+).js\$/.exec(argv0)[1];
-}
-
-function args(argv, expected_args) {
-	let args = {};
-
-	for (const arg of Object.keys(args)) {
-		if (!expected_args.includes(arg)) {
-			throw \`\${process_name(argv[0])}: \${arg}: Unknown option\`;
-		}
-	}
-
-	return new Args(args);
-}
+const process_name = () => /\\/([^/]+).js\$/.exec(process.argv0)[1];
 
 module.exports = { Args };
 `
-,"man.js": ``
 ,},
 "home": {"user": {"Documents": {"writing_scripts.txt": `===============================================================================
 =  W r i t i n g   S c r i p t s   i n   F l o p p a   O S                    =
@@ -380,13 +495,8 @@ theme = light`
 ,},
 "bin": {"help.js": `const { Args } = include("/lib/args");
 
-args = new Args(process.argv);
-const help = args.arg("help", { bool: true });
-
-if (help) {
-	console.println("yeehaw");
-	return;
-}
+args = new Args(\`Displays useful information about using the terminal and system.\`);
+args.finish();
 `
 ,"cd.js": ``
 ,"ls.js": ``
@@ -395,11 +505,32 @@ if (help) {
 	args = {};
 	params = [];
 	expected_args = new Set();
+	/**
+	 * Stored information about each argument
+	 * @type {{ [arg: string]: { desc: string, short?: boolean, required?: boolean, default_value?: boolean, boolean?: boolean } }}
+	 */
 	arg_defs = {};
+	mode = "args";
+	param_names = [];
+	/**
+	 * @type {{ auto_help: boolean }}
+	 */
+	opts;
+	summary;
 
-	constructor(argv) {
+	/**
+	 *
+	 * @param {string} summary A brief summary of the program
+	 * @param {{ auto_help: boolean }} opts
+	 * * \`auto_help\` (\`true\`) - Whether to automatically print the help message if the \`--help\` or \`-h\` flag are provided
+	 */
+	constructor(summary, opts = {}) {
+		this.opts = { auto_help: true, ...opts };
+		const { auto_help } = this.opts;
+		this.summary = summary;
+
 		let prev_arg = false;
-		argv.slice(1).forEach((arg) => {
+		process.argv.slice(1).forEach((arg) => {
 			if (arg.startsWith("-")) {
 				this.args[arg] = true;
 				prev_arg = arg;
@@ -411,12 +542,19 @@ if (help) {
 				this.params.push([null, arg]);
 			}
 		});
+
+		if (auto_help) {
+			this.arg("help", "Display help about using this command", {
+				bool: true,
+			});
+		}
 	}
 
 	/**
 	 * Retrieve the value of an argument provided to the program.
 	 *
 	 * @param {string} arg
+	 * @param {string} desc A description of the argument
 	 * @param {{ short?: boolean, required?: boolean, default_value?: boolean, boolean?: boolean }} options
 	 * * \`short\` (\`true\`) - Whether to allow the short form of the argument (e.g. \`-h\` for \`--help\`)
 	 * * \`required\` (\`false\`) - Whether the argument is mandatory. If \`true\`, this function will throw an error if it is not provided
@@ -427,30 +565,28 @@ if (help) {
 	 *   * \`bool\` and \`required\` are mutually exclusive
 	 * @returns The value of the argument, or \`default_value\` if the argument is not provided
 	 */
-	arg(arg, options) {
+	arg(arg, desc, options = {}) {
+		if (this.mode === "params") throw "Cannot add arguments after params";
+
 		const long_arg = \`--\${arg}\`;
 		const negative_arg = \`--no-\${arg}\`;
 		const short_arg = \`-\${arg[0]}\`;
 
-		this.arg_defs[arg] = options;
-
-		let { short, required, default_value, bool } = {
+		options = {
 			short: true,
 			required: false,
 			default_value: undefined,
 			bool: false,
 			...options,
 		};
+		this.arg_defs[arg] = { desc, ...options };
+		let { short, required, default_value, bool } = options;
 
 		if (short && this.args[short_arg] && this.args[long_arg]) {
-			throw \`\${process_name(
-				this.argv[0]
-			)}: \${short_arg} and \${long_arg} cannot be used together\`;
+			throw \`\${process_name()}: \${short_arg} and \${long_arg} cannot be used together\`;
 		}
 		if (bool && required) {
-			throw \`\${process_name(
-				this.argv[0]
-			)}: argument \\\`\${long_arg}\\\` cannot be both required and a boolean flag\`;
+			throw \`\${process_name()}: argument \\\`\${long_arg}\\\` cannot be both required and a boolean flag\`;
 		}
 		if (bool && default_value === undefined) {
 			default_value = false;
@@ -478,50 +614,139 @@ if (help) {
 		if (this.args[long_arg]) return this.args[long_arg];
 
 		if (required) {
-			if (short)
-				throw \`\${process_name(
-					this.argv[0]
-				)}: argument \${long_arg} (\${short_arg}) is required\`;
-			else throw \`\${process_name(this.argv[0])}: argument \${long_arg} is required\`;
+			if (short) throw \`\${process_name()}: argument \${long_arg} (\${short_arg}) is required\`;
+			else throw \`\${process_name()}: argument \${long_arg} is required\`;
 		}
 
 		return default_value;
 	}
 
+	// /**
+	//  *
+	//  * @param {string} name The name of the parameter
+	//  */
+	// param(name) {
+	// 	if (this.args === "args") {
+	// 		this.mode = "params";
+
+	// 		new_params = [];
+	// 		for (const [flag, value] of this.params) {
+	// 			if (flag && this.arg_defs[flag].boolean) {
+	// 				continue;
+	// 			}
+	// 			new_params.push(value);
+	// 		}
+	// 		this.params = new_params;
+	// 	}
+
+	// 	this.param_names.push(name);
+	// 	return this.params.shift();
+	// }
+
+	description(desc) {
+		this.long_desc = desc.trim();
+	}
+
 	/**
 	 *
-	 * @param {string} name
+	 * @param {{ ignore_params: boolean, print_help_on_error: boolean }} opts \\
+	 * * \`ignore_params\` (\`true\`) - Whether to throw an error if there are any remaining unused parameters
+	 * * \`print_help_on_error\` (\`true\`) - Whether to print the help message if there is an error.
 	 */
-	param(name) {}
+	finish(opts = {}) {
+		const { ignore_params, print_help_on_error } = {
+			ignore_params: true,
+			print_help_on_error: true,
+			...opts,
+		};
 
-	finish() {
-		for (const arg of Object.keys(this.args)) {
-			if (arg.startsWith("-")) {
-				throw \`\${process_name(this.argv[0])}: \${arg}: Unknown option\`;
+		try {
+			let unexpected_args = Object.keys(this.args)
+				.filter((arg) => !this.expected_args.has(arg))
+				.map((arg) => \`'\${arg}'\`);
+
+			if (unexpected_args.length === 1) {
+				throw \`\${process_name()}: Unexpected argument \${unexpected_args[0]}\`;
+			} else if (unexpected_args.length > 1) {
+				throw \`\${process_name()}: Unexpected arguments \${unexpected_args.join(", ")}\`;
+			}
+
+			if (this.args["--help"] || this.args["-h"]) {
+				this.print_help();
+				process.exit(0);
+			}
+		} catch (e) {
+			if (print_help_on_error) {
+				this.print_help();
+			}
+			throw e;
+		}
+	}
+
+	print_help() {
+		let buffer = "";
+		let sections = [
+			["NAME", \`\${process_name()} - \${this.summary}\`],
+			["USAGE", \`\\x1b[0;1m\${process_name()}\\x1b[0;37m [\\x1b[4mOPTIONS\\x1b[0m]\`],
+		];
+
+		const cols = console.cols();
+		const wrap = (s, indent, width) => {
+			let out = "";
+			let line = " ".repeat(indent);
+
+			for (const word of s.split(" ")) {
+				if (line.length + word.length + 1 > width) {
+					out += line + "\\r\\n";
+					line = " ".repeat(indent);
+				}
+				line += word + " ";
+			}
+			out += line;
+			return out;
+		};
+
+		if (this.long_desc) {
+			sections.push(["DESCRIPTION", this.long_desc]);
+		}
+		sections.push(["OPTIONS", ""]);
+
+		let first = true;
+		for (const [name, section] of sections) {
+			if (!first) buffer += "\\r\\n\\r\\n";
+			first = false;
+			buffer += \`\\x1b[0;4m\${name}\\x1b[0;37m\\r\\n\`;
+			buffer += wrap(section, 6, cols);
+		}
+
+		let argdefs = Object.entries(this.arg_defs).sort((a, b) => a[0] - b[0]);
+		if (argdefs.length > 0) {
+			first = true;
+			for (const [arg, { desc, short, required, default_value, bool }] of argdefs) {
+				if (!first) buffer += "      ";
+				buffer += "\\x1b[1m";
+				first = false;
+				if (short) buffer += \`-\${arg[0]}, \`;
+
+				buffer += \`--\${arg}\\x1b[22;37m\`;
+				if (short && required) buffer += \`, --no-\${arg}\`;
+
+				if (required) buffer += " REQUIRED";
+				if (default_value !== undefined) buffer += \` (default: \${default_value})\`;
+
+				console.log(desc);
+				buffer += \`\\r\\n\${wrap(desc, 6, cols)}\\r\\n\`;
 			}
 		}
+
+		console.print(buffer);
 	}
 }
 
-function process_name(argv0) {
-	return /\\/([^/]+).js\$/.exec(argv0)[1];
-}
-
-function args(argv, expected_args) {
-	let args = {};
-
-	for (const arg of Object.keys(args)) {
-		if (!expected_args.includes(arg)) {
-			throw \`\${process_name(argv[0])}: \${arg}: Unknown option\`;
-		}
-	}
-
-	return new Args(args);
-}
+const process_name = () => /\\/([^/]+).js\$/.exec(process.argv0)[1];
 
 module.exports = { Args };
 `
-,"man.js": ``
 ,"user": {"Documents": {"writing_scripts.txt": `===============================================================================
 =  W r i t i n g   S c r i p t s   i n   F l o p p a   O S                    =
 ===============================================================================
@@ -766,13 +991,8 @@ module.exports = { Args };
 theme = light`
 ,"help.js": `const { Args } = include("/lib/args");
 
-args = new Args(process.argv);
-const help = args.arg("help", { bool: true });
-
-if (help) {
-	console.println("yeehaw");
-	return;
-}
+args = new Args(\`Displays useful information about using the terminal and system.\`);
+args.finish();
 `
 ,"cd.js": ``
 ,"ls.js": ``

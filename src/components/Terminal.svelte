@@ -17,8 +17,8 @@
 		brightMagenta: "#E572FF",
 		cyan: "#5DA5D5",
 		brightCyan: "#72F0FF",
-		white: "#F8F8F8",
-		brightWhite: "#FFFFFF",
+		white: "#C8C8C8",
+		brightWhite: "#F8F8F8",
 	};
 
 	export const ansi = {

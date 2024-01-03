@@ -76,17 +76,39 @@ class Console {
 	log(...args: any[]) {
 		console.log(...args);
 	}
+
+	cols() {
+		return this.term?.cols ?? 0;
+	}
+
+	rows() {
+		return this.term?.rows ?? 0;
+	}
 }
 
 class Process {
 	fs: Fs;
 	argv: string[];
 	argv0: string;
+	exit: (code?: number) => void;
 
-	constructor(fs: Fs, args: string[], path: string) {
+	constructor(
+		fs: Fs,
+		args: string[],
+		path: string,
+		resolve: (value: unknown) => void,
+		reject: (reason?: any) => void
+	) {
 		this.fs = fs;
 		this.argv = [path, ...args];
 		this.argv0 = path;
+		this.exit = (code: number = 0) => {
+			if (code === 0) {
+				resolve(null);
+			} else {
+				reject(code);
+			}
+		};
 	}
 }
 
@@ -98,29 +120,34 @@ class IncludeError extends Error {
 }
 
 const make_script_fn = (path: string, content: string): ScriptFn => {
-	const f = new Function("console", "fs", "process", "module", "include", content);
-	return (cwd, args, term, module = { exports: {} }) => {
+	try {
+		var f = Function("console", "fs", "process", "module", "include", content);
+	} catch (e) {
+		console.log(e);
+		throw e;
+	}
+	return (cwd, args, term, module = { exports: {} }, path_override?: string) => {
 		return new Promise((resolve, reject) => {
 			try {
 				const console = new Console(term);
 				const fs = new Fs(cwd);
-				const process = new Process(fs, args, path);
-				const include = (path: string) => {
+				const process = new Process(fs, args, path_override ?? path, resolve, reject);
+				const include = (p: string) => {
 					let _module = { exports: {} };
 
-					if (!path.endsWith(".js")) {
-						path += ".js";
+					if (!p.endsWith(".js")) {
+						p += ".js";
 					}
 
 					try {
-						var imported_fn = ScriptCache.get(path);
+						var imported_fn = ScriptCache.get(p);
 					} catch (e) {
-						let _e = new IncludeError(`Failed to include '${path}'`);
-						_e.cause = e;
-						throw _e;
+						// let _e = new IncludeError(`Failed to include '${path}'`);
+						// _e.cause = e;
+						throw e;
 					}
 
-					imported_fn(cwd, args, term, _module);
+					imported_fn(cwd, args, term, _module, path_override ?? path);
 					return _module.exports;
 				};
 
@@ -137,7 +164,8 @@ type ScriptFn = (
 	cwd: string,
 	args: string[],
 	terminal: xtermTerminal | null,
-	module?: { exports: unknown }
+	module?: { exports: unknown },
+	path_override?: string
 ) => Promise<unknown>;
 
 export class ScriptCache {
